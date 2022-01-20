@@ -19,6 +19,7 @@ class PreInvoiceController extends Controller
 
     protected $returnDefault = 'sadmin/crm/preInvoice';
     protected $model = \App\Models\CRM\PreInvoice::class;
+    protected $modelInvoice = \App\Models\CRM\Invoice::class;
     protected $modelDetail = \App\Models\CRM\PreInvoiceDetail::class;
     protected $modelName = 'پیش فاکتور';
     protected $modelNameDetail = 'یک آیتم';

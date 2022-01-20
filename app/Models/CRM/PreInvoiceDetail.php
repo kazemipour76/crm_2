@@ -38,7 +38,7 @@ class PreInvoiceDetail extends Model
     protected $fillable = [
         'product_name',
 //        'unit_price',
-        'count',
+//        'count',
     ];
      public function preInvoice()
     {

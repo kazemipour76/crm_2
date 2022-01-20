@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Backend\CRM\PreInvoice;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\CRM\Customer;
+use App\Models\CRM\Invoice;
 use App\Models\CRM\PreInvoice;
 use App\Models\CRM\PreInvoiceDetail;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use League\CommonMark\Extension\CommonMark\Node\Block\ThematicBreak;
 use function Couchbase\defaultDecoder;
 use function React\Promise\all;
 
@@ -123,18 +125,26 @@ public function pdf(){
 
     public function store($id)
     {
-//        dd(request('checks'));
-        $model = new PreInvoiceDetail();
-        $model->pre_invoice_id = $id;
-        $model->unit_price = preg_replace("/[^A-Za-z0-9 ]/", '',request('unit_price'));
-        $model->fill(request()->all());
-        if ($model->save()) {
-            MessageBag::push($this->modelNameDetail . ' با موفقیت اضافه شد', MessageBag::TYPE_SUCCESS);
-            return redirect("{$this->returnDefault}/" . $id . '/edit');
-        } else {
-            MessageBag::push($this->modelName . ' ایجاد نشد لطفا مجددا تلاش فرمایید');
+        $status = $this->model::findOrFail($id);
+
+//        dd($status['status']);
+        if($status['status']==PreInvoice::STATUS_OPEN){
+            $model = new PreInvoiceDetail();
+            $model->pre_invoice_id = $id;
+            $model->unit_price = preg_replace("/[^A-Za-z0-9 ]/", '',request('unit_price'));
+            $model->fill(request()->all());
+            if ($model->save()) {
+                MessageBag::push($this->modelNameDetail . ' با موفقیت اضافه شد', MessageBag::TYPE_SUCCESS);
+                return redirect("{$this->returnDefault}/" . $id . '/edit');
+            } else {
+                MessageBag::push($this->modelName . ' ایجاد نشد لطفا مجددا تلاش فرمایید');
+                return redirect()->back();
+            }
+        }else{
+            MessageBag::push( ' امکان تغییر  وجود ندارد');
             return redirect()->back();
         }
+
 
     }
 
@@ -177,26 +187,30 @@ public function pdf(){
     }
 
     public function  update($id){
-//        dd('jj');
         $model=$this->modelDetail::findOrFail($id);
-        if(request('unit_price')||request('unit_price')){
-            $x=\App\Utilities\HString::number2en(request('unit_price'));
-            $y=\App\Utilities\HString::number2en(request('count'));
-            $model['unit_price']=preg_replace("/[^A-Za-z0-9 ]/", '',$x);
-            $model['count']=preg_replace("/[^A-Za-z0-9 ]/", '',$y);
-//            $model['unit_price']=null;
-//            $model['count']=null;
-        }
+        $status = $this->model::findOrFail($model['pre_invoice_id']);
+        if($status['status']==PreInvoice::STATUS_OPEN){
+        if(request('unit_price')||request('count')){
+                $x=\App\Utilities\HString::number2en(request('unit_price'));
+                $y=\App\Utilities\HString::number2en(request('count'));
+                $model['unit_price']=preg_replace("/[^A-Za-z0-9 ]/", '',$x);
+                $model['count']=preg_replace("/[^A-Za-z0-9 ]/", '',$y);
 
+            }
 
-        $model->fill(request()->all());
-        if ($model->save()) {
-            MessageBag::push($this->modelName . ' با موفقیت ویرایش شد', MessageBag::TYPE_SUCCESS);
-            return redirect()->back();
+            $model->fill(request()->all());
+            if ($model->save()) {
+                MessageBag::push($this->modelName . ' با موفقیت ویرایش شد', MessageBag::TYPE_SUCCESS);
+                return redirect()->back();
+            } else {
+                MessageBag::push('مجدد تلاش کنید ');
+                return redirect()->back();
+            }
         } else {
-            MessageBag::push('مجدد تلاش کنید ');
+            MessageBag::push('این پیش فاکتور به فاکتور تبدیل شده است.امکان تغییر آیتم ها وجود ندارد ');
             return redirect()->back();
         }
+
     }
 
 //    public function totalPrice($models)

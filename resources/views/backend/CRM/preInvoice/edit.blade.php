@@ -47,26 +47,30 @@
                         <div class="col-lg-6">
                             <x-backend.form.form-group title="قیمت کل  ریال">
                                 <x-backend.form.input name="total_price"
-                                                      disable="disabled"    :value="\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($totalSum))"/>
+                                                      disable="disabled"
+                                                      :value="\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($totalSum))"/>
                             </x-backend.form.form-group>
                         </div>
                         <div class="col-lg-6">
 
 
                             <x-backend.form.form-group title=" تخفیف کل  ریال">
-                                <x-backend.form.input name="total_discount" :value="\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($model->total_discount))"
-                                                      separate="true"   placeholder="درصورت نیاز تخفیف مورد نظر را وارد کنید"/>
+                                <x-backend.form.input name="total_discount"
+                                                      :value="\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($model->total_discount))"
+                                                      separate="true"
+                                                      placeholder="درصورت نیاز تخفیف مورد نظر را وارد کنید"/>
                             </x-backend.form.form-group>
                         </div>
                         <div class="col-lg-6">
-                            <x-backend.form.form-group title="مالیات" >
+                            <x-backend.form.form-group title="مالیات">
                                 @if(!$model->type)
                                     <x-backend.form.input name="address"
                                                           disable="disabled" :value="0"/>
                                 @else
                                     <x-backend.form.input name="address"
-                                                          disable="disabled"  :value="\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($tax))"/>
-                                    @endif
+                                                          disable="disabled"
+                                                          :value="\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($tax))"/>
+                                @endif
                             </x-backend.form.form-group>
                         </div>
 
@@ -89,8 +93,8 @@
                         </div>
                         <div class="col-lg-12">
                             <x-backend.form.form-group title="مبلغ قابل پرداخت ریال: ">
-                                <x-backend.form.input  name="address"  disable="disabled"
-                                                      :value="\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($amountPayable))" />
+                                <x-backend.form.input name="address" disable="disabled"
+                                                      :value="\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($amountPayable))"/>
                             </x-backend.form.form-group>
                         </div>
 
@@ -98,7 +102,7 @@
                             <x-backend.form.form-group title="توضیحات:">
                                 <x-backend.form.textarea name="description"
                                                          placeholder="درصورت نیاز توضیحات خود را وارد کنید">
-                                                                        {{$model->description}}
+                                    {{$model->description}}
                                 </x-backend.form.textarea>
                             </x-backend.form.form-group>
                         </div>
@@ -106,37 +110,41 @@
                     </div>
 
                     <x-slot name="footer">
-                        <button type="submit" class="btn btn-primary mr-2 px-10">
-                            ثبت
-                        </button>
-                        <a href="{{ \App\Utilities\Url::admin('crm/preInvoice') }}" class="btn btn-danger">بازگشت</a>
-                        <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/pdf') }}" class="btn btn-warning float-left ml-4">نمایش پیش فاکتور</a>
-                        <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/conversion') }}" class="btn btn-success float-left ml-4">  فاکتور کردن</a>
+                        @if($model->status==\App\Models\CRM\PreInvoice::STATUS_OPEN)
+                            <button type="submit" class="btn btn-primary mr-2 px-10">
+                                ثبت
+                            </button>
+                            <a href="{{ \App\Utilities\Url::admin('crm/preInvoice') }}"
+                               class="btn btn-danger">بازگشت</a>
+                            <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/pdf') }}"
+                               class="btn btn-warning float-left ml-4">نمایش پیش فاکتور</a>
+                            <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/conversion') }}"
+                               class="btn btn-success float-left ml-4"> فاکتور کردن</a>
+                        @else
+                            <a href="{{ \App\Utilities\Url::admin('crm/invoice/'.$model->Invoice->id.'/edit') }}"
+                                  class="btn btn-warning">نمایش فاکتور</a>
+                            <a href="{{ \App\Utilities\Url::admin('crm/preInvoice') }}"
+                               class="btn btn-danger">بازگشت</a>
+
+                            <h class="bg_color3 float-left">این پیش فاکتور به فاکتور تبدیل شده است لذا قابل تغییر نمی باشد</h>
+                        @endif
                     </x-slot>
                 </x-backend.card>
             </x-backend.form.form>
 
 
-
-
-
-
-
-
-
-
-
             <div class="row mt-5">
                 <div class="col-lg-12">
-                    <x-backend.form.form action="{{ \App\Utilities\Url::admin('crm/preInvoiceDetail/'.$model->id.'/create') }}"
-                                                    method="post">
-                                                    @csrf
-{{--                    <x-backend.form.form :action="Request::getRequestUri()" method="POST">--}}
-{{--                        @csrf--}}
-                    <x-backend.card no-padding="true" title="اقلام پیش فاکتور" color="2"
-                                    collapseid="#collapse-btn-2"
-                                    idcollapse="collapse-btn-2" icon="fa-list">
-                        <x-slot name="nav">
+                    <x-backend.form.form
+                        action="{{ \App\Utilities\Url::admin('crm/preInvoiceDetail/'.$model->id.'/create') }}"
+                        method="post">
+                        @csrf
+                        {{--                    <x-backend.form.form :action="Request::getRequestUri()" method="POST">--}}
+                        {{--                        @csrf--}}
+                        <x-backend.card no-padding="true" title="اقلام پیش فاکتور" color="2"
+                                        collapseid="#collapse-btn-2"
+                                        idcollapse="collapse-btn-2" icon="fa-list">
+                            <x-slot name="nav">
 
                                 <div class="row">
 
@@ -155,7 +163,8 @@
 
                                     <div class="col-lg-3">
                                         <x-backend.form.form-group title=" قیمت واحد">
-                                            <x-backend.form.input name="unit_price" placeholder="قیمت را وارد کنید " separate="true"/>
+                                            <x-backend.form.input name="unit_price" placeholder="قیمت را وارد کنید "
+                                                                  separate="true"/>
                                         </x-backend.form.form-group>
                                     </div>
 
@@ -165,75 +174,75 @@
                                         </button>
                                     </div>
                                 </div>
-                        </x-slot>
-                        <div class="row">
-                            <div class="col-12">
+                            </x-slot>
+                            <div class="row">
+                                <div class="col-12">
+                                </div>
                             </div>
-                        </div>
-                        <x-backend.table>
-                            <colgroup>
-                                <col style="width: 10px">
-                                <col style="width: 10px ">
-                                <col style="width: 20px ">
-                                <col style="width: 300px ">
-                                <col style="width: 14px ">
-                                <col style="width: 200px ">
-                                <col style="width: 200px ">
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <th class="align-middle text-center">#</th>
-                                <th class="align-middle text-center">
-
-                                </th>
-                                <th>عملیات</th>
-                                <th>محصول/خدمات</th>
-                                <th>تعداد</th>
-                                <th>قیمت واحد</th>
-                                <th>جمع کل</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($details as $item)
+                            <x-backend.table>
+                                <colgroup>
+                                    <col style="width: 10px">
+                                    <col style="width: 10px ">
+                                    <col style="width: 20px ">
+                                    <col style="width: 300px ">
+                                    <col style="width: 14px ">
+                                    <col style="width: 200px ">
+                                    <col style="width: 200px ">
+                                </colgroup>
+                                <thead>
                                 <tr>
-                                    <td></td>
-                                    <td class="align-middle text-center">
+                                    <th class="align-middle text-center">#</th>
+                                    <th class="align-middle text-center">
 
-                                    </td>
-                                    <td>
-                                        <x-backend.dropdown>
-                                            <div class=" text-center">
-                                                <a href="{{ \App\Utilities\Url::admin('crm/preInvoiceDetail/'. $item->id.'/edit') }}"
-                                                   class="dropdown-item text-center">ویرایش</a>
-                                                <div class="dropdown-divider"></div>
-                                            </div>
-                                            <div class=" text-center">
-
-                                                <a href="{{ \App\Utilities\Url::admin('crm/preInvoiceDetail/'. $item->id . '/delete') }}"
-                                                   class="x-confirm text-center text-danger dropdown-item"
-                                                   data-title="حذف فایل"
-                                                   data-description="آیا از حذف این فایل  اطمینان دارید؟"
-                                                   name="action"
-                                                   value="delete">حذف</a>
-
-                                            </div>
-                                        </x-backend.dropdown>
-
-                                    </td>
-                                    <td>{{$item->product_name}}</td>
-                                    <td>{{\App\Utilities\HString::number2farsi($item->count)}}</td>
-                                    <td>{{\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($item->unit_price))}}</td>
-                                    <td>{{\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($item->totalPrice()))}}</td>
+                                    </th>
+                                    <th>عملیات</th>
+                                    <th>محصول/خدمات</th>
+                                    <th>تعداد</th>
+                                    <th>قیمت واحد</th>
+                                    <th>جمع کل</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </x-backend.table>
+                                </thead>
+                                <tbody>
+                                @foreach($details as $item)
+                                    <tr>
+                                        <td></td>
+                                        <td class="align-middle text-center">
 
-                         </x-backend.card>
+                                        </td>
+                                        <td>
+                                            <x-backend.dropdown>
+                                                <div class=" text-center">
+                                                    <a href="{{ \App\Utilities\Url::admin('crm/preInvoiceDetail/'. $item->id.'/edit') }}"
+                                                       class="dropdown-item text-center">ویرایش</a>
+                                                    <div class="dropdown-divider"></div>
+                                                </div>
+                                                <div class=" text-center">
+
+                                                    <a href="{{ \App\Utilities\Url::admin('crm/preInvoiceDetail/'. $item->id . '/delete') }}"
+                                                       class="x-confirm text-center text-danger dropdown-item"
+                                                       data-title="حذف فایل"
+                                                       data-description="آیا از حذف این فایل  اطمینان دارید؟"
+                                                       name="action"
+                                                       value="delete">حذف</a>
+
+                                                </div>
+                                            </x-backend.dropdown>
+
+                                        </td>
+                                        <td>{{$item->product_name}}</td>
+                                        <td>{{\App\Utilities\HString::number2farsi($item->count)}}</td>
+                                        <td>{{\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($item->unit_price))}}</td>
+                                        <td>{{\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($item->totalPrice()))}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </x-backend.table>
+
+                        </x-backend.card>
 
                     </x-backend.form.form>
                 </div>
-           </div>
+            </div>
 
         </div>
     </div>

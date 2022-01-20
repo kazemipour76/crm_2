@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend\CRM\Invoice;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\CRM\Customer;
+use App\Models\CRM\Invoice;
+use App\Models\CRM\InvoiceDetail;
 use App\Models\CRM\PreInvoice;
 use App\Models\CRM\PreInvoiceDetail;
 use App\Utilities\Jdf;
@@ -16,14 +18,17 @@ use function React\Promise\all;
 
 class InvoiceController extends Controller
 {
-    protected $modelPre = \App\Models\CRM\PreInvoice::class;
-    protected $modelPreDetail = \App\Models\CRM\PreInvoiceDetail::class;
+    protected $modelPreInvoice = \App\Models\CRM\PreInvoice::class;
+//    protected $modelInvoice = \App\Models\CRM\Invoice::class;
+    protected $modelPreInvoiceDetail = \App\Models\CRM\PreInvoiceDetail::class;
+//    protected $modelInvoiceDetail = \App\Models\CRM\InvoiceDetail::class;
     protected $returnDefault = 'sadmin/crm/invoice';
     protected $model = \App\Models\CRM\Invoice::class;
     protected $modelDetail = \App\Models\CRM\InvoiceDetail::class;
-    protected $modelName = ' فاکتور';
+    protected $modelName = '';
     protected $modelNameDetail = 'یک آیتم';
     protected $viewFolder = 'CRM/invoice';
+    protected $isInvoice =false;
 
     public function filter()
     {
@@ -115,20 +120,57 @@ class InvoiceController extends Controller
 
         return view("backend.{$this->viewFolder}.detail.create", $data);
     }
-  public function conversion($id)
+
+    public function conversion($id)
     {
-        $modelPre = $this->modelPre::findOrFail($id);
-        $modelPre = $this->modelPre::findOrFail($id);
-        dd($modelPre);
 
-        $customers = Customer::all();
-//        $preInvoice= $this->model::all();
-        $preInvoiceDetails = PreInvoiceDetail::all();
-        $data['details'] = $preInvoiceDetails;
-        $data['customers'] = $customers;
-        $data['model'] = $model;
+        $invoice = Invoice::all();
+        if(!isset($invoice[0]))
+            goto continuation;
 
-        return view("backend.{$this->viewFolder}.detail.create", $data);
+        if ($invoice[0]['pre_invoice_id'] == $id) {
+            MessageBag::push($this->modelName . ' قبلا فاکتور شده است');
+            return redirect()->back();
+        } else {
+
+            continuation:
+            $modelInvoice = new Invoice();
+            $modelInvoiceDetail = new InvoiceDetail();
+
+            $modelPreInvoice = $this->modelPreInvoice::findOrFail($id);
+            $modelPreInvoiceDetail = $this->modelPreInvoiceDetail::where('pre_invoice_id', $id)->get();
+            if (isset($modelPreInvoiceDetail[0]['pre_invoice_id'])) {
+
+                $modelInvoice['status'] = \App\Models\CRM\Invoice::STATUS_FACTOR_SHODEH;
+                $modelInvoice['type'] = $modelPreInvoice->type;
+                $modelInvoice['customer_id'] = $modelPreInvoice->customer_id;
+                $modelInvoice['pre_invoice_id'] = $id;
+                $modelInvoice->save();
+
+                $modelPreInvoice['status']=\App\Models\CRM\Invoice::STATUS_FACTOR_SHODEH;
+                $modelPreInvoice->save();
+
+                $modelInvoiceDetail['product_name'] = $modelPreInvoiceDetail[0]->product_name;
+                $modelInvoiceDetail['unit_price'] = $modelPreInvoiceDetail[0]->unit_price;
+                $modelInvoiceDetail['count'] = $modelPreInvoiceDetail[0]->count;
+                $modelInvoiceDetail['invoice_id'] = $modelInvoice->id;
+
+                if ($modelInvoiceDetail->save()) {
+                    MessageBag::push($this->modelNameDetail . ' با موفقیت تبدیل شد', MessageBag::TYPE_SUCCESS);
+                    return redirect("{$this->returnDefault}/" .$modelInvoice->id . '/edit');
+                } else {
+                    MessageBag::push($this->modelName . ' تبدیل نشد لطفا مجددا تلاش فرمایید');
+                    return redirect()->back();
+                }
+            } else {
+                MessageBag::push($this->modelName . 'نباید بدون آیتم باشد . لطفا یک آیتم اضافه نمایید');
+                return redirect()->back();
+
+            }
+
+        }
+
+        return view("backend.{$this->viewFolder}.detail.create");
     }
 
     public function storePre($id)
@@ -136,7 +178,7 @@ class InvoiceController extends Controller
 //        dd(request('checks'));
         $model = new PreInvoiceDetail();
         $model->pre_invoice_id = $id;
-        $model->unit_price = preg_replace("/[^A-Za-z0-9 ]/", '',request('unit_price'));
+        $model->unit_price = preg_replace("/[^A-Za-z0-9 ]/", '', request('unit_price'));
         $model->fill(request()->all());
         if ($model->save()) {
             MessageBag::push($this->modelNameDetail . ' با موفقیت اضافه شد', MessageBag::TYPE_SUCCESS);
@@ -170,12 +212,12 @@ class InvoiceController extends Controller
     {
         $model = $this->model::findOrFail($id);
 //        dd($model);
-        if(request('total_discount')==null){
+        if (request('total_discount') == null) {
 
-            $model['total_discount']=null;
-        }else{
-            $x=\App\Utilities\HString::number2en(request('total_discount'));
-            $model['total_discount']=preg_replace("/[^A-Za-z0-9 ]/", '',$x);
+            $model['total_discount'] = null;
+        } else {
+            $x = \App\Utilities\HString::number2en(request('total_discount'));
+            $model['total_discount'] = preg_replace("/[^A-Za-z0-9 ]/", '', $x);
 
         }
 //        $model->total_discount=111;
@@ -190,15 +232,18 @@ class InvoiceController extends Controller
             return redirect()->back();
         }
     }
-    public function editDetail($id){
+
+    public function editDetail($id)
+    {
 //        dd('ddd');
         $model = $this->modelDetail::findOrFail($id);
         $data['model'] = $model;
         return view("backend.{$this->viewFolder}.detail.edit", $data);
     }
 
-    public function  updateDetail($id){
-        $model=$this->modelDetail::findOrFail($id);
+    public function updateDetail($id)
+    {
+        $model = $this->modelDetail::findOrFail($id);
         $model->fill(request()->all());
         if ($model->save()) {
             MessageBag::push($this->modelName . ' با موفقیت ویرایش شد', MessageBag::TYPE_SUCCESS);

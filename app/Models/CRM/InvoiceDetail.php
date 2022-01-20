@@ -38,7 +38,7 @@ class InvoiceDetail extends Model
     protected $fillable = [
         'product_name',
 //        'unit_price',
-        'count',
+//        'count',
     ];
 
 

@@ -88,12 +88,12 @@
 
                                     <x-backend.dropdown>
                                         <div class=" text-center">
-                                            <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/' . $model->id .'/edit') }}"
+                                            <a href="{{ \App\Utilities\Url::admin('crm/invoice/' . $model->id .'/edit') }}"
                                                class="dropdown-item text-center">ویرایش</a>
                                             <div class="dropdown-divider"></div>
                                         </div>
                                         <div class=" text-center">
-                                            <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id . '/delete') }}"
+                                            <a href="{{ \App\Utilities\Url::admin('crm/invoice/'. $model->id . '/delete') }}"
                                                class="x-confirm text-center text-danger dropdown-item"
                                                data-title="حذف فایل"
                                                data-description="آیا از حذف این فایل  اطمینان دارید؟" name="action"

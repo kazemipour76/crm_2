@@ -110,8 +110,7 @@
                             ثبت
                         </button>
                         <a href="{{ \App\Utilities\Url::admin('crm/preInvoice') }}" class="btn btn-danger">بازگشت</a>
-                        <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/pdf') }}" class="btn btn-warning float-left ml-4">نمایش پیش فاکتور</a>
-                        <a href="{{ \App\Utilities\Url::admin('crm/invoice/'. $model->id.'/create') }}" class="btn btn-success float-left ml-4">  فاکتور کردن</a>
+                        <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/pdf') }}" class="btn btn-warning float-left ml-4">نمایش  فاکتور</a>
                     </x-slot>
                 </x-backend.card>
             </x-backend.form.form>

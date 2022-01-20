@@ -64,9 +64,9 @@ class Invoice extends Model
         return $this->hasMany(InvoiceDetail::class,'invoice_id' );
     }
 
-//    public function preInvoice() {
-//        return $this->hasOne(PreInvoice::class,'pre_invoice_id') ;
-//    }
+    public function preInvoice() {
+        return $this->belongsTo(PreInvoice::class,'pre_invoice_id') ;
+    }
 
     public function customer() {
         return $this->belongsTo(Customer::class,'customer_id') ;

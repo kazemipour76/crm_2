@@ -65,9 +65,16 @@ Route::get('collect', function () {
 
 //Route::get('test', '\App\Http\Controllers\Backend\CMS\MenuController@index');
 
-Route::get('sadmin/login', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'loginPage'])->name('login');
-Route::post('sadmin/login', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'login']);
-Route::get('sadmin/logout', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'logout']);
+Route::get('/',function (){
+   return response()->redirectTo('auth/login');
+});
+Route::get('auth/login', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'loginPage'])->name('login');
+Route::post('auth/login', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'login']);
+
+Route::get('auth/register', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'registerPage']);
+Route::post('auth/register', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'register']);
+
+Route::get('auth/logout', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'logout']);
 
 use App\Models\CRM\Customer;
 use App\Utilities\Routers;

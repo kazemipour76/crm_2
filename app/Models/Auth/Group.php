@@ -4,6 +4,7 @@
 namespace App\Models\Auth;
 
 use App\Casts\Jalali;
+use App\Models\BaseModel;
 use App\Traits\FullTextSearch;
 use Database\Factories\GroupFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +29,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Group whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Group extends Model
+class Group extends BaseModel
 {
     use HasFactory, FullTextSearch;
 

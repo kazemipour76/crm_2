@@ -26,6 +26,7 @@ class CustomerSeeder extends Seeder
             $model->email = \Str::random(10).'@gmail.com';
             $model->nationalID = '12345678900_'.$i;
             $model->economicID = '00_'.$i;
+            $model->_user_id = 1;
             $model->save();
         }
 

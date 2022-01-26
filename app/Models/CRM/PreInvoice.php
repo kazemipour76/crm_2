@@ -5,6 +5,8 @@ namespace App\Models\CRM;
 
 
 use App\Casts\Jalali;
+use App\Models\BaseModel;
+use App\Traits\FullTextSearch;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -41,18 +43,28 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PreInvoice whereTotalPrice($value)
  * @property int $type
  * @method static \Illuminate\Database\Eloquent\Builder|PreInvoice whereType($value)
+ * @property string|null $description
+ * @property string|null $title
+ * @property string|null $date
+ * @method static \Illuminate\Database\Eloquent\Builder|PreInvoice whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PreInvoice whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PreInvoice whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PreInvoice search($term)
  */
-class PreInvoice extends Model
+class PreInvoice extends BaseModel
 {
-    CONST STATUS_OPEN=1;
-    CONST STATUS_CLOSE=2;
-    CONST STATUS_FACTOR_SHODEH=3;
+    use FullTextSearch;
 
-    CONST  TYPE_RASMI=1;
-    CONST  TYPE_GHEYRE_RASMI=0;
+    const STATUS_OPEN = 1;
+    const STATUS_CLOSE = 2;
+    const STATUS_FACTOR_SHODEH = 3;
+
+    const  TYPE_RASMI = 1;
+    const  TYPE_GHEYRE_RASMI = 0;
 
 
     protected $table = 'pre_invoices';
+    protected $searchable = ['description'];
     protected $fillable = [
         'type',
         'customer_id',
@@ -70,25 +82,30 @@ class PreInvoice extends Model
 
     public function details()
     {
-        return $this->hasMany(PreInvoiceDetail::class,'pre_invoice_id');
+        return $this->hasMany(PreInvoiceDetail::class, 'pre_invoice_id');
     }
 
-    public function invoice() {
-        return $this->hasOne(Invoice::class,'pre_invoice_id') ;
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class, 'pre_invoice_id');
     }
 
-    public function customer() {
-        return $this->belongsTo(Customer::class,'customer_id') ;
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
-    public function totalPriceAll(){
-       return $this->details()
+
+    public function totalPriceAll()
+    {
+        return $this->details()
             ->selectRaw('SUM(count*unit_price) as total_price')
             ->first()->total_price;
     }
-    public function totalPrice(){
-       return $this->details()
-            ->selectRaw('(count*unit_price) as total_price')->get()
-            ;
+
+    public function totalPrice()
+    {
+        return $this->details()
+            ->selectRaw('(count*unit_price) as total_price')->get();
     }
 
 }

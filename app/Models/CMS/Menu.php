@@ -2,6 +2,7 @@
 
 namespace App\Models\CMS;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -34,7 +35,7 @@ use Illuminate\Support\Collection;
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Menu extends Model
+class Menu extends BaseModel
 {
     protected $table = 'menus';
 

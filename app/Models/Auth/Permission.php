@@ -3,6 +3,7 @@
 namespace App\Models\Auth;
 
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereName($value)
  */
-class Permission extends Model
+class Permission extends BaseModel
 {
 
     protected $table = "permissions";

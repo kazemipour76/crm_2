@@ -2,6 +2,7 @@
 
 namespace App\Models\Auth;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,7 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|UserMeta whereUserId($value)
  * @mixin \Eloquent
  */
-class UserMeta extends Model
+class UserMeta extends BaseModel
 {
     use HasFactory;
     protected $table = 'users_meta';

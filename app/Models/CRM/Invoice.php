@@ -4,6 +4,7 @@
 namespace App\Models\CRM;
 
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -39,7 +40,45 @@ use Illuminate\Database\Eloquent\Model;
 // * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CRM\InvoiceDetail[] $details
 // * @property-read int|null $details_count
 // */
-class Invoice extends Model
+/**
+ * App\Models\CRM\Invoice
+ *
+ * @property int $id
+ * @property int|null $total_price
+ * @property int|null $total_discount
+ * @property string|null $description
+ * @property string|null $title
+ * @property string|null $date
+ * @property int|null $tax
+ * @property int $status
+ * @property int $type
+ * @property int $customer_id
+ * @property int|null $pre_invoice_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\CRM\Customer|null $customer
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CRM\InvoiceDetail[] $details
+ * @property-read int|null $details_count
+ * @property-read \App\Models\CRM\PreInvoice|null $preInvoice
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereCustomerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice wherePreInvoiceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereTax($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereTotalDiscount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereTotalPrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invoice whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+class Invoice extends BaseModel
 {
     CONST STATUS_OPEN=1;
     CONST STATUS_CLOSE=2;

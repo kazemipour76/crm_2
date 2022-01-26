@@ -4,12 +4,17 @@
 namespace App\Models\Auth;
 
 use App\Casts\Jalali;
+use App\Models\BaseModel;
 use App\Traits\FullTextSearch;
 use Database\Factories\UserFactory;
+use Faker\Provider\Base;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as AuthUser;
+
 
 /**
  * App\Models\Auth\User
@@ -38,9 +43,17 @@ use Illuminate\Foundation\Auth\User as AuthUser;
  * @method static \Illuminate\Database\Eloquent\Builder|User kazemi($name)
  * @method static \Illuminate\Database\Eloquent\Builder|User search($term)
  */
-class User extends AuthUser
+class User extends BaseModel implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
-    use HasFactory, FullTextSearch;
+    use
+        \Illuminate\Auth\Authenticatable,
+        \Illuminate\Foundation\Auth\Access\Authorizable,
+        \Illuminate\Auth\Passwords\CanResetPassword,
+        \Illuminate\Auth\MustVerifyEmail,
+        HasFactory, FullTextSearch;
 
     protected $table = "users";
     protected $searchable = [

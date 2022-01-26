@@ -3,28 +3,25 @@
 namespace App\Http\Controllers\Backend\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\Auth\User;
 use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
 use App\Models\CRM\PreInvoice;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use function React\Promise\all;
 
 class CustomerController extends Controller
 {
 
     protected $returnDefault = 'sadmin/crm/customer';
-    protected $model = \App\Models\CRM\Customer::class;
     protected $modelName = 'مشتری';
     protected $viewFolder = 'CRM/Customer';
 
     public function filter()
     {
 //        $model = $this->model::OrderBy('id')->withTrashed();
-        $model = $this->model::OrderBy('id');
+        $model = Customer::user()->orderBy('id');
+
         $filter = request()->all();
 
         if (!empty($filter['term'])) {
@@ -79,9 +76,11 @@ class CustomerController extends Controller
 
     public function store()
     {
-        $model = new $this->model;
-         request()->validate(Customer::getValidationCustomer());
+        $model = new Customer();
+        request()->validate(Customer::getValidationCustomer());
         $model->fill(request()->all());
+        $model->fillUser();
+
         if ($model->save()) {
             MessageBag::push($this->modelName . ' با موفقیت ایجاد شد', MessageBag::TYPE_SUCCESS);
             return redirect("{$this->returnDefault}/" . $model->id . '/edit');
@@ -94,14 +93,14 @@ class CustomerController extends Controller
 
     public function edit($id)
     {
-        $model = $this->model::findOrFail($id);
+        $model = Customer::user()->findOrFail($id);
         $data['model'] = $model;
         return view("backend.{$this->viewFolder}.edit", $data);
     }
 
     public function update($id)
     {
-        $model = $this->model::findOrFail($id);
+        $model = Customer::user()->findOrFail($id);
         request()->validate(Customer::getValidationCustomer(true, $id));
         $model->fill(request()->all());
         if ($model->save()) {
@@ -134,21 +133,23 @@ class CustomerController extends Controller
     public function deleteAction($ids)
     {
         $count = count($ids);
-        if ($this->model::whereIn('id', $ids)->delete()) {
-            MessageBag::push("تعداد {$count} {$this->modelName} با موفقیت حذف شد" , MessageBag::TYPE_SUCCESS);
+        if (Customer::user()->whereIn('id', $ids)->delete()) {
+            MessageBag::push("تعداد {$count} {$this->modelName} با موفقیت حذف شد", MessageBag::TYPE_SUCCESS);
         } else {
             MessageBag::push("{$this->modelName}  حذف نشد لطفا مجددا تلاش فرمایید");
         }
     }
 
-    public function invoicesList($id){
-        $model= Invoice::where('customer_id',$id)->paginate(5);
+    public function invoicesList($id)
+    {
+        $model = Invoice::where('customer_id', $id)->paginate(5);
         $data['models'] = $model;
         return view("backend.{$this->viewFolder}.lists.invoice", $data);
     }
 
-    public function preInvoicesList($id){
-        $model= PreInvoice::where('customer_id',$id)->paginate(5);
+    public function preInvoicesList($id)
+    {
+        $model = PreInvoice::where('customer_id', $id)->paginate(5);
         $data['models'] = $model;
         return view("backend.{$this->viewFolder}.lists.preInvoice", $data);
     }

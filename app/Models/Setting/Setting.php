@@ -3,6 +3,8 @@
 
 namespace App\Models\Setting;
 
+use App\Models\BaseModel;
+use Faker\Provider\Base;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
@@ -23,7 +25,7 @@ use Illuminate\Support\Facades\Cache;
  * @method static \Illuminate\Database\Eloquent\Builder|Setting whereValue($value)
  * @mixin \Eloquent
  */
-class Setting extends Model
+class Setting extends BaseModel
 {
     const CACHE_KEY = 'platform_settings';
     const TYPE_INPUT_TEXT = 1;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 trait FullTextSearch
@@ -17,17 +18,17 @@ trait FullTextSearch
 
         $words = explode(' ', $term);
 
-        foreach($words as $key => $word) {
+        foreach ($words as $key => $word) {
             /*
              * applying + operator (required word) only big words
              * because smaller ones are not indexed by mysql
              */
-            if(strlen($word) >= 3) {
+            if (strlen($word) >= 3) {
                 $words[$key] = '+' . $word . '*';
             }
         }
 
-        $searchTerm = implode( ' ', $words);
+        $searchTerm = implode(' ', $words);
 
         return $searchTerm;
     }
@@ -41,9 +42,10 @@ trait FullTextSearch
      */
     public function scopeSearch($query, $term)
     {
-        $columns = implode(',',$this->searchable);
-
-        $query->whereRaw("MATCH ({$columns}) AGAINST (? IN BOOLEAN MODE)" , $this->fullTextWildcards($term));
+        if (is_array($this->searchable) && count($this->searchable) > 0) {
+            $columns = implode(',', $this->searchable);
+            $query->whereRaw("MATCH ({$columns}) AGAINST (? IN BOOLEAN MODE)", $this->fullTextWildcards($term));
+        }
 
         return $query;
     }

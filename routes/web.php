@@ -29,6 +29,27 @@ Route::get('test', function () {
 //});
 
 
+Route::get('testFulltextSearch/{term?}', function ($term = null) {
+    $preInvoices = \App\Models\CRM\PreInvoice::with(['details'])->orderBy('id');
+    if (!empty($term)) {
+        $preInvoices->search($term);
+    }
+
+    $d = \App\Models\CRM\PreInvoiceDetail::orderBy('id');
+    if (!empty($term)) {
+        $d->search($term);
+    }
+    $preInvoiceIds = $d->get()->pluck('pre_invoice_id')->toArray();
+    $preInvoices->orWhereIn('id', $preInvoiceIds);
+
+    dd($preInvoices->get()->toArray());
+
+
+
+    dd($d->get()->toArray());
+});
+
+
 Route::get('collect', function () {
     $arr = collect([
         ['id' => 1, 'name' => 'ali', 'age' => 25],
@@ -60,12 +81,12 @@ Route::group([
 
     Route::group(['prefix' => 'crm'], function () {
         Routers::crud('customer', \App\Http\Controllers\Backend\CRM\CustomerController::class);
-        Route::get('customer/{id}/invoicesList', [\App\Http\Controllers\Backend\CRM\CustomerController::class,'invoicesList']);
-        Route::get('customer/{id}/preInvoicesList', [\App\Http\Controllers\Backend\CRM\CustomerController::class,'preInvoicesList']);
+        Route::get('customer/{id}/invoicesList', [\App\Http\Controllers\Backend\CRM\CustomerController::class, 'invoicesList']);
+        Route::get('customer/{id}/preInvoicesList', [\App\Http\Controllers\Backend\CRM\CustomerController::class, 'preInvoicesList']);
         Routers::crud('preInvoice', \App\Http\Controllers\Backend\CRM\PreInvoice\PreInvoiceController::class);
         Routers::crud('invoice', \App\Http\Controllers\Backend\CRM\Invoice\InvoiceController::class);
         Routers::crud('preInvoiceDetail', \App\Http\Controllers\Backend\CRM\PreInvoice\PreInvoiceDetailController::class);
-        Route::get('preInvoice/{id}/conversion', [\App\Http\Controllers\Backend\CRM\Invoice\InvoiceController::class,'conversion']);
+        Route::get('preInvoice/{id}/conversion', [\App\Http\Controllers\Backend\CRM\Invoice\InvoiceController::class, 'conversion']);
         Route::get('preInvoiceDetail/{id}/create', [\App\Http\Controllers\Backend\CRM\PreInvoice\PreInvoiceDetailController::class, 'create']);
         Route::post('preInvoiceDetail/{id}/create', [\App\Http\Controllers\Backend\CRM\PreInvoice\PreInvoiceDetailController::class, 'store']);
         Route::get('preInvoice/{id}/pdf', [\App\Http\Controllers\Backend\CRM\PreInvoice\PdfController::class, 'create']);

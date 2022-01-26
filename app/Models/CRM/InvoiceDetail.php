@@ -4,6 +4,7 @@
 namespace App\Models\CRM;
 
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -31,7 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|InvoiceDetail whereUnitPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|InvoiceDetail whereUpdatedAt($value)
  */
-class InvoiceDetail extends Model
+class InvoiceDetail extends BaseModel
 {
 
     protected $table = 'invoice_details';

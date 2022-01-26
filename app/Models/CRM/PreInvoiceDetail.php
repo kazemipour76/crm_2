@@ -4,6 +4,8 @@
 namespace App\Models\CRM;
 
 
+use App\Models\BaseModel;
+use App\Traits\FullTextSearch;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -32,9 +34,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $pre_invoice_id
  * @method static \Illuminate\Database\Eloquent\Builder|PreInvoiceDetail wherePreInvoiceId($value)
  */
-class PreInvoiceDetail extends Model
+class PreInvoiceDetail extends BaseModel
 {
+    use FullTextSearch;
+
     protected $table = 'pre_invoice_details';
+    protected $searchable = ['product_name'];
     protected $fillable = [
         'product_name',
 //        'unit_price',

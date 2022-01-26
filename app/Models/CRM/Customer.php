@@ -4,6 +4,8 @@
 namespace App\Models\CRM;
 
 
+use App\Models\BaseModel;
+use App\Traits\UserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -45,12 +47,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CRM\PreInvoice[] $preInvoices
  * @property-read int|null $pre_invoices_count
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereEmail($value)
+ * @property int $_user_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer user()
  */
-class Customer extends Model
+class Customer extends BaseModel
 {
 //    use SoftDeletes;
+    use UserScope;
 
     protected $table = 'customers';
+    protected $idGenerator = true;
+
     protected $fillable = [
         'name',
         'address',
@@ -58,15 +66,16 @@ class Customer extends Model
         'economicID',
         'nationalID',
     ];
+
     public static function getValidationCustomer($idEdit = false, $id = null)
     {
 
         $rules = [
 
-            'name'=> 'required',
-            'address'=> 'required',
-            'economicID'=> 'required',
-            'phone'=> 'required',
+            'name' => 'required',
+            'address' => 'required',
+            'economicID' => 'required',
+            'phone' => 'required',
 //            'nationalID'=> 'required',
 //            'email' => 'required|email|not_regex:/(^([a-zA-z]+)(\d+)?$)/u|unique:users',
 
@@ -77,11 +86,11 @@ class Customer extends Model
 
     public function preInvoices()
     {
-        return $this->hasMany(PreInvoice::class,'customer_id');
+        return $this->hasMany(PreInvoice::class, 'customer_id');
     }
 
     public function invoices()
     {
-        return $this->hasMany(Invoice::class,'customer_id');
+        return $this->hasMany(Invoice::class, 'customer_id');
     }
 }

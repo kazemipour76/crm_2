@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Backend\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\CRM\Customer;
+use App\Models\CRM\Invoice;
+use App\Models\CRM\PreInvoice;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use function React\Promise\all;
 
 class CustomerController extends Controller
 {
@@ -136,5 +139,17 @@ class CustomerController extends Controller
         } else {
             MessageBag::push("{$this->modelName}  حذف نشد لطفا مجددا تلاش فرمایید");
         }
+    }
+
+    public function invoicesList($id){
+        $model= Invoice::where('customer_id',$id)->paginate(5);
+        $data['models'] = $model;
+        return view("backend.{$this->viewFolder}.lists.invoice", $data);
+    }
+
+    public function preInvoicesList($id){
+        $model= PreInvoice::where('customer_id',$id)->paginate(5);
+        $data['models'] = $model;
+        return view("backend.{$this->viewFolder}.lists.preInvoice", $data);
     }
 }

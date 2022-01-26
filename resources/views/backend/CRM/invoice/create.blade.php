@@ -4,7 +4,7 @@
         <div class="col-lg-6">
             <x-backend.form.form action="{{ \App\Utilities\Url::admin('crm/invoice/create') }}" method="post">
                 @csrf
-                <x-backend.card title="ایجاد  فاکتور جدید">
+                <x-backend.card title="ایجاد  فاکتور جدید" color="17">
                     <div class="row ">
 
                         <div class="col-lg-6">

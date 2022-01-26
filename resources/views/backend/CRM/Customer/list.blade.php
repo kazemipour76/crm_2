@@ -15,7 +15,7 @@
         @csrf
         <div class="row mb-5">
             <div class="col-lg-12">
-                <x-backend.card no-padding="true" title="لیست کاربران" color="2" collapseid="#collapse-btn-2"
+                <x-backend.card no-padding="true" title="لیست کاربران" color="0" collapseid="#collapse-btn-2"
                                 idcollapse="collapse-btn-2" icon="fa-list">
 
                     <div class="col-lg-6 p-5 ">
@@ -89,6 +89,16 @@
                                         <div class=" text-center">
                                             <a href="{{ \App\Utilities\Url::admin('crm/customer/' . $model->id .'/edit') }}"
                                                class="dropdown-item text-center">ویرایش</a>
+                                            <div class="dropdown-divider"></div>
+                                        </div>
+                                        <div class=" text-center">
+                                            <a href="{{ \App\Utilities\Url::admin('crm/customer/' . $model->id .'/invoicesList') }}"
+                                               class="dropdown-item text-center">لیست فاکتورها</a>
+                                            <div class="dropdown-divider"></div>
+                                        </div>
+                                        <div class=" text-center">
+                                            <a href="{{ \App\Utilities\Url::admin('crm/customer/' . $model->id .'/preInvoicesList') }}"
+                                               class="dropdown-item text-center">لیست پیش فاکتورها</a>
                                             <div class="dropdown-divider"></div>
                                         </div>
                                         <div class=" text-center">

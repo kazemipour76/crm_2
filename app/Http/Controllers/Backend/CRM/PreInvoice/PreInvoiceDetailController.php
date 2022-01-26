@@ -127,10 +127,10 @@ public function pdf(){
     {
         $status = $this->model::findOrFail($id);
 
-//        dd($status['status']);
         if($status['status']==PreInvoice::STATUS_OPEN){
             $model = new PreInvoiceDetail();
             $model->pre_invoice_id = $id;
+            $model->count = request('count');
             $model->unit_price = preg_replace("/[^A-Za-z0-9 ]/", '',request('unit_price'));
             $model->fill(request()->all());
             if ($model->save()) {

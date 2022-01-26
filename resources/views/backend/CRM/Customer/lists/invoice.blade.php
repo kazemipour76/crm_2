@@ -7,7 +7,7 @@
 
     <div class="row mb-5">
         <div class="col-lg-12">
-            @include('backend.user.filter', ['formId' => $formId])
+            @include('backend.CRM.customer.filter', ['formId' => $formId])
         </div>
     </div>
 
@@ -15,11 +15,11 @@
         @csrf
         <div class="row mb-5">
             <div class="col-lg-12">
-                <x-backend.card no-padding="true" title="لیست کاربران" color="3 " collapseid="#collapse-btn-2"
+                <x-backend.card no-padding="true" title="لیست  فاکتورها" color="2" collapseid="#collapse-btn-2"
                                 idcollapse="collapse-btn-2" icon="fa-list">
 
                     <div class="col-lg-6 p-5 ">
-                        <a href="{{ \App\Utilities\Url::admin('auth/user/create') }}"
+                        <a href="{{ \App\Utilities\Url::admin('crm/invoice/create') }}"
                            class="btn btn-outline-success ml-5">
                             <x-backend.icon class="fa-plus"/>
                             ایجاد
@@ -66,9 +66,9 @@
                                     </label>
                                 </div>
                             </th>
-                            <th>عملیات</th>
+                            <th> </th>
                             <th> نام</th>
-                            <th>ایمیل</th>
+                            <th>شماره پیش فاکتور</th>
                             <th>تاریخ ایجاد</th>
                             <th>آخرین بروزرسانی</th>
                         </tr>
@@ -88,12 +88,12 @@
 
                                     <x-backend.dropdown>
                                         <div class=" text-center">
-                                            <a href="{{ \App\Utilities\Url::admin('auth/user/' . $model->id .'/edit') }}"
+                                            <a href="{{ \App\Utilities\Url::admin('crm/invoice/' . $model->id .'/edit') }}"
                                                class="dropdown-item text-center">ویرایش</a>
                                             <div class="dropdown-divider"></div>
                                         </div>
                                         <div class=" text-center">
-                                            <a href="{{ \App\Utilities\Url::admin('auth/user/'. $model->id . '/delete') }}"
+                                            <a href="{{ \App\Utilities\Url::admin('crm/invoice/'. $model->id . '/delete') }}"
                                                class="x-confirm text-center text-danger dropdown-item"
                                                data-title="حذف فایل"
                                                data-description="آیا از حذف این فایل  اطمینان دارید؟" name="action"
@@ -102,8 +102,9 @@
                                     </x-backend.dropdown>
 
                                 </td>
-                                <td>{{$model->name}}</td>
-                                <td>{{$model->email}}</td>
+
+                                <td>{{$model->Customer->name}}</td>
+                                <td>{{$model->Customer->phone}}</td>
                                 <td>{{$model->created_at}}</td>
                                 <td>{{$model->updated_at}}</td>
 

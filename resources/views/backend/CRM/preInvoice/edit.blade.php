@@ -5,7 +5,7 @@
             <x-backend.form.form action="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/edit')}}"
                                  method="POST">
                 @csrf
-                <x-backend.card title="ویرایش پیش فاکتور" icon="fa-edit">
+                <x-backend.card title="ویرایش پیش فاکتور" icon="fa-edit" color="10">
                     <div class="col-lg-6">
                         شماره پیش فاکتور: A{{$model->id}}
                     </div>
@@ -116,8 +116,10 @@
                             </button>
                             <a href="{{ \App\Utilities\Url::admin('crm/preInvoice') }}"
                                class="btn btn-danger">بازگشت</a>
+
                             <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/pdf') }}"
                                class="btn btn-warning float-left ml-4">نمایش پیش فاکتور</a>
+
                             <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/conversion') }}"
                                class="btn btn-success float-left ml-4"> فاکتور کردن</a>
                         @else
@@ -141,7 +143,7 @@
                         @csrf
                         {{--                    <x-backend.form.form :action="Request::getRequestUri()" method="POST">--}}
                         {{--                        @csrf--}}
-                        <x-backend.card no-padding="true" title="اقلام پیش فاکتور" color="2"
+                        <x-backend.card no-padding="true" title="اقلام پیش فاکتور" color="11"
                                         collapseid="#collapse-btn-2"
                                         idcollapse="collapse-btn-2" icon="fa-list">
                             <x-slot name="nav">

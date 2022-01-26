@@ -5,7 +5,7 @@
             <x-backend.form.form action="{{ \App\Utilities\Url::admin('crm/customer/'. $model->id.'/edit')}}"
                                  method="post">
                 @csrf
-                <x-backend.card title="ویرایش کاربر">
+                <x-backend.card title="ویرایش کاربر" color="13">
                     <div class="row">
 
                         {{--                <div class="col-lg-6">--}}

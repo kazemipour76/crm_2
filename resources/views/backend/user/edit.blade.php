@@ -3,7 +3,7 @@
 
     <x-backend.form.form action="{{ \App\Utilities\Url::admin('auth/user/'. $model->id.'/edit')}}" method="post">
         @csrf
-        <x-backend.card title="ویرایش کاربر">
+        <x-backend.card title="ویرایش کاربر" color="12">
             <div class="row">
 
                 <div class="col-lg-6">
@@ -26,7 +26,7 @@
 
                 <div class="col-lg-6">
                     <x-backend.form.form-group title="تکرار گذرواژه">
-                        <x-backend.form.input name="repassword" />
+                        <x-backend.form.input name="repassword"/>
                     </x-backend.form.form-group>
                 </div>
 
@@ -35,7 +35,7 @@
 
             <x-slot name="footer">
                 <button type="submit" class="btn btn-primary mr-2 px-10">
-
+                    ثبت
                 </button>
                 <a href="{{ \App\Utilities\Url::admin('auth/user') }}" class="btn btn-danger">بازگشت</a>
             </x-slot>

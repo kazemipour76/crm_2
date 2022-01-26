@@ -4,7 +4,7 @@
         <div class="col-lg-6">
             <x-backend.form.form action="{{ \App\Utilities\Url::admin('crm/customer/create') }}" method="post">
                 @csrf
-                <x-backend.card title="افرودن کاربر جدید">
+                <x-backend.card title="افرودن مشتری جدید" color="14">
                     <div class="row ">
 
                         <div class="col-lg-6">

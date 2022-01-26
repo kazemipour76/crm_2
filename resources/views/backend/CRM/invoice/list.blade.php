@@ -7,7 +7,7 @@
 
     <div class="row mb-5">
         <div class="col-lg-12">
-            @include('backend.CRM.customer.filter', ['formId' => $formId])
+            @include('backend.CRM.invoice.filter', ['formId' => $formId])
         </div>
     </div>
 
@@ -15,7 +15,7 @@
         @csrf
         <div class="row mb-5">
             <div class="col-lg-12">
-                <x-backend.card no-padding="true" title="لیست  فاکتورها" color="2" collapseid="#collapse-btn-2"
+                <x-backend.card no-padding="true" title="لیست  فاکتورها" color="7" collapseid="#collapse-btn-2"
                                 idcollapse="collapse-btn-2" icon="fa-list">
 
                     <div class="col-lg-6 p-5 ">

@@ -60,18 +60,15 @@ Route::group([
 
     Route::group(['prefix' => 'crm'], function () {
         Routers::crud('customer', \App\Http\Controllers\Backend\CRM\CustomerController::class);
+        Route::get('customer/{id}/invoicesList', [\App\Http\Controllers\Backend\CRM\CustomerController::class,'invoicesList']);
+        Route::get('customer/{id}/preInvoicesList', [\App\Http\Controllers\Backend\CRM\CustomerController::class,'preInvoicesList']);
         Routers::crud('preInvoice', \App\Http\Controllers\Backend\CRM\PreInvoice\PreInvoiceController::class);
         Routers::crud('invoice', \App\Http\Controllers\Backend\CRM\Invoice\InvoiceController::class);
-//        Routers::crud('invoice/{id}/create', \App\Http\Controllers\Backend\CRM\InvoiceController::class);
         Routers::crud('preInvoiceDetail', \App\Http\Controllers\Backend\CRM\PreInvoice\PreInvoiceDetailController::class);
         Route::get('preInvoice/{id}/conversion', [\App\Http\Controllers\Backend\CRM\Invoice\InvoiceController::class,'conversion']);
         Route::get('preInvoiceDetail/{id}/create', [\App\Http\Controllers\Backend\CRM\PreInvoice\PreInvoiceDetailController::class, 'create']);
         Route::post('preInvoiceDetail/{id}/create', [\App\Http\Controllers\Backend\CRM\PreInvoice\PreInvoiceDetailController::class, 'store']);
         Route::get('preInvoice/{id}/pdf', [\App\Http\Controllers\Backend\CRM\PreInvoice\PdfController::class, 'create']);
-//        Route::get('preInvoice/{id}/details/edit', [\App\Http\Controllers\Backend\CRM\PreInvoiceController::class, 'editDetail']);
-//        Route::get('preInvoice/{id}/details/delete', [\App\Http\Controllers\Backend\CRM\PreInvoiceController::class, 'destroy']);
-//        Route::post('preInvoice/{id}/edit', [\App\Http\Controllers\Backend\CRM\PreInvoiceController::class, 'edit']);
-//        Route::post('preInvoice/{id}/details/edit', [\App\Http\Controllers\Backend\CRM\PreInvoiceController::class, 'updateDetail']);
     });
 
     Route::group(['prefix' => 'auth'], function () {

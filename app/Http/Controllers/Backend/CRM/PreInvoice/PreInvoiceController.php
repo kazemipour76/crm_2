@@ -72,8 +72,15 @@ class PreInvoiceController extends Controller
 
     public function destroy($id)
     {
-        $this->deleteAction([$id]);
-        return redirect($this->returnDefault);
+        $model = $this->model::findOrFail($id);
+        if($model['status']==PreInvoice::STATUS_FACTOR_SHODEH) {
+            MessageBag::push("{$this->modelName}  به فاکتور تبدیل شده است .لذا قابل حذف نمی باشد");
+            return redirect()->back();
+        } else{
+            $this->deleteAction([$id]);
+            return redirect($this->returnDefault);
+        }
+
     }
 
     public function create()
@@ -151,25 +158,28 @@ class PreInvoiceController extends Controller
 
     public function update($id)
     {
+
         $model = $this->model::findOrFail($id);
-//        dd($model);
-        if(request('total_discount')==null){
+        if($model['status']==PreInvoice::STATUS_OPEN) {
 
-            $model['total_discount']=null;
-        }else{
-       $x=\App\Utilities\HString::number2en(request('total_discount'));
-            $model['total_discount']=preg_replace("/[^A-Za-z0-9 ]/", '',$x);
+            if (request('total_discount') == null) {
 
-        }
-//        $model->total_discount=111;
-//        dd(   request('total_discount'));
-//        request()->validate(Customer::getValidationCustomer(true, $id));
-        $model->fill(request()->all());
-        if ($model->save()) {
-            MessageBag::push($this->modelName . ' با موفقیت ویرایش شد', MessageBag::TYPE_SUCCESS);
-            return redirect()->back();
+                $model['total_discount'] = null;
+            } else {
+                $x = \App\Utilities\HString::number2en(request('total_discount'));
+                $model['total_discount'] = preg_replace("/[^A-Za-z0-9 ]/", '', $x);
+
+            }
+            $model->fill(request()->all());
+            if ($model->save()) {
+                MessageBag::push($this->modelName . ' با موفقیت ویرایش شد', MessageBag::TYPE_SUCCESS);
+                return redirect()->back();
+            } else {
+                MessageBag::push('مجدد تلاش کنید ');
+                return redirect()->back();
+            }
         } else {
-            MessageBag::push('مجدد تلاش کنید ');
+            MessageBag::push('این پیش فاکتور به فاکتور تبدیل شده است.امکان تغییر آیتم ها وجود ندارد ');
             return redirect()->back();
         }
     }
@@ -240,12 +250,14 @@ class PreInvoiceController extends Controller
 
     public function deleteAction($ids)
     {
-//        dd($ids);
-        $count = count($ids);
-        if ($this->model::whereIn('id', $ids)->delete()) {
+        $count = count($this->model::whereIn('id', $ids)->where('status', 1)->get());
+        if ($this->model::whereIn('id', $ids)->where('status', 1)->delete()) {
             MessageBag::push("تعداد {$count} {$this->modelName} با موفقیت حذف شد", MessageBag::TYPE_SUCCESS);
-        } else {
+        } elseif($this->model::whereIn('id', $ids)->where('status', \App\Models\CRM\PreInvoice::STATUS_FACTOR_SHODEH)) {
+            MessageBag::push("{$this->modelName}  به فاکتور تبدیل شده است .لذا قابل حذف نمی باشد");
+        }else{
             MessageBag::push("{$this->modelName}  حذف نشد لطفا مجددا تلاش فرمایید");
+
         }
     }
 }

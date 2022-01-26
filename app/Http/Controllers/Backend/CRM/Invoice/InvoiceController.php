@@ -28,7 +28,7 @@ class InvoiceController extends Controller
     protected $modelName = '';
     protected $modelNameDetail = 'یک آیتم';
     protected $viewFolder = 'CRM/invoice';
-    protected $isInvoice =false;
+    protected $isInvoice = false;
 
     public function filter()
     {
@@ -77,6 +77,14 @@ class InvoiceController extends Controller
 
     public function destroy($id)
     {
+        $model = $this->model::findOrFail($id);
+        $idPreInvoice=  $model->PreInvoice->id;
+
+        if (isset($model['pre_invoice_id'])) {
+            $preInvoice = $this->modelPreInvoice::findOrFail($idPreInvoice);
+            $preInvoice->status = 1;
+            $preInvoice->save();
+        }
         $this->deleteAction([$id]);
         return redirect($this->returnDefault);
     }
@@ -125,7 +133,7 @@ class InvoiceController extends Controller
     {
 
         $invoice = Invoice::all();
-        if(!isset($invoice[0]))
+        if (!isset($invoice[0]))
             goto continuation;
 
         if ($invoice[0]['pre_invoice_id'] == $id) {
@@ -147,7 +155,7 @@ class InvoiceController extends Controller
                 $modelInvoice['pre_invoice_id'] = $id;
                 $modelInvoice->save();
 
-                $modelPreInvoice['status']=\App\Models\CRM\Invoice::STATUS_FACTOR_SHODEH;
+                $modelPreInvoice['status'] = \App\Models\CRM\Invoice::STATUS_FACTOR_SHODEH;
                 $modelPreInvoice->save();
 
                 $modelInvoiceDetail['product_name'] = $modelPreInvoiceDetail[0]->product_name;
@@ -157,7 +165,7 @@ class InvoiceController extends Controller
 
                 if ($modelInvoiceDetail->save()) {
                     MessageBag::push($this->modelNameDetail . ' با موفقیت تبدیل شد', MessageBag::TYPE_SUCCESS);
-                    return redirect("{$this->returnDefault}/" .$modelInvoice->id . '/edit');
+                    return redirect("{$this->returnDefault}/" . $modelInvoice->id . '/edit');
                 } else {
                     MessageBag::push($this->modelName . ' تبدیل نشد لطفا مجددا تلاش فرمایید');
                     return redirect()->back();
@@ -302,12 +310,23 @@ class InvoiceController extends Controller
 
     public function deleteAction($ids)
     {
-//        dd($ids);
         $count = count($ids);
+//        dd($count);
+        $model = $this->model::findOrFail($ids);
+        for ($i = 0; $i < $count; $i++) {
+            $idPreInvoice = $model[$i]['pre_invoice_id'];
+            if (isset($idPreInvoice)) {
+                $preInvoice = $this->modelPreInvoice::findOrFail($idPreInvoice);
+                $preInvoice->status = 1;
+                $preInvoice->save();
+            }
+
+        }
         if ($this->model::whereIn('id', $ids)->delete()) {
             MessageBag::push("تعداد {$count} {$this->modelName} با موفقیت حذف شد", MessageBag::TYPE_SUCCESS);
         } else {
             MessageBag::push("{$this->modelName}  حذف نشد لطفا مجددا تلاش فرمایید");
         }
+
     }
 }

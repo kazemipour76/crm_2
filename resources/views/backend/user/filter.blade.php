@@ -1,6 +1,6 @@
 <x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('auth/user')" method="get">
     <x-backend.card icon="fa-filter" title="جست و جوی پیشرفته"
-                    color="3"
+                    color="2"
                     icon="fa-filter"
                     :isCollapse="!\App\Utilities\Request::hasQuery()">
         <div class="col-12">

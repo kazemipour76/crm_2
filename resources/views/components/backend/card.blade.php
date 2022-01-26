@@ -49,46 +49,79 @@
         }
 
         .color0 {
-            background-color: #f1aeae !important;
+            background-color: #6188fc !important;
         }
 
         .color1 {
-            background-color: #95e37b !important;
+            background-color: #9db5fc !important;
         }
 
         .color2 {
-            background-color: #7be0e3 !important;
+            background-color: #e1b0f5 !important;
         }
 
         .color3 {
-            background-color: #e3d57b !important;
+            background-color: #c371ee !important;
         }
 
         .color4 {
-            background-color: #7be3e0 !important;
+            background-color: #f7f79c !important;
         }
 
         .color5 {
-            background-color: #95e37b !important;
+            background-color: #f1f166 !important;
         }
 
         .color6 {
-            background-color: #7b9ee3
+            background-color: rgba(146, 248, 217, 0.94) !important;
         }
 
         .color7 {
-            background-color: #bb7be3
+            background-color: #34eea7 !important;
         }
 
         .color8 {
-            background-color: #e37b7b
+            background-color: #32d2b8!important;
         }
 
         .color9 {
-            background-color: #95e37b
+            background-color: #82e6d6!important;
         }
 
         .color10 {
+            background-color: #ffff6e!important;
+        }
+        .color11 {
+            background-color: #ffff8c!important;
+        }
+        .color12 {
+            background-color: rgba(168, 39, 149, 0.85) !important;
+        }
+        .color13 {
+            background-color: rgba(3, 186, 239, 0.88) !important;
+        }
+        .color14 {
+            background-color: #127296!important;
+        }
+        .color15 {
+            background-color: rgba(151, 26, 107, 0.88) !important;
+        }
+        .color16 {
+            background-color: #e7ce14!important;
+        }
+        .color17 {
+            background-color: #61cf7c!important;
+        }
+        .color18 {
+            background-color: #95e37b
+        }
+        .color19 {
+            background-color: #95e37b
+        }
+        .color20 {
+            background-color: #95e37b
+        }
+        .color21 {
             background-color: #95e37b
         }
     </style>

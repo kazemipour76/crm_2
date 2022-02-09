@@ -125,20 +125,29 @@ public function pdf(){
 
     public function store($id)
     {
-        $status = $this->model::findOrFail($id);
 
+        $status = $this->model::findOrFail($id);
+        $old = \Request::flash($status);
+        $old = \Request::old($old);
+        $data = [
+            'models' => $status,
+            'old' => $old,
+        ];
+
+//        dd($old);
         if($status['status']==PreInvoice::STATUS_OPEN){
             $model = new PreInvoiceDetail();
             $model->pre_invoice_id = $id;
             $model->count = request('count');
             $model->unit_price = preg_replace("/[^A-Za-z0-9 ]/", '',request('unit_price'));
+            request()->validate(PreInvoiceDetail::getValidationCustomer(true, $id));
             $model->fill(request()->all());
             if ($model->save()) {
                 MessageBag::push($this->modelNameDetail . ' با موفقیت اضافه شد', MessageBag::TYPE_SUCCESS);
                 return redirect("{$this->returnDefault}/" . $id . '/edit');
             } else {
                 MessageBag::push($this->modelName . ' ایجاد نشد لطفا مجددا تلاش فرمایید');
-                return redirect()->back();
+                return redirect($data)->back();
             }
         }else{
             MessageBag::push( ' امکان تغییر  وجود ندارد');
@@ -187,6 +196,8 @@ public function pdf(){
     }
 
     public function  update($id){
+        request()->validate(PreInvoiceDetail::getValidationCustomer(true, $id));
+
         $model=$this->modelDetail::findOrFail($id);
         $status = $this->model::findOrFail($model['pre_invoice_id']);
         if($status['status']==PreInvoice::STATUS_OPEN){

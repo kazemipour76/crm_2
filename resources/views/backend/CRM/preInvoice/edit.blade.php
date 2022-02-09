@@ -12,7 +12,7 @@
                     <div class="row ">
                         <div class="col-lg-6">
                             <x-backend.form.form-group title="عنوان">
-                                <x-backend.form.input name="title" :value="$model->title"
+                                <x-backend.form.input name="title" :value="$model->title" separate="true"
                                                       placeholder="درصورت نیازعنوان پیش فاکتور را وارد کنید"/>
                             </x-backend.form.form-group>
                         </div>
@@ -40,7 +40,11 @@
 
                         <div class="col-lg-6">
                             <x-backend.form.form-group title="وضعیت">
-                                <x-backend.form.input name="address" :value="$model->status" disable="disabled"/>
+                                @if($model->status==\App\Models\CRM\PreInvoice::STATUS_OPEN)
+                                    <x-backend.form.input name="status" value='پیش فاکتور' disable="disabled"/>
+                                @else
+                                    <x-backend.form.input name="status" value=' فاکتور' disable="disabled"/>
+                                @endif
                             </x-backend.form.form-group>
                         </div>
 
@@ -124,11 +128,13 @@
                                class="btn btn-success float-left ml-4"> فاکتور کردن</a>
                         @else
                             <a href="{{ \App\Utilities\Url::admin('crm/invoice/'.$model->Invoice->id.'/edit') }}"
-                                  class="btn btn-warning">نمایش فاکتور</a>
+                               class="btn btn-warning">نمایش فاکتور</a>
                             <a href="{{ \App\Utilities\Url::admin('crm/preInvoice') }}"
                                class="btn btn-danger">بازگشت</a>
 
-                            <h class="bg_color3 float-left">این پیش فاکتور به فاکتور تبدیل شده است لذا قابل تغییر نمی باشد</h>
+                            <h class="bg_color3 float-left">این پیش فاکتور به فاکتور تبدیل شده است لذا قابل تغییر نمی
+                                باشد
+                            </h>
                         @endif
                     </x-slot>
                 </x-backend.card>
@@ -152,20 +158,22 @@
 
                                     <div class="col-lg-6">
                                         <x-backend.form.form-group title="نام محصول / خدمات">
-                                            <x-backend.form.input name="product_name"
+                                            <x-backend.form.input name="product_name" :value="old('product_name')"
                                                                   placeholder="نام محصول را وارد کنید"/>
                                         </x-backend.form.form-group>
                                     </div>
 
                                     <div class="col-lg-1">
                                         <x-backend.form.form-group title="تعداد">
-                                            <x-backend.form.input name="count" placeholder="تعداد"/>
+                                            <x-backend.form.input name="count" :value="old('count')"
+                                                                  placeholder="تعداد"/>
                                         </x-backend.form.form-group>
                                     </div>
 
                                     <div class="col-lg-3">
                                         <x-backend.form.form-group title=" قیمت واحد">
-                                            <x-backend.form.input name="unit_price" placeholder="قیمت را وارد کنید "
+                                            <x-backend.form.input name="unit_price" :value="old('unit_price')"
+                                                                  placeholder="قیمت را وارد کنید "
                                                                   separate="true"/>
                                         </x-backend.form.form-group>
                                     </div>

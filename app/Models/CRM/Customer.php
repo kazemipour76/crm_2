@@ -57,7 +57,7 @@ class Customer extends BaseModel
     use UserScope;
 
     protected $table = 'customers';
-    protected $idGenerator = true;
+//    protected $idGenerator = true;
 
     protected $fillable = [
         'name',
@@ -74,9 +74,9 @@ class Customer extends BaseModel
 
             'name' => 'required',
             'address' => 'required',
-            'economicID' => 'required',
-            'phone' => 'required',
-//            'nationalID'=> 'required',
+            'economicID' => 'numeric',
+            'phone' => 'required|numeric',
+            'nationalID'=> 'required|numeric',
 //            'email' => 'required|email|not_regex:/(^([a-zA-z]+)(\d+)?$)/u|unique:users',
 
         ];

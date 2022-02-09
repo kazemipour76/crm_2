@@ -13,6 +13,7 @@ class CreatePreInvoicesTable extends Migration
      */
     public function up()
     {
+//        Schema::dropIfExists('pre_invoices');
         Schema::create('pre_invoices', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
             $table->bigInteger('total_price')->nullable();
@@ -31,6 +32,8 @@ class CreatePreInvoicesTable extends Migration
 //            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->timestamps();
         });
+        DB::statement('ALTER TABLE tbl_pre_invoices ADD FULLTEXT fulltext_index (description,title)');
+
     }
 
     /**

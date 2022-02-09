@@ -218,6 +218,7 @@ class InvoiceController extends Controller
 
     public function update($id)
     {
+        request()->validate(Invoice::getValidationInvoice(true, $id));
         $model = $this->model::findOrFail($id);
 //        dd($model);
         if (request('total_discount') == null) {
@@ -239,6 +240,7 @@ class InvoiceController extends Controller
             MessageBag::push('مجدد تلاش کنید ');
             return redirect()->back();
         }
+
     }
 
     public function editDetail($id)

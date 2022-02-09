@@ -77,10 +77,10 @@ class PreInvoiceController extends Controller
             request()->validate(PreInvoice::getValidationSearchNumber());
             $model->where('id', '=', $filter['perInvoiceNumber']);
         }
-        if (isset($filter['perInvoiceTitle'])) {
+        if (isset($filter['title'])) {
 //            $model->search($filter['perInvoiceTitle']);
             request()->validate(PreInvoice::getValidationSearchTitle());
-            $model->where('title', '=', $filter['perInvoiceTitle']);
+            $model->where('title', '=', $filter['title']);
         }
         if (isset($filter['economicID'])) {
             request()->validate(PreInvoice::getValidationeconomicID());

@@ -25,7 +25,7 @@ add<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('c
 
                     <div class="col-lg-6">
                         <x-backend.form.form-group title="جست و جو بر اساس عنوان  پیش فاکتور">
-                            <x-backend.form.input name="perInvoiceTitle" :value="old('perInvoiceTitle')"/>
+                            <x-backend.form.input name="title" :value="old('perInvoiceTitle')"/>
                         </x-backend.form.form-group>
                     </div>
                     <div class="col-lg-6">
@@ -64,7 +64,7 @@ add<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('c
                 <x-backend.icon class="fa-file-search"/>
                 جست و جو
             </button>
-            <a class="btn btn-warning" href="{{ \App\Utilities\Url::admin('auth/user') }}">
+            <a class="btn btn-warning" href="{{ \App\Utilities\Url::admin('crm/preInvoice') }}">
                 <x-backend.icon class="fa-eraser"/>
                 پاک کن</a>
         </x-slot>

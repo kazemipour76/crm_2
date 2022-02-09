@@ -5,8 +5,8 @@
     'checked' => false
   ])
 
-<div class="form-group">
-    <div class="radio-list p-2">
+<div class="form-group  mb-0">
+    <div class="radio-list p-1">
         <label class="radio radio-success ">
             <input type="radio" name="{{ $name }}" value="{{ $value }}"
                    @if(old($name)== $value|| empty(old($name)))

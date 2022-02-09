@@ -120,4 +120,16 @@ class Invoice extends BaseModel
             ->selectRaw('(count*unit_price) as total_price')->get()
             ;
     }
+    public static function getValidationInvoice($idEdit = false, $id = null)
+    {
+
+        $rules = [
+
+            'date' => 'required|date',
+            'total_discount' => 'nullable|regex:/(^([0-9,۰-۹]+)(\d+)?$)/u',
+
+        ];
+
+        return $rules;
+    }
 }

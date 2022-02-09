@@ -5,7 +5,7 @@
             <x-backend.form.form
                 action="{{ \App\Utilities\Url::admin('crm/preInvoiceDetail/'.$model->id.'/edit') }}" method="post">
                 @csrf
-                <x-backend.card title="ویرایش اقلام" icon="fa-edit">
+                <x-backend.card title="ویرایش اقلام پیش فاکتور" icon="fa-edit" color="19">
                     <div class="row ">
 
                         <div class="col-lg-6 ">

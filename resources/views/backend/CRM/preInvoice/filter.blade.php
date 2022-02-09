@@ -35,11 +35,9 @@ add<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('c
                     </div>
                     <div class="col-lg-12">
                         <x-backend.form.form-group title="نوع تاریخ">
-                            <x-backend.form.radio-inline>
                                 <x-backend.form.radio title=" تاریخ ایجاد" name="date_type" value="created_at"/>
                                 <x-backend.form.radio title=" تاریخ اخرین بروزرسانی" name="date_type"
                                                       value="updated_at"/>
-                            </x-backend.form.radio-inline>
                         </x-backend.form.form-group>
                     </div>
 

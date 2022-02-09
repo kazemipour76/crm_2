@@ -18,13 +18,13 @@ add<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('c
                         </x-backend.form.form-group>
                     </div>
                     <div class="col-lg-6">
-                        <x-backend.form.form-group title="جست و جو بر اساس شماره پیش فاکتور">
+                        <x-backend.form.form-group title="جست و جو بر اساس شماره  فاکتور">
                             <x-backend.form.input name="perInvoiceNumber" :value="old('perInvoiceNumber')"/>
                         </x-backend.form.form-group>
                     </div>
 
                     <div class="col-lg-6">
-                        <x-backend.form.form-group title="جست و جو بر اساس عنوان  پیش فاکتور">
+                        <x-backend.form.form-group title="جست و جو بر اساس عنوان   فاکتور">
                             <x-backend.form.input name="title" :value="old('perInvoiceTitle')"/>
                         </x-backend.form.form-group>
                     </div>

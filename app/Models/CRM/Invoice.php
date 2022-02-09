@@ -132,4 +132,48 @@ class Invoice extends BaseModel
 
         return $rules;
     }
+
+    public static function getValidationSearchTitle()
+    {
+        $rules = [
+            'title' => 'regex:/(^([a-zA-zآ-ی]+)(\d+)?$)/u',
+        ];
+        return $rules;
+    }
+    public static function getValidationSearchNumber()
+    {
+        $rules = [
+            'perInvoiceNumber' => 'numeric',
+        ];
+        return $rules;
+    }
+    public static function getValidationeconomicID()
+    {
+        $rules = [
+            'economicID' => 'numeric',
+        ];
+        return $rules;
+    }
+    public static function getValidationSearchDateFrom()
+    {
+        $rules = [
+            'date_from' => 'date',
+        ];
+        return $rules;
+    }
+    public static function getValidationSearchDateTo()
+    {
+        $rules = [
+            'date_to' => 'date',
+        ];
+        return $rules;
+    }
+    public static function getValidationFullTextSearch()
+    {
+        $rules = [
+            'term' => 'regex:/(^([a-zA-z0-9,۰-۹آ-ی]+)(\d+)?$)/u',
+        ];
+        return $rules;
+    }
+
 }

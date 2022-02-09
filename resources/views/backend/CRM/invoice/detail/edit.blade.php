@@ -5,7 +5,7 @@
             <x-backend.form.form
                 action="{{ \App\Utilities\Url::admin('crm/preInvoiceDetail/'.$model->id.'/edit') }}" method="post">
                 @csrf
-                <x-backend.card title="ویرایش اقلام" icon="fa-edit">
+                <x-backend.card title="ویرایش اقلام فاکتور" icon="fa-edit" color="20">
                     <div class="row ">
 
                         <div class="col-lg-6 ">
@@ -31,7 +31,7 @@
                         <button type="submit" class="btn btn-primary mr-2 px-10">
                             ثبت
                         </button>
-                        <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'.$model->preInvoice->id.'/edit') }}"
+                        <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'.$model->invoice->id.'/edit') }}"
                            class="btn btn-danger">بازگشت</a>
                     </x-slot>
                 </x-backend.card>

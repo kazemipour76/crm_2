@@ -125,7 +125,7 @@ class PreInvoice extends BaseModel
     public static function getValidationSearchTitle()
     {
         $rules = [
-            'perInvoiceTitle' => 'regex:/(^([a-zA-zآ-ی]+)(\d+)?$)/u',
+            'title' => 'regex:/(^([a-zA-zآ-ی]+)(\d+)?$)/u',
         ];
         return $rules;
     }

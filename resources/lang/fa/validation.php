@@ -170,6 +170,10 @@ return [
         'total_discount' => 'تخفیف',
         'count' => 'تعداد',
         'unit_price' => 'قیمت ',
-        'product_name' => 'نام خدمات/محصول'
+        'product_name' => 'نام خدمات/محصول',
+        'date_from' => 'تاری ',
+        'date_to' => 'تاریخ',
+        'perInvoiceNumber' => 'شماره فاکتور',
+
     ],
 ];

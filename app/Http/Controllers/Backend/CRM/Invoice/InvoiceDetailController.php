@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\CRM\Invoice;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\CRM\Customer;
+use App\Models\CRM\InvoiceDetail;
 use App\Models\CRM\PreInvoice;
 use App\Models\CRM\PreInvoiceDetail;
 use App\Utilities\Jdf;
@@ -17,12 +18,12 @@ use function React\Promise\all;
 class InvoiceDetailController extends Controller
 {
 
-    protected $returnDefault = 'sadmin/crm/preInvoice';
+    protected $returnDefault = 'sadmin/crm/invoice';
     protected $model = \App\Models\CRM\PreInvoice::class;
-    protected $modelDetail = \App\Models\CRM\PreInvoiceDetail::class;
+    protected $modelDetail = \App\Models\CRM\InvoiceDetail::class;
     protected $modelName = 'پیش فاکتور';
     protected $modelNameDetail = 'یک آیتم';
-    protected $viewFolder = 'CRM/preInvoice';
+    protected $viewFolder = 'CRM/invoice';
 
     public function filter()
     {
@@ -122,9 +123,19 @@ public function pdf(){
 
     public function store($id)
     {
-//        dd(request('checks'));
-        $model = new PreInvoiceDetail();
-        $model->pre_invoice_id = $id;
+
+//        $status = $this->model::findOrFail($id);
+//        $old = \Request::flash($status);
+//        $old = \Request::old($old);
+//        $data = [
+//            'models' => $status,
+//            'old' => $old,
+//        ];
+//        dd('dd');
+        request()->validate(InvoiceDetail::getValidationCustomer(true, $id));
+        $model = new InvoiceDetail();
+        $model->invoice_id = $id;
+        $model->count = request('count');
         $model->unit_price = preg_replace("/[^A-Za-z0-9 ]/", '',request('unit_price'));
         $model->fill(request()->all());
         if ($model->save()) {
@@ -169,14 +180,17 @@ public function pdf(){
 //        }
 //    }
     public function edit($id){
-//        dd('ddd');
         $model = $this->modelDetail::findOrFail($id);
+
         $data['model'] = $model;
+//        dd($data['model']);
         return view("backend.{$this->viewFolder}.detail.edit", $data);
     }
 
     public function  update($id){
 //        dd('jj');
+        request()->validate(PreInvoiceDetail::getValidationCustomer(true, $id));
+
         $model=$this->modelDetail::findOrFail($id);
         if(request('unit_price')||request('unit_price')){
             $x=\App\Utilities\HString::number2en(request('unit_price'));

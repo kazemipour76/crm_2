@@ -45,11 +45,31 @@ class PreInvoiceDetail extends BaseModel
 //        'unit_price',
 //        'count',
     ];
-     public function preInvoice()
+
+    public function preInvoice()
     {
-        return $this->belongsTo(PreInvoice::class,'pre_invoice_id');
+        return $this->belongsTo(PreInvoice::class, 'pre_invoice_id');
     }
-    public  function totalPrice(){
-       return $this->unit_price*$this->count;
+
+    public function totalPrice()
+    {
+        return $this->unit_price * $this->count;
     }
+
+
+    public static function getValidationCustomer($idEdit = false, $id = null)
+    {
+
+        $rules = [
+
+            'count' => 'required||regex:/(^([1-9۱-۹]+)(\d+)?$)/u',
+            'unit_price' => 'required|nullable|regex:/(^([0-9,۰-۹]+)(\d+)?$)/u',
+            'product_name' => 'required'
+
+        ];
+
+        return $rules;
+    }
+
+
 }

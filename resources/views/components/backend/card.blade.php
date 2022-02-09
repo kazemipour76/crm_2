@@ -113,16 +113,16 @@
             background-color: #61cf7c!important;
         }
         .color18 {
-            background-color: #95e37b
+            background-color: #95e37b!important;
         }
         .color19 {
-            background-color: #95e37b
+            background-color: #e3ee43 !important;
         }
         .color20 {
-            background-color: #95e37b
+            background-color: #95e37b!important;
         }
         .color21 {
-            background-color: #95e37b
+            background-color: #95e37b!important;
         }
     </style>
 @endpush

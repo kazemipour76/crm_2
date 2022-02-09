@@ -36,6 +36,7 @@ class InvoiceDetail extends BaseModel
 {
 
     protected $table = 'invoice_details';
+    protected $searchable=['product_name'];
     protected $fillable = [
         'product_name',
 //        'unit_price',
@@ -50,4 +51,20 @@ class InvoiceDetail extends BaseModel
     public  function totalPrice(){
         return $this->unit_price*$this->count;
     }
+
+
+    public static function getValidationInvoiceDetail($idEdit = false, $id = null)
+    {
+
+        $rules = [
+
+            'unit_price' => 'required|nullable|regex:/(^([0-9,۰-۹]+)(\d+)?$)/u',
+            'count' => 'required||regex:/(^([1-9۱-۹]+)(\d+)?$)/u',
+            'product_name' => 'required'
+
+        ];
+
+        return $rules;
+    }
+
 }

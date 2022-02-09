@@ -3,18 +3,13 @@
 namespace App\Http\Controllers\Backend\CRM\Invoice;
 
 use App\Http\Controllers\Controller;
-use App\Models\Auth\User;
 use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
 use App\Models\CRM\InvoiceDetail;
-use App\Models\CRM\PreInvoice;
-use App\Models\CRM\PreInvoiceDetail;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use function Couchbase\defaultDecoder;
-use function React\Promise\all;
+
 
 class InvoiceController extends Controller
 {
@@ -36,8 +31,20 @@ class InvoiceController extends Controller
         $model = $this->model::OrderBy('id');
         $filter = request()->all();
 
+//        if (!empty($filter['term'])) {
+//            $model->search($filter['term']);
+//        }
+
+        $details = InvoiceDetail::orderBy('id');
         if (!empty($filter['term'])) {
+
+            request()->validate(Invoice::getValidationFullTextSearch());
+
             $model->search($filter['term']);
+            if ($details->search($filter['term'])) {
+                $preInvoiceIds = $details->get()->pluck('pre_invoice_id')->toArray();
+                $model->orWhereIn('id', $preInvoiceIds);
+            }
         }
 
         $date_type = '';
@@ -46,15 +53,37 @@ class InvoiceController extends Controller
         }
 
         if (isset($filter['date_from'])) {
+            request()->validate(Invoice::getValidationSearchDateFrom());
+
             $date = explode('/', $filter['date_from']);
             $gdate = Jdf::jalali_to_gregorian($date[0], $date[1], $date[2], '-') . ' 00:00:00';
             $model->where($date_type, '>=', $gdate);
         }
 
         if (isset($filter['date_to'])) {
+            request()->validate(Invoice::getValidationSearchDateTo());
+
             $date = explode('/', $filter['date_to']);
             $gdate = Jdf::jalali_to_gregorian($date[0], $date[1], $date[2], '-') . ' 23:59:59';
             $model->where($date_type, '<=', $gdate);
+        }
+        if (isset($filter['customer']) && $filter['customer'] > 0) {
+            $model->where('customer_id', '=', $filter['customer']);
+        }
+        if (isset($filter['perInvoiceNumber'])) {
+            request()->validate(Invoice::getValidationSearchNumber());
+            $model->where('id', '=', $filter['perInvoiceNumber']);
+        }
+        if (isset($filter['title'])) {
+//            $model->search($filter['perInvoiceTitle']);
+            request()->validate(Invoice::getValidationSearchTitle());
+            $model->where('title', '=', $filter['title']);
+        }
+        if (isset($filter['economicID'])) {
+            request()->validate(Invoice::getValidationeconomicID());
+            $economicID = Customer::where('economicID', $filter['economicID'])->get();
+            $model->where('customer_id', '=', $economicID[0]->id);
+
         }
 
         return $model;
@@ -78,7 +107,7 @@ class InvoiceController extends Controller
     public function destroy($id)
     {
         $model = $this->model::findOrFail($id);
-        $idPreInvoice=  $model->PreInvoice->id;
+        $idPreInvoice = $model->PreInvoice->id;
 
         if (isset($model['pre_invoice_id'])) {
             $preInvoice = $this->modelPreInvoice::findOrFail($idPreInvoice);
@@ -115,19 +144,19 @@ class InvoiceController extends Controller
 
     }
 
-    public function createPre($id)
-    {
-        $model = $this->model::findOrFail($id);
-
-        $customers = Customer::all();
-//        $preInvoice= $this->model::all();
-        $preInvoiceDetails = PreInvoiceDetail::all();
-        $data['details'] = $preInvoiceDetails;
-        $data['customers'] = $customers;
-        $data['model'] = $model;
-
-        return view("backend.{$this->viewFolder}.detail.create", $data);
-    }
+//    public function createPre($id)
+//    {
+//        $model = $this->model::findOrFail($id);
+//
+//        $customers = Customer::all();
+////        $preInvoice= $this->model::all();
+//        $preInvoiceDetails = PreInvoiceDetail::all();
+//        $data['details'] = $preInvoiceDetails;
+//        $data['customers'] = $customers;
+//        $data['model'] = $model;
+//
+//        return view("backend.{$this->viewFolder}.detail.create", $data);
+//    }
 
     public function conversion($id)
     {
@@ -181,22 +210,22 @@ class InvoiceController extends Controller
         return view("backend.{$this->viewFolder}.detail.create");
     }
 
-    public function storePre($id)
-    {
-//        dd(request('checks'));
-        $model = new PreInvoiceDetail();
-        $model->pre_invoice_id = $id;
-        $model->unit_price = preg_replace("/[^A-Za-z0-9 ]/", '', request('unit_price'));
-        $model->fill(request()->all());
-        if ($model->save()) {
-            MessageBag::push($this->modelNameDetail . ' با موفقیت اضافه شد', MessageBag::TYPE_SUCCESS);
-            return redirect("{$this->returnDefault}/" . $id . '/edit');
-        } else {
-            MessageBag::push($this->modelName . ' ایجاد نشد لطفا مجددا تلاش فرمایید');
-            return redirect()->back();
-        }
-
-    }
+//    public function storePre($id)
+//    {
+////        dd(request('checks'));
+//        $model = new PreInvoiceDetail();
+//        $model->pre_invoice_id = $id;
+//        $model->unit_price = preg_replace("/[^A-Za-z0-9 ]/", '', request('unit_price'));
+//        $model->fill(request()->all());
+//        if ($model->save()) {
+//            MessageBag::push($this->modelNameDetail . ' با موفقیت اضافه شد', MessageBag::TYPE_SUCCESS);
+//            return redirect("{$this->returnDefault}/" . $id . '/edit');
+//        } else {
+//            MessageBag::push($this->modelName . ' ایجاد نشد لطفا مجددا تلاش فرمایید');
+//            return redirect()->back();
+//        }
+//
+//    }
 
     public function edit($id, Request $request)
     {
@@ -229,9 +258,7 @@ class InvoiceController extends Controller
             $model['total_discount'] = preg_replace("/[^A-Za-z0-9 ]/", '', $x);
 
         }
-//        $model->total_discount=111;
-//        dd(   request('total_discount'));
-//        request()->validate(Customer::getValidationCustomer(true, $id));
+
         $model->fill(request()->all());
         if ($model->save()) {
             MessageBag::push($this->modelName . ' با موفقیت ویرایش شد', MessageBag::TYPE_SUCCESS);
@@ -285,7 +312,6 @@ class InvoiceController extends Controller
         return $tax;
     }
 
-//total_discount
     public function discount()
     {
         $discount = request('total_discount');
@@ -313,7 +339,6 @@ class InvoiceController extends Controller
     public function deleteAction($ids)
     {
         $count = count($ids);
-//        dd($count);
         $model = $this->model::findOrFail($ids);
         for ($i = 0; $i < $count; $i++) {
             $idPreInvoice = $model[$i]['pre_invoice_id'];

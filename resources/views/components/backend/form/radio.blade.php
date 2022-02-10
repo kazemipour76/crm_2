@@ -9,8 +9,8 @@
     <div class="radio-list p-1">
         <label class="radio radio-success ">
             <input type="radio" name="{{ $name }}" value="{{ $value }}"
-                   @if(old($name)== $value|| empty(old($name)))
-                   checked @endif  />
+
+                       {{$checked}}  />
             <span></span>
             {{ $title }}
         </label>

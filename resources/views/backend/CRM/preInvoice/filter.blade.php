@@ -35,18 +35,18 @@
                     </div>
                     <div class="col-lg-6">
                         <x-backend.form.form-group title="نوع تاریخ">
-                                <x-backend.form.radio title=" تاریخ ایجاد" name="date_type" value="created_at"/>
+                                <x-backend.form.radio title=" تاریخ ایجاد" name="date_type" value="created_at" checked="{{old('date_type')=== 'created_at'||!old('type') ? 'checked' : ''}}"/>
                                 <x-backend.form.radio title=" تاریخ اخرین بروزرسانی" name="date_type"
-                                                      value="updated_at"/>
+                                                      value="updated_at" checked="{{old('date_type')=== 'updated_at'||!old('type') ? 'checked' : ''}}"/>
                         </x-backend.form.form-group>
                     </div>
 
                     <div class="col-lg-6">
                         <x-backend.form.form-group title="جست و جو بر اساس نوع پیش فاکتور">
                             <x-backend.form.radio title=" غیر رسمی" name="type"
-                                                  value="unOfficial"/>
-                            <x-backend.form.radio title=" رسمی" name="type" value="official"/>
-                            <x-backend.form.radio title=" همه" name="type" value="all"/>
+                                                  value="unOfficial" checked="{{old('type')=== 'unOfficial'||!old('type') ? 'checked' : ''}}"/>
+                            <x-backend.form.radio title=" رسمی" name="type" value="official" checked="{{old('type')=== 'official'||!old('type') ? 'checked' : ''}}"/>
+                            <x-backend.form.radio title=" همه" name="type" value="all"  checked="{{old('type')=== 'all'||!old('type') ? 'checked' : ''}}"/>
                         </x-backend.form.form-group>
                     </div>
 

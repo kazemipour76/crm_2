@@ -85,6 +85,11 @@ class PreInvoiceController extends Controller
             request()->validate(PreInvoice::getValidationSearchTitle());
             $model->where('title', '=', $filter['title']);
         }
+
+        if (isset($filter['type'])) {
+            $model->where('status', $filter['type']);
+        }
+
         if (isset($filter['economicID'])) {
             request()->validate(PreInvoice::getValidationeconomicID());
             $x = \App\Utilities\HString::number2en($filter['economicID']);

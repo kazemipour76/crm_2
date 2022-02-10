@@ -51,6 +51,9 @@ class InvoiceController extends Controller
         if (isset($filter['date_type'])) {
             $date_type = $filter['date_type'];
         }
+        if (isset($filter['type'])) {
+            $model->where('status', $filter['type']);
+        }
 
         if (isset($filter['date_from'])) {
             request()->validate(Invoice::getValidationSearchDateFrom());

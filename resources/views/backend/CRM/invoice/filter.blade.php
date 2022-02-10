@@ -1,8 +1,8 @@
-<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('auth/user')" method="get">
+<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('crm/invoice')" method="get">
     <x-backend.card icon="fa-filter" title="جست و جوی پیشرفته"
                     color="6"
                     icon="fa-filter"
-{{--                    :isCollapse="!\App\Utilities\Request::hasQuery()"--}}
+        {{--                    :isCollapse="!\App\Utilities\Request::hasQuery()"--}}
     >
         <div class="col-12">
             <div class="card-body">
@@ -19,13 +19,13 @@
                         </x-backend.form.form-group>
                     </div>
                     <div class="col-lg-6">
-                        <x-backend.form.form-group title="جست و جو بر اساس شماره پیش فاکتور">
+                        <x-backend.form.form-group title="جست و جو بر اساس شماره  فاکتور">
                             <x-backend.form.input name="perInvoiceNumber" :value="old('perInvoiceNumber')"/>
                         </x-backend.form.form-group>
                     </div>
 
                     <div class="col-lg-6">
-                        <x-backend.form.form-group title="جست و جو بر اساس عنوان  پیش فاکتور">
+                        <x-backend.form.form-group title="جست و جو بر اساس عنوان   فاکتور">
                             <x-backend.form.input name="title" :value="old('perInvoiceTitle')"/>
                         </x-backend.form.form-group>
                     </div>
@@ -34,15 +34,28 @@
                             <x-backend.form.input name="economicID" :value="old('economicID')"/>
                         </x-backend.form.form-group>
                     </div>
-                    <div class="col-lg-12">
+
+                    <div class="col-lg-6">
                         <x-backend.form.form-group title="نوع تاریخ">
-{{--                            <x-backend.form.radio-inline>--}}
-                                <x-backend.form.radio title=" تاریخ ایجاد" name="date_type" value="created_at"/>
-                                <x-backend.form.radio title=" تاریخ اخرین بروزرسانی" name="date_type"
-                                                      value="updated_at"/>
-{{--                            </x-backend.form.radio-inline>--}}
+                            {{--                            <x-backend.form.radio-inline>--}}
+                            <x-backend.form.radio title=" تاریخ ایجاد" name="date_type" value="created_at"/>
+                            <x-backend.form.radio title=" تاریخ اخرین بروزرسانی" name="date_type"
+                                                  value="updated_at"/>
+                            {{--                            </x-backend.form.radio-inline>--}}
                         </x-backend.form.form-group>
                     </div>
+
+                    <div class="col-lg-6">
+                        <x-backend.form.form-group title="جست و جو بر اساس نوع فاکتور">
+                            {{--                            <x-backend.form.radio-inline>--}}
+                            <x-backend.form.radio title=" غیر رسمی" name="type"
+                                                  value="{{\App\Models\CRM\Invoice::TYPE_GHEYRE_RASMI}}"/>
+                            <x-backend.form.radio title=" رسمی" name="type"
+                                                  value="{{\App\Models\CRM\Invoice::TYPE_RASMI}}"/>
+                            {{--                            </x-backend.form.radio-inline>--}}
+                        </x-backend.form.form-group>
+                    </div>
+
 
                     <div class="col-lg-6">
                         <x-backend.form.form-group title="تاریخ از">

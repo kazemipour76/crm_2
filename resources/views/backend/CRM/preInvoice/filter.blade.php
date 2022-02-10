@@ -1,4 +1,4 @@
-add<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('crm/preInvoice')" method="get">
+<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('crm/preInvoice')" method="get">
     <x-backend.card icon="fa-filter" title="جست و جوی پیشرفته"
                     color="4"
                     icon="fa-filter"
@@ -33,11 +33,20 @@ add<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('c
                             <x-backend.form.input name="economicID" :value="old('economicID')"/>
                         </x-backend.form.form-group>
                     </div>
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <x-backend.form.form-group title="نوع تاریخ">
                                 <x-backend.form.radio title=" تاریخ ایجاد" name="date_type" value="created_at"/>
                                 <x-backend.form.radio title=" تاریخ اخرین بروزرسانی" name="date_type"
                                                       value="updated_at"/>
+                        </x-backend.form.form-group>
+                    </div>
+                    <div class="col-lg-6">
+                        <x-backend.form.form-group title="جست و جو بر اساس نوع پیش فاکتور">
+                            {{--                            <x-backend.form.radio-inline>--}}
+                            <x-backend.form.radio title=" غیر رسمی" name="type"
+                                                  value="{{\App\Models\CRM\PreInvoice::TYPE_GHEYRE_RASMI}}"/>
+                            <x-backend.form.radio title=" رسمی" name="type" value="{{\App\Models\CRM\PreInvoice::TYPE_RASMI}}"/>
+                            {{--                            </x-backend.form.radio-inline>--}}
                         </x-backend.form.form-group>
                     </div>
 

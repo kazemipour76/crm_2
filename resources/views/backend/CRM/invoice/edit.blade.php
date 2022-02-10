@@ -75,13 +75,13 @@
                                 <x-backend.form.radio-inline>
                                     <x-backend.form.radio title="غیر رسمی"
                                                           name="type"
-                                                          value="{{\App\Models\CRM\PreInvoice::TYPE_GHEYRE_RASMI}}"
-                                                          :checked="\App\Models\CRM\PreInvoice::TYPE_GHEYRE_RASMI === $model->type"
+                                                          value="{{\App\Models\CRM\Invoice::TYPE_GHEYRE_RASMI}}"
+                                                          checked="{{\App\Models\CRM\Invoice::TYPE_GHEYRE_RASMI=== $model->type ? 'checked' : ''}}"
                                     />
                                     <x-backend.form.radio title="رسمی"
                                                           name="type"
-                                                          value="{{\App\Models\CRM\PreInvoice::TYPE_RASMI}}"
-                                                          :checked="\App\Models\CRM\PreInvoice::TYPE_RASMI === $model->type"
+                                                          value="{{\App\Models\CRM\Invoice::TYPE_RASMI}}"
+                                                          checked="{{\App\Models\CRM\Invoice::TYPE_RASMI === $model->type ? 'checked' : ''}}"
                                     />
                                 </x-backend.form.radio-inline>
                             </x-backend.form.form-group>

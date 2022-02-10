@@ -71,20 +71,28 @@ class InvoiceController extends Controller
             $model->where('customer_id', '=', $filter['customer']);
         }
         if (isset($filter['perInvoiceNumber'])) {
+
+            $x = \App\Utilities\HString::number2en($filter['perInvoiceNumber']);
+            $filter['perInvoiceNumber'] = preg_replace("/[^0-9 ]/", '', $x);
             request()->validate(Invoice::getValidationSearchNumber());
             $model->where('id', '=', $filter['perInvoiceNumber']);
         }
         if (isset($filter['title'])) {
 //            $model->search($filter['perInvoiceTitle']);
+//            $x = \App\Utilities\HString::number2en($filter['title']);
+//            $filter['title'] = preg_replace("/[^آ-یA-Za-z0-9 ]/", '', $x);
             request()->validate(Invoice::getValidationSearchTitle());
             $model->where('title', '=', $filter['title']);
         }
         if (isset($filter['economicID'])) {
             request()->validate(Invoice::getValidationeconomicID());
-            $economicID = Customer::where('economicID', $filter['economicID'])->get();
-            $model->where('customer_id', '=', $economicID[0]->id);
-
+            $x = \App\Utilities\HString::number2en($filter['economicID']);
+            $filter['economicID'] = preg_replace("/[^0-9 ]/", '', $x);
+            $customerID = Customer::orderBy('id');
+            $economicID=  $customerID->where('economicID', $filter['economicID'])->get()->pluck('id');
+            $model->orWhereIn('customer_id', $economicID );
         }
+
 
         return $model;
     }

@@ -91,7 +91,7 @@ class PreInvoiceController extends Controller
             $filter['economicID'] = preg_replace("/[^0-9 ]/", '', $x);
             $customerID = Customer::orderBy('id');
             $economicID=  $customerID->where('economicID', $filter['economicID'])->get()->pluck('id');
-            $model->orWhereIn('id', $economicID );
+            $model->orWhereIn('customer_id', $economicID );
         }
 
         return $model;

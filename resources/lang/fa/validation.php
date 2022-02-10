@@ -128,6 +128,26 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'perInvoiceNumber' => [
+            'regex' => 'فقط عدد وارد نمایید',
+        ],
+        'title'=> [
+            'not_regex' => ' از کاراکترهای<>  نمی توانید استفاده کنید',
+        ],
+        'description'=> [
+            'not_regex' => ' از کاراکترهای<>  نمی توانید استفاده کنید',
+        ],
+        'term'=> [
+            'not_regex' => ' از کاراکترهای<>  نمی توانید استفاده کنید',
+        ],
+
+        'economicID' => [
+            'regex' => 'فقط عدد وارد نمایید',
+        ],
+        'product_name' => [
+            'not_regex' => ' از کاراکترهای<>  نمی توانید استفاده کنید',
+        ],
+
     ],
     'attributes' => [
         'address' => 'نشانی',
@@ -171,7 +191,7 @@ return [
         'count' => 'تعداد',
         'unit_price' => 'قیمت ',
         'product_name' => 'نام خدمات/محصول',
-        'date_from' => 'تاری ',
+        'date_from' => 'تاریخ ',
         'date_to' => 'تاریخ',
         'perInvoiceNumber' => 'شماره فاکتور',
 

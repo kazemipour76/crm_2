@@ -59,8 +59,9 @@ class InvoiceDetail extends BaseModel
         $rules = [
 
             'unit_price' => 'required|nullable|regex:/(^([0-9,۰-۹]+)(\d+)?$)/u',
-            'count' => 'required||regex:/(^([1-9۱-۹]+)(\d+)?$)/u',
-            'product_name' => 'required'
+            'count' => 'required|regex:/(^([1-9۱-۹]+)(\d+)?$)/u',
+//            'product_name' => 'required|regex:/(^([a-zA-z0-9,۰-۹آ-ی]+)(\d+)?$)/u'
+            'product_name' => 'required|not_regex:/([<>])/'
 
         ];
 

@@ -59,12 +59,14 @@ class PreInvoiceDetail extends BaseModel
 
     public static function getValidationCustomer($idEdit = false, $id = null)
     {
-
         $rules = [
 
             'count' => 'required||regex:/(^([1-9۱-۹]+)(\d+)?$)/u',
             'unit_price' => 'required|nullable|regex:/(^([0-9,۰-۹]+)(\d+)?$)/u',
-            'product_name' => 'required'
+//            'product_name' => 'required|regex:/(^([a-zA-z0-9,۰-۹آ-ی]+)(\d+)?$)/u'
+            'product_name' => 'required|not_regex:/([<>])/'
+
+
 
         ];
 

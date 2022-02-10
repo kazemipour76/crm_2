@@ -74,6 +74,8 @@ class PreInvoiceController extends Controller
             $model->where('customer_id', '=', $filter['customer']);
         }
         if (isset($filter['perInvoiceNumber'])) {
+            $x = \App\Utilities\HString::number2en($filter['perInvoiceNumber']);
+            $filter['perInvoiceNumber'] = preg_replace("/[^0-9 ]/", '', $x);
             request()->validate(PreInvoice::getValidationSearchNumber());
             $model->where('id', '=', $filter['perInvoiceNumber']);
         }
@@ -84,8 +86,10 @@ class PreInvoiceController extends Controller
         }
         if (isset($filter['economicID'])) {
             request()->validate(PreInvoice::getValidationeconomicID());
+//            dd(Customer::where('economicID', $filter['economicID'])->get());
             $economicID = Customer::where('economicID', $filter['economicID'])->get();
-            $model->where('customer_id', '=', $economicID[0]->id);
+//dd($economicID[0]->id);
+            $model->where('customer_id', $economicID[0]->id);
 
         }
 

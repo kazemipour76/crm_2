@@ -115,8 +115,10 @@ class PreInvoice extends BaseModel
         $rules = [
 
             'date' => 'required|date',
+            'title' => 'not_regex:/([<>])/',
+            'description' => 'not_regex:/([<>])/',
             'total_discount' => 'nullable|regex:/(^([0-9,۰-۹]+)(\d+)?$)/u',
-            'perInvoiceTitle' => 'numeric|max:255'
+            'perInvoiceTitle' => 'numeric|max:255',
 
         ];
 
@@ -125,21 +127,23 @@ class PreInvoice extends BaseModel
     public static function getValidationSearchTitle()
     {
         $rules = [
-            'title' => 'regex:/(^([a-zA-zآ-ی]+)(\d+)?$)/u',
+//            'title' => 'regex:/(^([a-zA-z0-9آ-ی,۰-۹]+)(\d+)?$)/u',
+            'title' => 'required|not_regex:/([<>])/'
+
         ];
         return $rules;
     }
     public static function getValidationSearchNumber()
     {
         $rules = [
-            'perInvoiceNumber' => 'numeric',
+            'perInvoiceNumber' => 'regex:/(^([0-9۰-۹]+)(\d+)?$)/u',
         ];
         return $rules;
     }
     public static function getValidationeconomicID()
     {
         $rules = [
-            'economicID' => 'numeric',
+            'economicID' => 'regex:/(^([0-9۰-۹]+)(\d+)?$)/u',
         ];
         return $rules;
     }
@@ -160,7 +164,7 @@ class PreInvoice extends BaseModel
     public static function getValidationFullTextSearch()
     {
         $rules = [
-            'term' => 'regex:/(^([a-zA-z0-9,۰-۹آ-ی]+)(\d+)?$)/u',
+            'term' => 'required|not_regex:/([<>])/',
         ];
         return $rules;
     }

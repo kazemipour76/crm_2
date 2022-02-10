@@ -37,25 +37,20 @@
 
                     <div class="col-lg-6">
                         <x-backend.form.form-group title="نوع تاریخ">
-                            {{--                            <x-backend.form.radio-inline>--}}
                             <x-backend.form.radio title=" تاریخ ایجاد" name="date_type" value="created_at"/>
                             <x-backend.form.radio title=" تاریخ اخرین بروزرسانی" name="date_type"
                                                   value="updated_at"/>
-                            {{--                            </x-backend.form.radio-inline>--}}
                         </x-backend.form.form-group>
                     </div>
 
                     <div class="col-lg-6">
-                        <x-backend.form.form-group title="جست و جو بر اساس نوع فاکتور">
-                            {{--                            <x-backend.form.radio-inline>--}}
+                        <x-backend.form.form-group title="جست و جو بر اساس نوع پیش فاکتور">
                             <x-backend.form.radio title=" غیر رسمی" name="type"
-                                                  value="{{\App\Models\CRM\Invoice::TYPE_GHEYRE_RASMI}}"/>
-                            <x-backend.form.radio title=" رسمی" name="type"
-                                                  value="{{\App\Models\CRM\Invoice::TYPE_RASMI}}"/>
-                            {{--                            </x-backend.form.radio-inline>--}}
+                                                  value="unOfficial"/>
+                            <x-backend.form.radio title=" رسمی" name="type" value="official"/>
+                            <x-backend.form.radio title=" همه" name="type" value="all"/>
                         </x-backend.form.form-group>
                     </div>
-
 
                     <div class="col-lg-6">
                         <x-backend.form.form-group title="تاریخ از">

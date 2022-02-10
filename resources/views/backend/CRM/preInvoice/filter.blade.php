@@ -40,13 +40,13 @@
                                                       value="updated_at"/>
                         </x-backend.form.form-group>
                     </div>
+
                     <div class="col-lg-6">
                         <x-backend.form.form-group title="جست و جو بر اساس نوع پیش فاکتور">
-                            {{--                            <x-backend.form.radio-inline>--}}
                             <x-backend.form.radio title=" غیر رسمی" name="type"
-                                                  value="{{\App\Models\CRM\PreInvoice::TYPE_GHEYRE_RASMI}}"/>
-                            <x-backend.form.radio title=" رسمی" name="type" value="{{\App\Models\CRM\PreInvoice::TYPE_RASMI}}"/>
-                            {{--                            </x-backend.form.radio-inline>--}}
+                                                  value="unOfficial"/>
+                            <x-backend.form.radio title=" رسمی" name="type" value="official"/>
+                            <x-backend.form.radio title=" همه" name="type" value="all"/>
                         </x-backend.form.form-group>
                     </div>
 

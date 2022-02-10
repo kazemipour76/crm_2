@@ -51,6 +51,15 @@ class InvoiceController extends Controller
         if (isset($filter['date_type'])) {
             $date_type = $filter['date_type'];
         }
+        if (isset($filter['type'])) {
+            $unOfficial="unOfficial";
+            $official="official";
+            if ($filter['type']==$unOfficial){
+                $model->where('type', Invoice::TYPE_GHEYRE_RASMI);
+            }elseif($filter['type']==$official){
+                $model->where('type', Invoice::TYPE_RASMI);
+            }
+        }
 
         if (isset($filter['date_from'])) {
             request()->validate(Invoice::getValidationSearchDateFrom());

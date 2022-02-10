@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TitleSearchValidation;
 use App\Models\Auth\User;
 use App\Models\CRM\Customer;
+use App\Models\CRM\Invoice;
 use App\Models\CRM\PreInvoice;
 use App\Models\CRM\PreInvoiceDetail;
 use App\Utilities\Jdf;
@@ -85,6 +86,17 @@ class PreInvoiceController extends Controller
             request()->validate(PreInvoice::getValidationSearchTitle());
             $model->where('title', '=', $filter['title']);
         }
+
+        if (isset($filter['type'])) {
+            $unOfficial="unOfficial";
+            $official="official";
+            if ($filter['type']==$unOfficial){
+                $model->where('type', PreInvoice::TYPE_GHEYRE_RASMI);
+            }elseif($filter['type']==$official){
+                $model->where('type', PreInvoice::TYPE_RASMI);
+            }
+        }
+
         if (isset($filter['economicID'])) {
             request()->validate(PreInvoice::getValidationeconomicID());
             $x = \App\Utilities\HString::number2en($filter['economicID']);

@@ -115,10 +115,9 @@ class PreInvoice extends BaseModel
         $rules = [
 
             'date' => 'required|date',
-            'title' => 'not_regex:/([<>])/',
-            'description' => 'not_regex:/([<>])/',
+            'title' => 'nullable|not_regex:/([<>])/',
+            'description' => 'nullable|not_regex:/([<>])/',
             'total_discount' => 'nullable|regex:/(^([0-9,۰-۹]+)(\d+)?$)/u',
-            'perInvoiceTitle' => 'numeric|max:255',
 
         ];
 

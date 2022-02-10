@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Self_;
 use function Couchbase\defaultDecoder;
+use function PHPUnit\Framework\isEmpty;
 use function React\Promise\all;
 
 class PreInvoiceController extends Controller
@@ -86,11 +87,11 @@ class PreInvoiceController extends Controller
         }
         if (isset($filter['economicID'])) {
             request()->validate(PreInvoice::getValidationeconomicID());
-//            dd(Customer::where('economicID', $filter['economicID'])->get());
-            $economicID = Customer::where('economicID', $filter['economicID'])->get();
-//dd($economicID[0]->id);
-            $model->where('customer_id', $economicID[0]->id);
-
+            $x = \App\Utilities\HString::number2en($filter['economicID']);
+            $filter['economicID'] = preg_replace("/[^0-9 ]/", '', $x);
+            $customerID = Customer::orderBy('id');
+            $economicID=  $customerID->where('economicID', $filter['economicID'])->get()->pluck('id');
+            $model->orWhereIn('id', $economicID );
         }
 
         return $model;

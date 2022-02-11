@@ -100,6 +100,7 @@ Route::group([
         Route::post('preInvoiceDetail/{id}/create', [\App\Http\Controllers\Backend\CRM\PreInvoice\PreInvoiceDetailController::class, 'store']);
         Route::post('invoiceDetail/{id}/create', [\App\Http\Controllers\Backend\CRM\Invoice\InvoiceDetailController::class, 'store']);
         Route::get('preInvoice/{id}/pdf', [\App\Http\Controllers\Backend\CRM\PreInvoice\PdfController::class, 'create']);
+        Route::get('invoice/{id}/pdf', [\App\Http\Controllers\Backend\CRM\Invoice\PdfController::class, 'create']);
     });
 
     Route::group(['prefix' => 'auth'], function () {

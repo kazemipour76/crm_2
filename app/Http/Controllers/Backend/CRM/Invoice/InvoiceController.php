@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
 use App\Models\CRM\InvoiceDetail;
+use App\Models\CRM\PreInvoice;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
@@ -246,20 +247,25 @@ class InvoiceController extends Controller
 
     public function edit($id, Request $request)
     {
-        $invoiceDetails = $this->modelDetail::where('invoice_id', $id)->get();
+        $preInvoiceDetails = $this->modelDetail::where('invoice_id', $id)->get();
+        $data['details'] = $preInvoiceDetails;
         $model = $this->model::findOrFail($id);
         $totalSum = $model->totalPriceAll();
         $discount = $model->total_discount;
         $tax = $this->tax($totalSum);
-        $amountPayable = ($totalSum - $discount) + $tax;
-        $data['details'] = $invoiceDetails;
-        $data['tax'] = $tax;
         $data['totalSum'] = $totalSum;
-        $data['amountPayable'] = $amountPayable;
         $customers = Customer::all();
         $data['customers'] = $customers;
         $data['model'] = $model;
-        return view("backend.{$this->viewFolder}.edit", $data);
+        if ($model['type'] ===Invoice::TYPE_RASMI) {
+            $amountPayable = ($totalSum - $discount) + $tax;
+        } else {
+            $amountPayable = $totalSum - $discount;
+            $tax = 0;
+        }
+        $data['tax'] = $tax;
+        $data['amountPayable'] = $amountPayable;
+        return view("backend.$this->viewFolder", $data);
     }
 
     public function update($id)

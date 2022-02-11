@@ -201,11 +201,18 @@ class PreInvoiceController extends Controller
         $totalSum = $model->totalPriceAll();
         $discount = $model->total_discount;
         $tax = $this->tax($totalSum);
-        $amountPayable = ($totalSum - $discount) + $tax;
+        if($model['type']===PreInvoice::TYPE_RASMI) {
+
+            $amountPayable = ($totalSum - $discount) + $tax;
+
+        }else{
+            $amountPayable = $totalSum - $discount;
+
+        }
         $data['details'] = $preInvoiceDetails;
         $data['tax'] = $tax;
-        $data['totalSum'] = $totalSum;
         $data['amountPayable'] = $amountPayable;
+        $data['totalSum'] = $totalSum;
         $customers = Customer::all();
         $data['customers'] = $customers;
         $data['model'] = $model;

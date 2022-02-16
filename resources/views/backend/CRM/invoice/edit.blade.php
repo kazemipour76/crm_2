@@ -109,8 +109,8 @@
                         <button type="submit" class="btn btn-primary mr-2 px-10">
                             ثبت
                         </button>
-                        <a href="{{ \App\Utilities\Url::admin('crm/preInvoice') }}" class="btn btn-danger">بازگشت</a>
-                        <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/'. $model->id.'/pdf') }}" class="btn btn-warning float-left ml-4">نمایش  فاکتور</a>
+                        <a href="{{ \App\Utilities\Url::admin('crm/invoice') }}" class="btn btn-danger">بازگشت</a>
+                        <a href="{{ \App\Utilities\Url::admin('crm/invoice/'. $model->id.'/pdf') }}" class="btn btn-warning float-left ml-4">نمایش  فاکتور</a>
                     </x-slot>
                 </x-backend.card>
             </x-backend.form.form>

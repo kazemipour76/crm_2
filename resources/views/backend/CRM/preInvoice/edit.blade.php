@@ -67,7 +67,7 @@
                         </div>
                         <div class="col-lg-6">
                             <x-backend.form.form-group title="مالیات">
-                                @if(!$model->type)
+                                @if(\App\Models\CRM\PreInvoice::TYPE_GHEYRE_RASMI==$model->type)
                                     <x-backend.form.input name="address"
                                                           disable="disabled" :value="0"/>
                                 @else
@@ -158,21 +158,21 @@
 
                                     <div class="col-lg-6">
                                         <x-backend.form.form-group title="نام محصول / خدمات">
-                                            <x-backend.form.input name="product_name" :value="old('product_name')"
+                                            <x-backend.form.input name="product_name"
                                                                   placeholder="نام محصول را وارد کنید"/>
                                         </x-backend.form.form-group>
                                     </div>
 
                                     <div class="col-lg-1">
                                         <x-backend.form.form-group title="تعداد">
-                                            <x-backend.form.input name="count" :value="old('count')"
+                                            <x-backend.form.input name="count"
                                                                   placeholder="تعداد"/>
                                         </x-backend.form.form-group>
                                     </div>
 
                                     <div class="col-lg-3">
                                         <x-backend.form.form-group title=" قیمت واحد">
-                                            <x-backend.form.input name="unit_price" :value="old('unit_price')"
+                                            <x-backend.form.input name="unit_price"
                                                                   placeholder="قیمت را وارد کنید "
                                                                   separate="true"/>
                                         </x-backend.form.form-group>

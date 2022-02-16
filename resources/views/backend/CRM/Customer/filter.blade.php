@@ -1,4 +1,4 @@
-<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('auth/user')" method="get">
+<x-backend.form.form id="{{ $formId }}" :action="\App\Utilities\Url::admin('crm/customer')" method="get">
     <x-backend.card icon="fa-filter" title="جست و جوی پیشرفته"
                     color="1"
                     icon="fa-filter"
@@ -6,13 +6,19 @@
         <div class="col-12">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <x-backend.form.form-group title="نوع تاریخ">
-                            <x-backend.form.radio-inline>
-                                <x-backend.form.radio title=" تاریخ ایجاد" name="date_type" value="created_at"/>
-                                <x-backend.form.radio title=" تاریخ اخرین بروزرسانی" name="date_type"
-                                                      value="updated_at"/>
-                            </x-backend.form.radio-inline>
+                            <x-backend.form.radio title=" تاریخ ایجاد" name="date_type" value="created_at" checked="{{old('date_type')=== 'created_at'||!old('type') ? 'checked' : ''}}"/>
+                            <x-backend.form.radio title=" تاریخ اخرین بروزرسانی" name="date_type"
+                                                  value="updated_at" checked="{{old('date_type')=== 'updated_at'||!old('type') ? 'checked' : ''}}"/>
+                        </x-backend.form.form-group>
+                    </div>
+                    <div class="col-lg-6">
+                        <x-backend.form.form-group title="جست و جو بر اساس نوع مشتری">
+                            <x-backend.form.radio title=" حقوقی" name="entity"
+                                                  value="legal" checked="{{old('entity')=== 'legal'||!old('entity') ? 'checked' : ''}}"/>
+                            <x-backend.form.radio title=" حقیقی" name="entity" value="natural" checked="{{old('entity')=== 'natural'||!old('entity') ? 'checked' : ''}}"/>
+                            <x-backend.form.radio title=" همه" name="entity" value="all"  checked="{{old('entity')=== 'all'||!old('entity') ? 'checked' : ''}}"/>
                         </x-backend.form.form-group>
                     </div>
 

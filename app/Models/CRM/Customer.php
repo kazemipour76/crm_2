@@ -53,6 +53,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Customer extends BaseModel
 {
+    CONST LEGAL=1;
+    CONST NATURAL =2;
 //    use SoftDeletes;
     use UserScope;
 

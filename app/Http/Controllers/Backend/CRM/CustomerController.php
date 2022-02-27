@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Backend\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
+use App\Models\CRM\InvoiceDetail;
 use App\Models\CRM\PreInvoice;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -16,37 +18,50 @@ class CustomerController extends Controller
     protected $returnDefault = 'sadmin/crm/customer';
     protected $modelName = 'مشتری';
     protected $viewFolder = 'CRM/Customer';
+    protected $model = \App\Models\CRM\Customer::class;
 
     public function filter()
     {
 //        $model = $this->model::OrderBy('id')->withTrashed();
-        $model = Customer::user()->orderBy('id');
-
+        $model = $this->model::OrderBy('id');
         $filter = request()->all();
 
-        if (!empty($filter['term'])) {
-            $model->search($filter['term']);
-        }
 
         $date_type = '';
         if (isset($filter['date_type'])) {
             $date_type = $filter['date_type'];
         }
 
+        if (isset($filter['entity'])) {
+            $legal="legal";
+            $natural="natural";
+            if ($filter['entity']==$legal){
+                $model->where('entity', Customer::LEGAL);
+            }elseif($filter['entity']==$natural){
+                $model->where('entity', Customer::NATURAL);
+            }
+        }
+
         if (isset($filter['date_from'])) {
+            request()->validate(Invoice::getValidationSearchDateFrom());
+
             $date = explode('/', $filter['date_from']);
             $gdate = Jdf::jalali_to_gregorian($date[0], $date[1], $date[2], '-') . ' 00:00:00';
             $model->where($date_type, '>=', $gdate);
         }
 
         if (isset($filter['date_to'])) {
+            request()->validate(Invoice::getValidationSearchDateTo());
+
             $date = explode('/', $filter['date_to']);
             $gdate = Jdf::jalali_to_gregorian($date[0], $date[1], $date[2], '-') . ' 23:59:59';
             $model->where($date_type, '<=', $gdate);
         }
 
+
         return $model;
     }
+
 
 
     public function index(Request $request)
@@ -78,8 +93,9 @@ class CustomerController extends Controller
     {
         $model = new Customer();
         request()->validate(Customer::getValidationCustomer());
+        $model->_user_id=Auth::id();
         $model->fill(request()->all());
-        $model->fillUser();
+//        $model->fillUser();
 
         if ($model->save()) {
             MessageBag::push($this->modelName . ' با موفقیت ایجاد شد', MessageBag::TYPE_SUCCESS);
@@ -93,14 +109,14 @@ class CustomerController extends Controller
 
     public function edit($id)
     {
-        $model = Customer::user()->findOrFail($id);
+        $model = Customer::findOrFail($id);
         $data['model'] = $model;
         return view("backend.{$this->viewFolder}.edit", $data);
     }
 
     public function update($id)
     {
-        $model = Customer::user()->findOrFail($id);
+        $model = Customer::findOrFail($id);
         request()->validate(Customer::getValidationCustomer(true, $id));
         $model->fill(request()->all());
         if ($model->save()) {
@@ -133,7 +149,7 @@ class CustomerController extends Controller
     public function deleteAction($ids)
     {
         $count = count($ids);
-        if (Customer::user()->whereIn('id', $ids)->delete()) {
+        if (Customer::whereIn('id', $ids)->delete()) {
             MessageBag::push("تعداد {$count} {$this->modelName} با موفقیت حذف شد", MessageBag::TYPE_SUCCESS);
         } else {
             MessageBag::push("{$this->modelName}  حذف نشد لطفا مجددا تلاش فرمایید");

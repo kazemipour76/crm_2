@@ -147,7 +147,7 @@
 
                                     <div class="col-lg-3">
                                         <x-backend.form.form-group title=" قیمت واحد">
-                                            <x-backend.form.input name="unit_price" placeholder="قیمت را وارد کنید " />
+                                            <x-backend.form.input name="unit_price" separate="true" placeholder="قیمت را وارد کنید " />
                                         </x-backend.form.form-group>
                                     </div>
 

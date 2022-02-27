@@ -5,8 +5,9 @@
     <div class="brand flex-column-auto" id="kt_brand">
 
         <!--begin::Logo-->
-        <a href="{{ url('/') }}" class="brand-logo">
-            <img alt="Logo" src="{{ asset('assets/media/logos/logo-light.png') }}"/>
+        <a href="{{ url('/') }}" class="brand-logo font-size-h4">
+{{--            <img alt="Logo" src="{{ asset('assets/media/logos/logo-light.png') }}"/>--}}
+            INVOICE MAKER
         </a>
 
         <!--end::Logo-->
@@ -101,22 +102,22 @@
                     </a>
                 </li>
 
-                <li class="menu-section">
-                    <h4 class="menu-text">تنظیمات</h4>
-                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                </li>
+{{--                <li class="menu-section">--}}
+{{--                    <h4 class="menu-text">تنظیمات</h4>--}}
+{{--                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>--}}
+{{--                </li>--}}
 
 
-                @foreach(config('platform.setting') as $key => $item)
+{{--                @foreach(config('platform.setting') as $key => $item)--}}
 
-                    <li class="menu-item @if(request()->is('sadmin/setting/'.$key)) menu-item-active @endif"
-                        aria-haspopup="true">
-                        <a href="{{ \App\Utilities\Url::admin('setting/' . $key) }}" class="menu-link">
-                            <i class="menu-icon fal {{ $item['icon'] }}" aria-hidden="true"></i>
-                            <span class="menu-text">{{ $item['name'] }} </span>
-                        </a>
-                    </li>
-                @endforeach
+{{--                    <li class="menu-item @if(request()->is('sadmin/setting/'.$key)) menu-item-active @endif"--}}
+{{--                        aria-haspopup="true">--}}
+{{--                        <a href="{{ \App\Utilities\Url::admin('setting/' . $key) }}" class="menu-link">--}}
+{{--                            <i class="menu-icon fal {{ $item['icon'] }}" aria-hidden="true"></i>--}}
+{{--                            <span class="menu-text">{{ $item['name'] }} </span>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                @endforeach--}}
 
             </ul>
 

@@ -73,9 +73,9 @@
                             <div class="checkbox-inline">
                                 <label class="checkbox m-0 text-muted">
                                     <input type="checkbox" name="remember"/>
-                                    <span></span>مرابخاطر بسپار</label>
+{{--                                    <span></span>مرابخاطر بسپار</label>--}}
                             </div>
-                            <a class="text-muted text-hover-primary ">گذرواژه را فراموش کردید ؟</a>
+{{--                            <a class="text-muted text-hover-primary ">گذرواژه را فراموش کردید ؟</a>--}}
                         </div>
                         <button class="btn btn-primary btn-block font-weight-bold px-9 py-4 my-3 mx-4">ورود</button>
                         <a class="btn btn-secondary btn-block font-weight-bold px-9 py-4 my-3 mx-4"

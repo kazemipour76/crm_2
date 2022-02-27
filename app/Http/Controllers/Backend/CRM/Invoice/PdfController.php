@@ -9,6 +9,7 @@ use App\Models\CRM\Invoice;
 use App\Models\CRM\PreInvoice;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
+use App\Utilities\Number2Word;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -35,6 +36,8 @@ class PdfController extends Controller
 
     public function create($id)
     {
+        $numToStr=new Number2Word();
+
         $preInvoiceDetails = $this->modelDetail::where('invoice_id', $id)->get();
         $data['details'] = $preInvoiceDetails;
         $model = $this->model::findOrFail($id);
@@ -45,6 +48,7 @@ class PdfController extends Controller
         $customers = Customer::all();
         $data['customers'] = $customers;
         $data['model'] = $model;
+        $data['date'] = $model->date;
         if ($model['type'] === Invoice::TYPE_RASMI) {
             $amountPayable = ($totalSum - $discount) + $tax;
         } else {
@@ -53,6 +57,12 @@ class PdfController extends Controller
         }
         $data['tax'] = $tax;
         $data['amountPayable'] = $amountPayable;
+        if ($amountPayable==0){
+            $data['amountPayableString'] ="صفر" ;
+        }else{
+
+            $data['amountPayableString'] =$numToStr->numberToWords($amountPayable) ;
+        }
         return view("backend.$this->viewFolder", $data);
     }
 

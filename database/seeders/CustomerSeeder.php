@@ -18,7 +18,7 @@ class CustomerSeeder extends Seeder
         Model::unguard();
 
 
-        for($i=1;$i<=20;$i++){
+        for($i=1;$i<=10;$i++){
             $model = new Customer();
             $model->name = 'name_company'.$i;
             $model->address ='address'.$i;

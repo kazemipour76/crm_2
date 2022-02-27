@@ -123,7 +123,6 @@ class LibraryController extends Controller
             return response()->json($data);
         }
 
-
         if ($file) {
             $model = new Library();
             $model->file_name = $file['name'];

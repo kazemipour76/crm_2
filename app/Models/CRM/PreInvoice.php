@@ -6,8 +6,10 @@ namespace App\Models\CRM;
 
 use App\Casts\Jalali;
 use App\Models\BaseModel;
+use App\Scopes\UserScope;
 use App\Traits\FullTextSearch;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -62,6 +64,7 @@ class PreInvoice extends BaseModel
     const  TYPE_RASMI = 1;
     const  TYPE_GHEYRE_RASMI = 0;
 
+    protected $idGenerator = true;
 
     protected $table = 'pre_invoices';
     protected $searchable = ['description','title'];
@@ -69,7 +72,7 @@ class PreInvoice extends BaseModel
         'type',
         'customer_id',
 //        'total_discount',
-        'date',
+//        'date',
         'description',
         'title',
 //        'pre_invoice_id',
@@ -77,7 +80,7 @@ class PreInvoice extends BaseModel
     ];
 
     protected $casts = [
-//        'updated_at' => Jalali::class . ':time',
+//        'date' => Jalali::class ,
 //        'created_at' => Jalali::class . ':time',
     ];
 
@@ -167,5 +170,11 @@ class PreInvoice extends BaseModel
         ];
         return $rules;
     }
+    protected static function booted()
+    {
+        if (!Auth::id()==1){
 
+            static::addGlobalScope(new UserScope());
+        }
+    }
 }

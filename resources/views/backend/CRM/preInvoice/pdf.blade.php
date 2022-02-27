@@ -252,14 +252,20 @@
     </style>
 </head>
 <body>
-<button class="print-button" id="print-button">پرینت</button>
-<div class=" wrapper">
 
-    <table class="header-table" style=" border-collapse:collapse; width: 100%">
+<button class="print-button"  id="print-button">پرینت</button>
+<div class=" wrapper" >
+
+    <table class="header-table"  style="font-family: IRNazanin; border-collapse:collapse; width: 100%">
         <tr>
             <td colspan="4">
-                <b><img width="80px" height="80px" src="{{ asset('storage/img.png') }}"></b>
-
+                <b>
+                @if(Auth::user()->name_image==null)
+                 <div class="symbol-label"  width="80px" height="80px"></div>
+                    @else
+                <img  width="80px" height="80px" src="{{URL::asset('/imageUser/'.Auth::user()->name_image)}}">
+                @endif
+                </b>
             </td>
             <td colspan="4" style="text-align: center; padding-top: 27px ;font-size: 14pt">
                 <b>شرکت یکتا تجهیز صیانت علیرضا</b>
@@ -271,28 +277,27 @@
         </tr>
 
         <tr>
-            <th colspan="7" style=" text-align: right ;padding-right: 20px; font-size: 10pt">
-                @if($model->status)
+            <th colspan="7"  style="font-family: IRNazanin; text-align: right ;padding-right: 20px; font-size: 10pt">
+
                     پیش فاکتور
-                @else
-                    فاکتور
-                @endif
+
                 <br>
                 {{$model->title}}
             </th>
-            <th colspan="5" style=" text-align: right ;padding-right: 20px; font-size: 10pt">تاریخ: {{$model->date}}
+            <th colspan="5" style="font-family: IRNazanin; text-align: left ;padding-right: 20px; font-size: 10pt">
+                {{$model->date}}  :تاریخ
                 <br>
-                شماره: A{{$model->id}}
+                 A{{$model->id}} :شماره
 
             </th>
 
         </tr>
         <tr style="">
-            <th colspan="1" style="border-collapse:collapse; text-align: right ;padding-right: 20px">
+            <th colspan="1" style="font-family: IRNazanin; border-collapse:collapse; text-align: right ;padding-right: 20px">
                 مشخصات
             </th>
-            <th colspan="6" style="border-collapse:collapse; height: 60px; text-align: right ;padding-right: 20px">
-                <span class="label">مشتری:</span> {{$model->Customer->name}}
+            <th colspan="6"  style="font-family: IRNazanin ; border-collapse:collapse; height: 60px; text-align: right ;padding-right: 20px">
+                <span class="label" >مشتری:</span> {{$model->Customer->name}}
                 <br>
                 <span class="label">شماره‌اقتصادی :</span>
                 {{$model->Customer->economicID}}
@@ -311,7 +316,7 @@
                 <span class="label">کد پستی:</span>
 
             </th>
-            <th colspan="5" style="height: 60px; text-align: right ;padding-right: 20px">
+            <th colspan="5"  style="font-family: IRNazanin;height: 60px; text-align: right ;padding-right: 20px">
                 <span class="label">مشتری:</span> {{$model->Customer->name}}
                 <br>
                 <span class="label">شماره‌اقتصادی :</span>
@@ -334,7 +339,7 @@
 
         </tr>
     </table>
-    <table class="content-table ">
+    <table class="content-table "  style="font-family: IRNazanin">
         <thead>
         <tr>
             <th colspan="1">ردیف</th>
@@ -347,9 +352,9 @@
         </tr>
         </thead>
         @foreach($details as $detail)
-        <tr style="height: auto;font-size: 12px">
+        <tr  style="font-family: IRNazanin ;height: auto;font-size: 12px">
             <td colspan="1" style="">۱</td>
-            <td colspan="3">
+            <td colspan="3" style="font-family: IRNazanin;">
 
                 {{$detail->product_name}}
 
@@ -381,7 +386,7 @@
         </tr>
         @endforeach
         <tr>
-            <td colspan="4">
+            <td colspan="4"  style="font-family: IRNazanin">
                 <b>جمع کل (ریال)</b>
             </td>
             <td colspan="8" style="text-align: left ;padding-left: 10px;font-size: 11pt">
@@ -390,17 +395,17 @@
 
         </tr>
         <tr>
-            <td colspan="4">
-                <b> مالیات بر ارزش افزوده (ریال)ل</b>
+            <td colspan="4" style="font-family: IRNazanin">
+                <b> مالیات بر ارزش افزوده (ریال)</b>
             </td>
-            <td colspan="8" style="text-align: left ;padding-left: 10px;font-size: 11pt">
+            <td colspan="8"  style="text-align: left ;padding-left: 10px;font-size: 11pt">
                 <b>{{\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($tax))}}</b>
             </td>
 
         </tr>
         @if($model->total_discount)
             <tr>
-                <td colspan="4">
+                <td colspan="4" style="font-family: IRNazanin">
                     <b> تخفیف (ریال)</b>
                 </td>
                 <td colspan="8" style="text-align: left ;padding-left: 10px;font-size: 11pt">
@@ -409,11 +414,19 @@
             </tr>
         @endif
         <tr>
-            <td colspan="4">
+            <td colspan="4" style="font-family: IRNazanin">
                 <b>مبلغ قابل پرداخت (ریال)</b>
             </td>
             <td colspan="8"style="text-align: left ;padding-left: 10px;font-size: 12pt">
                 <b>{{\App\Utilities\HString::number2farsi(\App\Utilities\HString::dividePrice($amountPayable))}}</b>
+            </td>
+        </tr>        <tr>
+            <td colspan="4" style="font-family: IRNazanin">
+                <b>به حروف:</b>
+            </td>
+            <td colspan="8"style="text-align: right ;padding-left: 10px;font-size: 12pt">
+                <b style="font-family: IRMitra">{{  $amountPayableString}} ریال </b>
+
             </td>
         </tr>
 
@@ -429,7 +442,7 @@
                     </div>
 
                 </div>
-                <span class="ltr" style="text-align: left;padding-left:40px; font-family:'2  Baran'; font-size: 20px">
+                <span class="ltr " style="font-family: IRNazanin; text-align: left;padding-left:40px; padding-top: 20px; font-size: 20px">
                   امضاء و مهر شرکت
                                         </span>
             </td>

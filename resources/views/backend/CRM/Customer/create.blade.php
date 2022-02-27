@@ -35,7 +35,22 @@
                                 <x-backend.form.input name="phone"/>
                             </x-backend.form.form-group>
                         </div>
+                        <div class="col-lg-6 mt-8 mb-3">
+                            <x-backend.form.form-group title="نوع :" isInline="true">
+                                <x-backend.form.radio-inline>
+                                    <x-backend.form.radio title="حقیقی" name="entity"
+                                                          value="{{\App\Models\CRM\Customer::NATURAL}}"
+                                                          checked="{{\App\Models\CRM\Customer::NATURAL||!old('entity') ? 'checked' : ''}}"
 
+                                    />
+
+                                    <x-backend.form.radio title="حقوقی" name="entity"
+                                                          value="{{\App\Models\CRM\Customer::LEGAL}}"
+                                                          checked="{{\App\Models\CRM\Customer::LEGAL||!old('entity') ? 'checked' : ''}}"
+                                    />
+                                </x-backend.form.radio-inline>
+                            </x-backend.form.form-group>
+                        </div>
                         {{--                <div class="col-lg-6">--}}
                         {{--                    <x-backend.form.form-group title="رایانامه">--}}
                         {{--                        <x-backend.form.input--}}

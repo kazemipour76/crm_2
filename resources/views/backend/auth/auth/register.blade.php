@@ -63,23 +63,30 @@
                     <form class="form" action="{{ url('auth/register') }}" method="post">
                         @csrf
                         <div class="form-group mb-5">
+                            <input class="form-control h-auto form-control-solid py-4 px-8 text-right"
+                                   placeholder="نام خود یا شرکت" name="name" autocomplete="off"/>
+                        </div>
+                        <div class="form-group mb-5">
                             <input class="form-control h-auto form-control-solid py-4 px-8 text-right" type="email"
                                    placeholder="ایمیل" name="email" autocomplete="off"/>
                         </div>
+
+
                         <div class="form-group mb-5">
-                            <input class="form-control h-auto form-control-solid py-4 px-8 text-right" type="password"
+                            <input class="form-control h-auto form-control-solid py-4px-8 text-right" type="password"
                                    placeholder="گذرواژه" name="password"/>
                         </div>
 
                         <div class="form-group mb-5">
                             <input class="form-control h-auto form-control-solid py-4 px-8 text-right" type="password"
-                                   placeholder="تکرار گذرواژه" name="repassword"/>
+                                   placeholder="تکرار گذرواژه" name="password_confirmation"/>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-block font-weight-bold px-9 py-4 my-3 mx-4">ثبت
                             نام
                         </button>
-
+                        <a class="btn btn-secondary btn-block font-weight-bold px-9 py-4 my-3 mx-4"
+                           href="{{ url('auth/login') }}">ورود</a>
                     </form>
 
                 </div>

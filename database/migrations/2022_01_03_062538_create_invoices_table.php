@@ -24,6 +24,8 @@ class CreateInvoicesTable extends Migration
             $table->bigInteger('tax',)->nullable();
             $table->tinyInteger('status',)->default(\App\Models\CRM\Invoice::STATUS_OPEN);
             $table->tinyInteger('type');
+            $table->bigInteger('_user_id');
+
             $table->bigInteger('customer_id')->unsigned()->index();
             $table->bigInteger('pre_invoice_id')->unsigned()->index()->nullable();
 

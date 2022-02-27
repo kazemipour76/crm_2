@@ -9,6 +9,7 @@ use App\Models\CRM\InvoiceDetail;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class InvoiceController extends Controller
@@ -148,8 +149,8 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $model = new $this->model;
-//        dd($request->all());
-//        $model['pre_invoice_id']=1;
+        $model['date']=Jdf::jdate('Y/m/d');
+        $model['_user_id']=Auth::id();
         $model->fill(request()->all());
         if ($model->save()) {
             MessageBag::push($this->modelName . ' با موفقیت ایجاد شد', MessageBag::TYPE_SUCCESS);

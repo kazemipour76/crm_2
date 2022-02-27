@@ -3,29 +3,35 @@
 namespace App\Http\Controllers\Backend\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Auth\User;
 use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
 use App\Models\CRM\InvoiceDetail;
 use App\Models\CRM\PreInvoice;
 use App\Models\CRM\PreInvoiceDetail;
-use Decimal\Decimal;
-use phpDocumentor\Reflection\Types\Self_;
-use phpDocumentor\Reflection\Types\This;
+use App\Utilities\NumToWord;
+use Chartisan\PHP\Chartisan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
 
 class DashboardController extends Controller
 {
 
 //    public $preInvoice;
+    public $data;
+    public $customer;
 
-    public function index()
+
+        public function index()
     {
-$c="pre_invoice_id";
-        $customer = Customer::user()->get();
+
+
+        $customer = Customer::get();
+        $this->customer = $customer;
         $preInvoice = PreInvoice::orderBy('id');
         $invoice = Invoice::orderBy('id');
-//dd(PreInvoice::orderBy('id')->whereHas('details', function ($q) {
-//
-//})->count());
+
         //------------------------invoices------------------------
 
         $totalSumPriceInvoice = $this->resultSumPriceInvoice($invoice->get()->pluck('id'));
@@ -57,7 +63,7 @@ $c="pre_invoice_id";
         $totalSumLegal = $this->resultSumPriceInvoice($invoiceLegalId);
         $totalSumNatural = $this->resultSumPriceInvoice($invoiceNaturalId);
 
-        $data = [
+        $this->data = [
             //------------------------invoices------------------------
 
             'invoiceOfficialNaturalCount' => $invoiceOfficialNatural == null ? 0 : $invoiceOfficialNatural->count(),
@@ -69,7 +75,8 @@ $c="pre_invoice_id";
             'invoiceUnOfficialLegalCount' => $invoiceUnOfficialLegal == null ? 0 : $invoiceUnOfficialLegal->count(),
             'invoiceUnOfficialLegalPrice' => $invoiceUnOfficialLegalPrice,
             'totalSumPriceInvoice' => $totalSumPriceInvoice,
-            'invoiceCount' => $invoice->whereHas('details', function ($q){})->count(),
+            'invoiceCount' => $invoice->whereHas('details', function ($q) {
+            })->count(),
 
             //------------------------preInvoices------------------------
 
@@ -82,7 +89,8 @@ $c="pre_invoice_id";
             'preInvoiceUnOfficialLegalCount' => $preInvoiceUnOfficialLegal == null ? 0 : $preInvoiceUnOfficialLegal->count(),
             'preInvoiceUnOfficialLegalPrice' => $preInvoiceUnOfficialLegalPrice,
             'totalSumPricePreInvoice' => $totalSumPricePreInvoice,
-            'preInvoiceCount' =>$preInvoice->whereHas('details', function ($q){})->count(),
+            'preInvoiceCount' => $preInvoice->whereHas('details', function ($q) {
+            })->count(),
 
             //------------------------customer------------------------
 
@@ -92,8 +100,18 @@ $c="pre_invoice_id";
             'entityNatural' => $customer->where('entity', Customer::NATURAL)->count(),
             'entityLegal' => $customer->where('entity', Customer::LEGAL)->count(),
         ];
+//        dd($this->data['invoiceOfficialNaturalCount']);
 
-        return view('backend.CRM.index', $data);
+        return view('backend.CRM.index', $this->data);
+    }
+
+    public function handler(Request $request): Chartisan
+    {
+        $y = Customer::withCount('invoices');
+        $y = $y->get()->pluck('invoices_count', 'name');
+        return Chartisan::build()
+            ->labels($y->keys()->toArray())
+            ->dataset('Sample', $y->values()->toArray());
     }
 
     public $entity;
@@ -138,14 +156,15 @@ $c="pre_invoice_id";
                 ->selectRaw('SUM(count*unit_price) as total_price')
                 ->pluck('total_price')->toArray();
             $totalSum = implode($totalSum);
-           if(  $totalSum){
-               return $totalSum;
-           }
+            if ($totalSum) {
+                return $totalSum;
+            }
             return 0;
 
         }
         return 0;
     }
+
     public function resultSumPricePreInvoice($invoiceId)
     {
         if ($invoiceId !== null) {
@@ -153,9 +172,22 @@ $c="pre_invoice_id";
                 ->selectRaw('SUM(count*unit_price) as total_price')
                 ->pluck('total_price')->toArray();
             $totalSum = implode($totalSum);
-            return $totalSum;
+            if ($totalSum) {
+                return $totalSum;
+            }
+            return 0;
+
         }
         return 0;
+    }
+
+    public function chart(User $user)
+    {
+        if (!Gate::allows('isSpecial', $user)) {
+            abort(403, 'این بخش از سایت مخصوص کاربران ویژه می باشد');
+        }
+
+        return view('backend/CRM/chart_reports/index');
     }
 }
 

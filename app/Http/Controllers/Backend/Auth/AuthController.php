@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Backend\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Utilities\MessageBag;
+use App\Utilities\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 
 class AuthController extends Controller
@@ -26,6 +29,9 @@ class AuthController extends Controller
         if (Auth::attempt($data)) {
             request()->session()->regenerate();
             return redirect(\App\Utilities\Url::admin('/dash'));
+        }else{
+            MessageBag::push("ایمیل یا کلمه عبور صحیح نمی باشد");
+            return redirect()->back();
         }
         return redirect()->back();
 //        return redirect('dash');
@@ -44,10 +50,10 @@ class AuthController extends Controller
     {
         $data = request()->validate([
             'email' => 'required',
-            'password' => 'required',
-            'repassword' => 'required:same:password'
+            'name' => 'required|regex:/(^([a-zA-z0-9]+)(\d+)?$)/u',
+            'password' => ['required', 'string', 'confirmed', Password::min(4)],
+            'password_confirmation' => ['required'],
         ]);
-
 
         $userCount = User::where('email', request()->get('email'))->count();
         if ($userCount > 0) {
@@ -55,23 +61,22 @@ class AuthController extends Controller
             return redirect()->back();
         }
 
-        $user = new User();
-        $user->name = request()->get('email');
-        $user->email = request()->get('email');
-        $user->password = Hash::make(request()->get('password'));
-        if ($user->save()) {
-            $loginData = [
-                'email' => request()->get('email'),
-                'password' => request()->get('password')
-            ];
-            if (Auth::attempt($loginData)) {
-                request()->session()->regenerate();
-                return redirect(\App\Utilities\Url::admin('/dash'));
+            $user = new User();
+            $user->name = request()->get('name');
+            $user->email = request()->get('email');
+            $user->password = Hash::make(request()->get('password'));
+            if ($user->save()) {
+                $loginData = [
+                    'email' => request()->get('email'),
+                    'password' => request()->get('password')
+                ];
+                if (Auth::attempt($loginData)) {
+                    request()->session()->regenerate();
+                    return redirect(\App\Utilities\Url::admin('/dash'));
+                }
             }
-        }
 
-        return redirect()->back();
-
+            return redirect()->back();
 
     }
 

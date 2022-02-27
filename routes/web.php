@@ -5,8 +5,9 @@ Route::post('add-category', ['as' => 'add.category', 'uses' => 'CategoryControll
 //  $test=new \App\Models\CMS\Menu()  ;
 //  $test->getTree();
 //});
-Route::get('test', function () {
-//
+//Route::get('test', function () {
+
+Route::get('sadmin/admin/detailUser/{id}/show', [\App\Http\Controllers\Backend\CRM\Admin\AdminController::class ,'index']);
 //$test = \App\Models\CRM\PreInvoice::find(2);
 //$test->totalPrice();
 //dd($test->totalPrice());
@@ -17,7 +18,7 @@ Route::get('test', function () {
 //        ->groupBy('pre_invoice_id')
 //        ->first()->total_price;
 //dd($test);
-});
+//});
 
 //Route::get('tree', function () {
 //    $tree = \App\Models\CMS\Menu::getTree();
@@ -81,7 +82,7 @@ use App\Utilities\Routers;
 use Illuminate\Database\Eloquent\Model;
 
 Route::group([
-    'middleware' => 'auth',
+    'middleware' =>[ 'auth','check_user'],
     'prefix' => \App\Utilities\Url::getAdminPrefix()
 ], function () {
 
@@ -101,11 +102,20 @@ Route::group([
         Route::post('invoiceDetail/{id}/create', [\App\Http\Controllers\Backend\CRM\Invoice\InvoiceDetailController::class, 'store']);
         Route::get('preInvoice/{id}/pdf', [\App\Http\Controllers\Backend\CRM\PreInvoice\PdfController::class, 'create']);
         Route::get('invoice/{id}/pdf', [\App\Http\Controllers\Backend\CRM\Invoice\PdfController::class, 'create']);
+        Route::get('chartReports', [\App\Http\Controllers\Backend\Dashboard\DashboardController::class ,'chart']);
     });
-
     Route::group(['prefix' => 'auth'], function () {
         Routers::crud('user', \App\Http\Controllers\Backend\Auth\UserController::class);
         Routers::crud('group', \App\Http\Controllers\Backend\Auth\GroupController::class);
+        Route::get('user/image', [\App\Http\Controllers\Backend\Auth\UserController::class, 'image']);
+        Route::post('user/image', [\App\Http\Controllers\Backend\Auth\UserController::class, 'saveImage']);
+        Route::get('user/image/deleteImage', [\App\Http\Controllers\Backend\Auth\UserController::class, 'deleteImage']);
+        Route::get('user/userInformation', [\App\Http\Controllers\Backend\Auth\UserController::class, 'editInformation']);
+        Route::get('user/{id}/block', [\App\Http\Controllers\Backend\Auth\UserController::class, 'blockUser']);
+        Route::get('user/{id}/permissions', [\App\Http\Controllers\Backend\Auth\UserController::class, 'userPermissions']);
+        Route::post('user/{id}/permissions', [\App\Http\Controllers\Backend\Auth\UserController::class, 'userPermissionsChange']);
+        Route::post('user/userInformation', [\App\Http\Controllers\Backend\Auth\UserController::class, 'updateInformation']);
+
     });
 
     Route::group(['prefix' => 'library'], function () {
@@ -128,11 +138,11 @@ Route::group([
 
 
     Route::group(['prefix' => '/dash'], function () {
-        Route::get('/', [\App\Http\Controllers\Backend\Dashboard\DashboardController::class, 'index']);
+        Route::get('/', [\App\Http\Controllers\Backend\Dashboard\DashboardController::class, 'index'])->withoutMiddleware(\App\Http\Middleware\CheckUser::class);
     });
 
     Route::get('/', function () {
-        return redirect(\App\Utilities\Url::admin('dash'));
+//        return redirect(\App\Utilities\Url::admin('dash'));
     });
 });
 

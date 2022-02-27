@@ -4,20 +4,13 @@ namespace App\Http\Controllers\Backend\CRM\PreInvoice;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TitleSearchValidation;
-use App\Models\Auth\User;
 use App\Models\CRM\Customer;
-use App\Models\CRM\Invoice;
 use App\Models\CRM\PreInvoice;
 use App\Models\CRM\PreInvoiceDetail;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use phpDocumentor\Reflection\Types\Self_;
-use function Couchbase\defaultDecoder;
-use function PHPUnit\Framework\isEmpty;
-use function React\Promise\all;
+use Illuminate\Support\Facades\Auth;
 
 class PreInvoiceController extends Controller
 {
@@ -152,6 +145,9 @@ class PreInvoiceController extends Controller
     public function store(Request $request)
     {
         $model = new $this->model;
+        $model['date']=Jdf::jdate('Y/m/d');
+        $model['_user_id']=Auth::id();
+
         $model->fill(request()->all());
         if ($model->save()) {
             MessageBag::push($this->modelName . ' با موفقیت ایجاد شد', MessageBag::TYPE_SUCCESS);
@@ -221,6 +217,7 @@ class PreInvoiceController extends Controller
 
     public function update($id, Request $request)
     {
+        dd(  request('date'));
 //        $this->validate($request, [
 ////                    'title' => 'regex:/(^([0-9,]+)(\d+)?$)/u',
 //                    'date' => 'required|date',
@@ -229,6 +226,7 @@ class PreInvoiceController extends Controller
 //        dd($request->all());
         request()->validate(PreInvoice::getValidationPreInvoice(true, $id));
         $model = $this->model::findOrFail($id);
+        $model['date']= request('date');
         if ($model['status'] == PreInvoice::STATUS_OPEN) {
 
             if (request('total_discount') == null) {

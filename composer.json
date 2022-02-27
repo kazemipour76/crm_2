@@ -15,7 +15,9 @@
         "laravel/tinker": "^2.5",
         "morilog/jalali": "3.*",
         "nette/utils": "^3.2",
-        "predis/predis": "^1.1"
+        "pishran/laravel-persian-string": "^1.6",
+        "predis/predis": "^1.1",
+        "spatie/laravel-permission": "^5.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

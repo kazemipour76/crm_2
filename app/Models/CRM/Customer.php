@@ -5,9 +5,11 @@ namespace App\Models\CRM;
 
 
 use App\Models\BaseModel;
-use App\Traits\UserScope;
+use \App\Scopes\UserScope;
+//use App\Traits\UserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -56,10 +58,10 @@ class Customer extends BaseModel
     CONST LEGAL=1;
     CONST NATURAL =2;
 //    use SoftDeletes;
-    use UserScope;
+//    use UserScope;
 
     protected $table = 'customers';
-//    protected $idGenerator = true;
+    protected $idGenerator = true;
 
     protected $fillable = [
         'name',
@@ -67,6 +69,7 @@ class Customer extends BaseModel
         'phone',
         'economicID',
         'nationalID',
+        'entity',
     ];
 
     public static function getValidationCustomer($idEdit = false, $id = null)
@@ -94,5 +97,13 @@ class Customer extends BaseModel
     public function invoices()
     {
         return $this->hasMany(Invoice::class, 'customer_id');
+    }
+
+    protected static function booted()
+    {
+        if (!Auth::id()==1){
+
+            static::addGlobalScope(new UserScope());
+        }
     }
 }

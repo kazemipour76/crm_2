@@ -22,6 +22,8 @@ class CreatePreInvoicesTable extends Migration
             $table->string('title',255)->nullable();
             $table->date('date')->nullable();
             $table->bigInteger('tax')->nullable();
+            $table->bigInteger('_user_id');
+
             $table->tinyInteger('status' ,)->default(\App\Models\CRM\PreInvoice::STATUS_OPEN);
             $table->tinyInteger('type');
             $table->bigInteger('customer_id')->unsigned()->index();

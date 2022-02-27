@@ -106,7 +106,7 @@
                                         </div>
                                         <div class=" text-center">
                                             <a href="{{ \App\Utilities\Url::admin('crm/preInvoice/' . $model->id .'/edit') }}"
-                                               class="dropdown-item text-center">مشاهده</a>
+                                               class="dropdown-item text-center">ویرایش</a>
                                             <div class="dropdown-divider"></div>
                                         </div>
                                             @if($model->status==\App\Models\CRM\PreInvoice::STATUS_OPEN)

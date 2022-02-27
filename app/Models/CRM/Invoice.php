@@ -5,7 +5,9 @@ namespace App\Models\CRM;
 
 
 use App\Models\BaseModel;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 
 ///**
@@ -86,6 +88,7 @@ class Invoice extends BaseModel
 
     CONST  TYPE_RASMI=1;
     CONST  TYPE_GHEYRE_RASMI=0;
+    protected $idGenerator = true;
 
     protected $table = 'invoices';
     protected $fillable = [
@@ -179,5 +182,11 @@ class Invoice extends BaseModel
         ];
         return $rules;
     }
-
+    protected static function booted()
+    {
+//        if (Auth::id()!==1){
+//
+//            static::addGlobalScope(new UserScope());
+//        }
+    }
 }

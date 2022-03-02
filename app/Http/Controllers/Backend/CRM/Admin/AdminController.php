@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend\CRM\Admin;
 
+use App\Charts\UserChart;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\CRM\Customer;
@@ -9,53 +10,74 @@ use App\Models\CRM\Invoice;
 use App\Models\CRM\InvoiceDetail;
 use App\Models\CRM\PreInvoice;
 use App\Models\CRM\PreInvoiceDetail;
+use App\Scopes\UserScope;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
-use App\Utilities\Number2Word;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
 
-
     public function index($id)
     {
+        if (Auth::id() == $id) {
+            MessageBag::push('امکان این کار برای شما وجود ندارد');
+            return redirect()->back();
+        }
         $modelUser = User::findOrFail($id);
-        $invoiceCount = Invoice::where('_user_id', $id)->count();
-        $preInvoiceCount = PreInvoice::where('_user_id', $id)->count();
-        $customerCount = Customer::where('_user_id', $id)->count();
+        $blockedTime = $this->createTimeJalali($modelUser->last_blocked_at);
+        $loginTime = $this->createTimeJalali($modelUser->last_login_at);
+        $createdTime = $this->createTimeJalali($modelUser->created_at);
+//        $model = Customer::withoutGlobalScope(UserScope::class)->OrderBy('id');
+        $invoiceCount = Invoice::withoutGlobalScope(UserScope::class)->where('_user_id', $id)->count();
+        $preInvoiceCount = PreInvoice::withoutGlobalScope(UserScope::class)->where('_user_id', $id)->count();
+        $customerCount = Customer::withoutGlobalScope(UserScope::class)->where('_user_id', $id)->count();
         $montInvoice = [];
         $montPreInvoice = [];
         $totalSumPriceInvoice = $this->resultSumPriceInvoice(Invoice::where('_user_id', $id)->get()->pluck('id'));
         $totalSumPricePreInvoice = $this->resultSumPricePreInvoice(PreInvoice::where('_user_id', $id)->get()->pluck('id'));
-//        dd($totalSumPriceInvoice,$totalSumPricePreInvoice);
         if ($totalSumPricePreInvoice !== 0) {
             $nerkhTabdil = ($totalSumPriceInvoice / $totalSumPricePreInvoice) * 100;
         } else {
             $nerkhTabdil = 0;
         }
 
-        $year = Jdf::jdate('Y');
-        for ($i = 0; $i < 12; $i++) {
-            $montInvoice[] = $this->DateCountInvoice($year, "-$i-01", "-$i-31", $id);
-        }
-        for ($i = 0; $i < 12; $i++) {
-            $montPreInvoice[] = $this->DateCountInvoice($year, "-$i-01", "-$i-31", $id);
-        }
-//        dd($montInvoice,$montPreInvoice);
+        $data = [
+            'modelUser' => $modelUser,
+            'invoiceCount' => $invoiceCount,
+            'preInvoiceCount' => $preInvoiceCount,
+            'customerCount' => $customerCount,
+            'nerkhTabdil' => $nerkhTabdil,
+            'totalSumPriceInvoice' => $totalSumPriceInvoice,
+            'totalSumPricePreInvoice' => $totalSumPricePreInvoice,
+            'blockedTime' => $blockedTime,
+            'loginTime' => $loginTime,
+            'createdTime' => $createdTime,
+        ];
+
+        session(['id' => $id]);
+
+        return view('backend.user.showDetail', $data);
     }
 
-    public function DateCountInvoice($Year, $dateFrom, $dateTo, $id)
+    public function createTimeJalali($dateTime)
     {
-        return Invoice::where('_user_id', $id)->whereBetween('date', [$Year . $dateFrom, $Year . $dateTo])->count();
+        if ($dateTime !== null) {
 
-    }
+            $date = explode(' ', $dateTime);
+            $time = explode(':', $date[1]);
+            $t = mktime($time[0], $time[1], $time[2]);
+            $t = Jdf::jdate("H:i", $t);
+            $dayNumber = date('w', strtotime($date[0]));
+            $dayName = Jdf::jdate_words(array('rh' => $dayNumber), '|');
+            $data1 = explode('-', $date[0]);
+            $gdate = Jdf::gregorian_to_jalali($data1[0], $data1[1], $data1[2], '-');
+            return $t . ' ' . $gdate . ' ' . $dayName;
 
-    public function DateCountPreInvoice($Year, $dateFrom, $dateTo, $id)
-    {
-        return PreInvoice::where('_user_id', $id)->whereBetween('date', [$Year . $dateFrom, $Year . $dateTo])->count();
-
+        } else {
+            return 'این رویداد وجود ندارد';
+        }
     }
 
     public function resultSumPriceInvoice($invoiceId)

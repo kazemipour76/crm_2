@@ -42,6 +42,7 @@ use Illuminate\Support\Facades\Auth;
 // * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CRM\InvoiceDetail[] $details
 // * @property-read int|null $details_count
 // */
+
 /**
  * App\Models\CRM\Invoice
  *
@@ -82,12 +83,12 @@ use Illuminate\Support\Facades\Auth;
  */
 class Invoice extends BaseModel
 {
-    CONST STATUS_OPEN=1;
-    CONST STATUS_CLOSE=2;
-    CONST STATUS_FACTOR_SHODEH=3;
+    const STATUS_OPEN = 1;
+    const STATUS_CLOSE = 2;
+    const STATUS_FACTOR_SHODEH = 3;
 
-    CONST  TYPE_RASMI=1;
-    CONST  TYPE_GHEYRE_RASMI=0;
+    const  TYPE_RASMI = 1;
+    const  TYPE_GHEYRE_RASMI = 0;
     protected $idGenerator = true;
 
     protected $table = 'invoices';
@@ -101,28 +102,35 @@ class Invoice extends BaseModel
 //        'pre_invoice_id',
         'date',
     ];
+
     public function details()
     {
-        return $this->hasMany(InvoiceDetail::class,'invoice_id' );
+        return $this->hasMany(InvoiceDetail::class, 'invoice_id');
     }
 
-    public function preInvoice() {
-        return $this->belongsTo(PreInvoice::class,'pre_invoice_id') ;
+    public function preInvoice()
+    {
+        return $this->belongsTo(PreInvoice::class, 'pre_invoice_id');
     }
 
-    public function customer() {
-        return $this->belongsTo(Customer::class,'customer_id') ;
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
-    public function totalPriceAll(){
+
+    public function totalPriceAll()
+    {
         return $this->details()
             ->selectRaw('SUM(count*unit_price) as total_price')
             ->first()->total_price;
     }
-    public function totalPrice(){
+
+    public function totalPrice()
+    {
         return $this->details()
-            ->selectRaw('(count*unit_price) as total_price')->get()
-            ;
+            ->selectRaw('(count*unit_price) as total_price')->get();
     }
+
     public static function getValidationInvoice($idEdit = false, $id = null)
     {
 
@@ -147,6 +155,7 @@ class Invoice extends BaseModel
         ];
         return $rules;
     }
+
     public static function getValidationSearchNumber()
     {
         $rules = [
@@ -154,6 +163,7 @@ class Invoice extends BaseModel
         ];
         return $rules;
     }
+
     public static function getValidationeconomicID()
     {
         $rules = [
@@ -161,6 +171,7 @@ class Invoice extends BaseModel
         ];
         return $rules;
     }
+
     public static function getValidationSearchDateFrom()
     {
         $rules = [
@@ -168,6 +179,7 @@ class Invoice extends BaseModel
         ];
         return $rules;
     }
+
     public static function getValidationSearchDateTo()
     {
         $rules = [
@@ -175,6 +187,7 @@ class Invoice extends BaseModel
         ];
         return $rules;
     }
+
     public static function getValidationFullTextSearch()
     {
         $rules = [
@@ -182,11 +195,9 @@ class Invoice extends BaseModel
         ];
         return $rules;
     }
+
     protected static function booted()
     {
-//        if (Auth::id()!==1){
-//
-//            static::addGlobalScope(new UserScope());
-//        }
+        static::addGlobalScope(new UserScope());
     }
 }

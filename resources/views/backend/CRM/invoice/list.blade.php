@@ -66,11 +66,12 @@
                                     </label>
                                 </div>
                             </th>
-                            <th> </th>
+                            <th></th>
                             <th> نام</th>
-                            <th>شماره پیش فاکتور</th>
+                            <th> عنوان</th>
+                            <th> شماره پیش فاکتور</th>
+                            <th> نوع پیش فاکتور</th>
                             <th>تاریخ ایجاد</th>
-                            <th>آخرین بروزرسانی</th>
                         </tr>
                         </thead>
 
@@ -104,9 +105,17 @@
                                 </td>
 
                                 <td>{{$model->Customer->name}}</td>
-                                <td>{{$model->Customer->phone}}</td>
-                                <td>{{$model->created_at}}</td>
-                                <td>{{$model->updated_at}}</td>
+                                <td>{{$model->title}}</td>
+                                <td>{{$model->id}}</td>
+                                @if($model->type==\App\Models\CRM\Invoice::TYPE_RASMI)
+                                    <td style="color:#1CB841"> رسمی</td>
+
+                                @else
+                                    <td  style="color:#a92222">غیر رسمی</td>
+
+                                @endif
+                                <td>{{$model->date}}</td>
+
 
                             </tr>
                         @endforeach

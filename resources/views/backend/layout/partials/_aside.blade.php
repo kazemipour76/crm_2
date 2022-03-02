@@ -63,13 +63,7 @@
                         <span class="menu-text">مشتریان </span>
                     </a>
                 </li>
-                <li class="menu-item @if(request()->is('sadmin/auth/user')) menu-item-active @endif"
-                    aria-haspopup="true">
-                    <a href="{{ \App\Utilities\Url::admin('auth/user') }}" class="menu-link">
-                        <i class="menu-icon fal fa-users" aria-hidden="true"></i>
-                        <span class="menu-text">کاربران </span>
-                    </a>
-                </li>
+
                 <li class="menu-item @if(request()->is('sadmin/crm/preInvoice')) menu-item-active @endif"
                     aria-haspopup="true">
                     <a href="{{ \App\Utilities\Url::admin('crm/preInvoice') }}" class="menu-link">
@@ -85,23 +79,15 @@
                     </a>
                 </li>
 
-                <li class="menu-item @if(request()->is('sadmin/auth/group')) menu-item-active @endif"
-                    aria-haspopup="true">
-                    <a href="{{ \App\Utilities\Url::admin('auth/group') }}" class="menu-link">
-                        <i class="menu-icon fal fa-list-ul" aria-hidden="true"></i>
-                        <span class="menu-text">گروه های کاربری </span>
-                    </a>
-                </li>
-
-
-                <li class="menu-item @if(request()->is('sadmin/library/library')) menu-item-active @endif"
-                    aria-haspopup="true">
-                    <a href="{{ \App\Utilities\Url::admin('library/library') }}" class="menu-link">
-                        <i class="menu-icon fal fa-books" aria-hidden="true"></i>
-                        <span class="menu-text">کتابخانه </span>
-                    </a>
-                </li>
-
+                @can('isAdmin')
+                    <li class="menu-item @if(request()->is('sadmin/auth/user')) menu-item-active @endif"
+                        aria-haspopup="true">
+                        <a href="{{ \App\Utilities\Url::admin('auth/user') }}" class="menu-link">
+                            <i class="menu-icon fal fa-users" aria-hidden="true"></i>
+                            <span class="menu-text">کاربران </span>
+                        </a>
+                    </li>
+                @endcan
 {{--                <li class="menu-section">--}}
 {{--                    <h4 class="menu-text">تنظیمات</h4>--}}
 {{--                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>--}}

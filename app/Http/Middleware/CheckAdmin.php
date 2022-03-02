@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-class CheckUser
+class CheckAdmin
 {
     /**
      * Handle an incoming request.
@@ -20,13 +20,10 @@ class CheckUser
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-        // Perform action
 
-//        $user =new User();
-        if (Gate::allows('isBlock', Auth::user())) {
-            abort(403, 'حساب کاربری شما مسدود است ');
+        if (!Gate::allows('isAdmin', Auth::user())) {
+            abort(403, 'این بخش برای شما تعریف نشده است');
         }
-
         return $response;
     }
 }

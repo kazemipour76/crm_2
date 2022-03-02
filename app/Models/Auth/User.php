@@ -57,6 +57,9 @@ class User  extends BaseModel implements
 
     const USER_BLOCK=1;
     const USER_UNBLOCK=0;
+    const USER_ADMIN=3;
+    const USER_SPECIAL=2;
+    const USER_NORMAL=0;
 
     protected $table = "users";
     protected $searchable = [
@@ -80,7 +83,7 @@ class User  extends BaseModel implements
 
     protected $casts = [
         'updated_at' => Jalali::class . ':time',
-        'created_at' => Jalali::class . ':time',
+//        'created_at' => Jalali::class . ':time',
     ];
 
     protected static function newFactory()

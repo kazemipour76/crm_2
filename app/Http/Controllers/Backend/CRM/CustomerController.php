@@ -66,6 +66,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
+
         $models = $this->filter()->paginate(request('perPage', 5));
         $old = \Request::flash($models);
         $old = \Request::old($old);

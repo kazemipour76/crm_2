@@ -8,23 +8,27 @@
                     <div class="row ">
 
                         <div class="col-lg-6">
+                        <p>مشخصات کاربری:</p>
+                        <p>نام کاربری:</p>
+                        <p>ایمیل کاربری:</p>
+                        <p>مشخصات کاربری:</p>
 
-                        <div class="col-lg-6 mt-8 mb-3">
+                            <div class="col-lg-6 mt-8 mb-3">
                             <x-backend.form.form-group title="نوع :" isInline="true">
                                 <x-backend.form.radio-inline>
 
 
-                                    <x-backend.form.radio title="کاربر ادمین" name="user_status"
-                                                          value="{{\App\Models\Auth\User::USER_BLOCK}}"
-                                                          checked="{{\App\Models\CRM\Customer::LEGAL||!old('user_status') ? 'checked' : ''}}"
+                                    <x-backend.form.radio title="کاربر ادمین" name="user_type"
+                                                          value="{{\App\Models\Auth\User::USER_ADMIN}}"
+                                                          checked="{{\App\Models\Auth\User::USER_ADMIN=== $model->user_type ? 'checked' : ''}}"
                                     />
-                                    <x-backend.form.radio title="کاربر ویژه" name="user_status"
-                                                          value="{{\App\Models\CRM\Customer::LEGAL}}"
-                                                          checked="{{\App\Models\CRM\Customer::LEGAL||!old('user_status') ? 'checked' : ''}}"
+                                    <x-backend.form.radio title="کاربر ویژه" name="user_type"
+                                                          value="{{\App\Models\Auth\User::USER_SPECIAL}}"
+                                                          checked="{{\App\Models\Auth\User::USER_SPECIAL=== $model->user_type ? 'checked' : ''}}"
                                     />
-                                    <x-backend.form.radio title="کاربر عادی" name="user_status"
-                                                          value="{{\App\Models\CRM\Customer::NATURAL}}"
-                                                          checked="{{\App\Models\CRM\Customer::NATURAL||!old('user_status') ? 'checked' : ''}}"
+                                    <x-backend.form.radio title="کاربر عادی" name="user_type"
+                                                          value="{{\App\Models\Auth\User::USER_NORMAL}}"
+                                                          checked="{{\App\Models\Auth\User::USER_NORMAL=== $model->user_type ?  'checked' : ''}}"
 
                                     />
 

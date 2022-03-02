@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         $charts->register([
             \App\Charts\SampleChart::class,
             \App\Charts\InvoiceChart::class,
+            \App\Charts\UserChart::class,
             \App\Charts\TypeEntityChart::class,
             \App\Charts\TestChart::class,
 //            \App\Http\Controllers\Backend\Dashboard\DashboardController::class

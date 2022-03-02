@@ -197,30 +197,74 @@ class UserController extends Controller
     }
 
     public function blockUser($id){
-
-        $user= User::findOrFail(6);
-        if ($user->user_status){
-            $user->user_status=User::USER_UNBLOCK;
+        if (Auth::id()==$id)
+        {
+            MessageBag::push('امکان این کار برای شما وجود ندارد');
+            return redirect()->back();
+        }
+        $user= User::findOrFail($id);
+        if ($user->user_block){
+            $user->user_block=User::USER_UNBLOCK;
             $user->last_blocked_at=null;
-            $user->save();
+            if ($user->save()) {
+                MessageBag::push( ' با موفقیت رفع مسدودیت شد', MessageBag::TYPE_SUCCESS);
+                return redirect()->back();
+            } else {
+                MessageBag::push('مجدد تلاش کنید ');
+                return redirect()->back();
+            }
         }else{
-            $user->user_status=User::USER_BLOCK;
-            event(new UserBlocked($user));
+            $user->user_block=User::USER_BLOCK;
+
+            if (  event(new UserBlocked($user))) {
+                MessageBag::push( ' با موفقیت مسدود شد', MessageBag::TYPE_SUCCESS);
+                return redirect()->back();
+            } else {
+                MessageBag::push('مجدد تلاش کنید ');
+                return redirect()->back();
+            }
         }
     }
 
 
     public function userPermissions($id){
-
+        if (Auth::id()==$id)
+        {
+            MessageBag::push('امکان این کار برای شما وجود ندارد');
+            return redirect()->back();
+        }
         $model=User::findOrFail($id);
         $data['model']=$model;
         return view('backend/user/permissions',$data);
     }
     public function userPermissionsChange($id){
+        if (Auth::id()==$id)
+        {
+            MessageBag::push('امکان این کار برای شما وجود ندارد');
+            return redirect()->back();
+        }
+        $model =User::findOrFail($id);
 
-        $model=User::findOrFail($id);
-        $data['model']=$model;
-        return view('backend/user/permissions',$data);
+
+
+        if (\request('user_type')==User::USER_ADMIN) {
+            $model->user_type=User::USER_ADMIN;
+        }
+        if (\request('user_type') == User::USER_SPECIAL) {
+            $model->user_type=User::USER_SPECIAL;
+        }
+        if (\request('user_type') == User::USER_NORMAL) {
+            $model->user_type = User::USER_NORMAL;
+        }
+        if ($model->save()) {
+            MessageBag::push($this->modelName . ' با موفقیت تغییر کرد', MessageBag::TYPE_SUCCESS);
+            return redirect()->back();
+
+        } else {
+            MessageBag::push($this->modelName . ' ایجاد نشد لطفا مجددا تلاش فرمایید');
+            return redirect()->back();
+        }
+
     }
     /*
      * ------------------------------- actions ------------------------------

@@ -268,10 +268,10 @@
                 </b>
             </td>
             <td colspan="4" style="text-align: center; padding-top: 27px ;font-size: 14pt">
-                <b>شرکت یکتا تجهیز صیانت علیرضا</b>
+                <b>{{Auth::user()->name}}</b>
             </td>
             <td colspan="4" style="text-align: left; padding-top: 27px;font-size: 14pt;color: #0a6aa1">
-                <b>YEKTA TAJHIZ</b>
+                <b>{{Auth::user()->name_en}}</b>
             </td>
 
         </tr>
@@ -297,23 +297,26 @@
                 مشخصات
             </th>
             <th colspan="6"  style="font-family: IRNazanin ; border-collapse:collapse; height: 60px; text-align: right ;padding-right: 20px">
-                <span class="label" >مشتری:</span> {{$model->Customer->name}}
+                <span class="label" >نام:</span>
+                {{Auth::user()->name}}
                 <br>
                 <span class="label">شماره‌اقتصادی :</span>
-                {{$model->Customer->economicID}}
+                {{Auth::user()->economicID}}
                 <br>
-                <span class="label">شناسه ملی:</span>
-                {{$model->Customer->nationalID}}
+                <span class="label">شناسه/کد ملی:</span>
+                {{Auth::user()->nationalID}}
                 <br>
                 <span class="label">نشانی:</span>
-
-                {{$model->Customer->address}}
+                {{Auth::user()->address}}
                 <br>
                 <span class="label">شماره تماس:</span>
-
-                {{$model->Customer->phone}}
+                {{Auth::user()->phone}}
                 <br>
-                <span class="label">کد پستی:</span>
+                <span class="label">ایمیل:</span>
+                {{Auth::user()->email}}
+                <br>
+                <span class="label">شماره ثبت:</span>
+                {{Auth::user()->registration_number}}
 
             </th>
             <th colspan="5"  style="font-family: IRNazanin;height: 60px; text-align: right ;padding-right: 20px">
@@ -451,9 +454,8 @@
 </div>
 
 <div class=" footer " style=" text-align: center">
-    امضاء و مهر شرکت
-    {{--        <img class="footer-img uk-align-center " width="150px" height="30px"--}}
-    {{--             src="https://www.digikala.com/static/files/acb0d08c.jpg"/>--}}
+    {{Auth::user()->address}}
+    {{Auth::user()->phone}}
 </div>
 </body>
 

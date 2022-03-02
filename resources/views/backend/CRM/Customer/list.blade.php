@@ -28,7 +28,7 @@
                         <button type="submit"
                                 class="x-confirm btn btn-outline-info dropdown"
                                 data-title="حذف کاربر ها"
-                                data-description="آیا از حذف این کاربر ها اطمینان دارید؟"
+                                data-description="آیا از حذف این مشتری ها اطمینان دارید؟"
                                 name="action" value="delete">
                             <x-backend.icon class="fa-trash"/>
                             حذف
@@ -66,10 +66,13 @@
                                     </label>
                                 </div>
                             </th>
-                            <th> نام</th>
+                            <th> عملیات</th>
+                            <th> نام مشتری</th>
+                            <th>نوع مشتری</th>
                             <th>تلفن</th>
-                            <th>تاریخ ایجاد</th>
-                            <th>آخرین بروزرسانی</th>
+                            <th>کد اقتصادی</th>
+                            <th>شناسه/کد ملی</th>
+
                         </tr>
                         </thead>
 
@@ -83,8 +86,6 @@
                                     </div>
                                 </td>
                                 <td>
-
-
                                     <x-backend.dropdown>
                                         <div class=" text-center">
                                             <a href="{{ \App\Utilities\Url::admin('crm/customer/' . $model->id .'/edit') }}"
@@ -112,9 +113,10 @@
 
                                 </td>
                                 <td>{{$model->name}}</td>
+                                <td>{{$model->entity}}</td>
                                 <td>{{$model->phone}}</td>
-                                <td>{{$model->created_at}}</td>
-                                <td>{{$model->updated_at}}</td>
+                                <td>{{$model->economicID}}</td>
+                                <td>{{$model->nationalID}}</td>
 
                             </tr>
                         @endforeach

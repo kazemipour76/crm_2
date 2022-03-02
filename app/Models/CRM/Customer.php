@@ -101,9 +101,9 @@ class Customer extends BaseModel
 
     protected static function booted()
     {
-        if (!Auth::id()==1){
+
 
             static::addGlobalScope(new UserScope());
-        }
+
     }
 }

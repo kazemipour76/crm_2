@@ -183,7 +183,9 @@ class DashboardController extends Controller
 
     public function chart(User $user)
     {
-        if (!Gate::allows('isSpecial', $user)) {
+
+
+        if (!Gate::allows('isSpecial', $user) && !Gate::allows('isAdmin', $user)) {
             abort(403, 'این بخش از سایت مخصوص کاربران ویژه می باشد');
         }
 

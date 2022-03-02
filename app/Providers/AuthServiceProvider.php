@@ -29,7 +29,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->user_type === 2;
         });
         Gate::define('isBlock', function (User $user) {
-            return $user->user_type === 1;
+            return $user->user_block === User::USER_BLOCK;
+        });
+        Gate::define('isAdmin', function (User $user) {
+            return $user->user_type === 3;
         });
 
     }

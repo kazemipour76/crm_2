@@ -83,13 +83,13 @@
                                         <x-backend.form.checkbox name="checks[{{ $model->id }}]"/>
                                     </div>
                                 </td>
+
                                 <td class="pt-9">
-
-
                                     <x-backend.dropdown>
+                                    @if($model->id!==\Illuminate\Support\Facades\Auth::id())
 
                                         <div class=" text-center">
-                                            <a href="{{ \App\Utilities\Url::admin('admin/detailUser/' . $model->id .'/show') }}"
+                                            <a href="{{ \App\Utilities\Url::admin('auth/admin/detailUser/' . $model->id .'/show') }}"
                                                class="dropdown-item text-center">جزئیات</a>
                                             <div class="dropdown-divider"></div>
                                         </div>
@@ -104,7 +104,7 @@
                                                class="dropdown-item text-center">ویرایش</a>
                                             <div class="dropdown-divider"></div>
                                         </div>
-                                        @if($model->user_status==\App\Models\Auth\User::USER_UNBLOCK)
+                                        @if($model->user_block==\App\Models\Auth\User::USER_UNBLOCK)
                                         <div class=" text-center">
                                             <a href="{{ \App\Utilities\Url::admin('auth/user/'. $model->id . '/block') }}"
                                                class="x-confirm text-center text-danger dropdown-item"
@@ -117,7 +117,7 @@
                                                 <a href="{{ \App\Utilities\Url::admin('auth/user/'. $model->id . '/block') }}"
                                                    class="x-confirm text-center text-success dropdown-item"
                                                    data-title="حذف فایل"
-                                                   data-description="آیا از مسدود کردن این کاربر اطمینان دارید؟" name="action"
+                                                   data-description="آیا از رفع مسدودیت این کاربر اطمینان دارید؟" name="action"
                                                    value="Block">رفع مسدودیت</a>
                                             </div>
                                         @endif
@@ -128,9 +128,17 @@
 {{--                                               data-description="آیا از حذف این فایل  اطمینان دارید؟" name="action"--}}
 {{--                                               value="delete">حذف</a>--}}
 {{--                                        </div>--}}
+                                        @else
+                                            <div class=" text-center">
+                                                <a href="{{ \App\Utilities\Url::admin('auth/user/' . $model->id .'/edit') }}"
+                                                   class="dropdown-item text-center">ویرایش</a>
+                                                <div class="dropdown-divider"></div>
+                                            </div>
+                                        @endif
                                     </x-backend.dropdown>
-
                                 </td>
+
+
                                 <td>
                                     @if($model->name_image==null)
                                         <img   width="80px" height="80px"  style="border-radius:200px" src="{{URL::asset('/imageUser/noImage.png')}}">

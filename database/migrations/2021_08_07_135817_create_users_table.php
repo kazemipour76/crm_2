@@ -26,7 +26,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('last_login_at')->nullable();
             $table->timestamp('last_blocked_at')->nullable();
-            $table->tinyInteger('user_type')->default(\App\Models\Auth\User::USER_UNBLOCK);
+            $table->tinyInteger('user_type')->default(\App\Models\Auth\User::USER_NORMAL);
+            $table->tinyInteger('user_block')->default(\App\Models\Auth\User::USER_UNBLOCK);
 
             $table->text('password');
             $table->timestamps();

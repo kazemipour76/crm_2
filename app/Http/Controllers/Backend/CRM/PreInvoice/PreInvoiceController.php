@@ -217,7 +217,6 @@ class PreInvoiceController extends Controller
 
     public function update($id, Request $request)
     {
-        dd(  request('date'));
 //        $this->validate($request, [
 ////                    'title' => 'regex:/(^([0-9,]+)(\d+)?$)/u',
 //                    'date' => 'required|date',

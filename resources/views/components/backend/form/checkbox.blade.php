@@ -1,7 +1,7 @@
 @props([
 'name',
 'checked' => false,
-'title' => 'title',
+'title' => null,
 'value' => null,
 'id' => null,
 'checked' => false

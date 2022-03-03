@@ -157,17 +157,5 @@ class CustomerController extends Controller
         }
     }
 
-    public function invoicesList($id)
-    {
-        $model = Invoice::where('customer_id', $id)->paginate(5);
-        $data['models'] = $model;
-        return view("backend.{$this->viewFolder}.lists.invoice", $data);
-    }
 
-    public function preInvoicesList($id)
-    {
-        $model = PreInvoice::where('customer_id', $id)->paginate(5);
-        $data['models'] = $model;
-        return view("backend.{$this->viewFolder}.lists.preInvoice", $data);
-    }
 }

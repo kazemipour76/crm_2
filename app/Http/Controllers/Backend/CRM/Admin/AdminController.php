@@ -33,10 +33,9 @@ class AdminController extends Controller
         $invoiceCount = Invoice::withoutGlobalScope(UserScope::class)->where('_user_id', $id)->count();
         $preInvoiceCount = PreInvoice::withoutGlobalScope(UserScope::class)->where('_user_id', $id)->count();
         $customerCount = Customer::withoutGlobalScope(UserScope::class)->where('_user_id', $id)->count();
-        $montInvoice = [];
-        $montPreInvoice = [];
-        $totalSumPriceInvoice = $this->resultSumPriceInvoice(Invoice::where('_user_id', $id)->get()->pluck('id'));
-        $totalSumPricePreInvoice = $this->resultSumPricePreInvoice(PreInvoice::where('_user_id', $id)->get()->pluck('id'));
+
+        $totalSumPriceInvoice = $this->resultSumPriceInvoice(Invoice::withoutGlobalScope(UserScope::class)->where('_user_id', $id)->get()->pluck('id'));
+        $totalSumPricePreInvoice = $this->resultSumPricePreInvoice(PreInvoice::withoutGlobalScope(UserScope::class)->where('_user_id', $id)->get()->pluck('id'));
         if ($totalSumPricePreInvoice !== 0) {
             $nerkhTabdil = ($totalSumPriceInvoice / $totalSumPricePreInvoice) * 100;
         } else {

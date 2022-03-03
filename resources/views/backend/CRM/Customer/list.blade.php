@@ -93,12 +93,12 @@
                                             <div class="dropdown-divider"></div>
                                         </div>
                                         <div class=" text-center">
-                                            <a href="{{ \App\Utilities\Url::admin('crm/customer/' . $model->id .'/invoicesList') }}"
+                                            <a href="http://127.0.0.1:8000/sadmin/crm/invoice?customer={{$model->id}}"
                                                class="dropdown-item text-center">لیست فاکتورها</a>
                                             <div class="dropdown-divider"></div>
                                         </div>
                                         <div class=" text-center">
-                                            <a href="{{ \App\Utilities\Url::admin('crm/customer/' . $model->id .'/preInvoicesList') }}"
+                                            <a href="http://127.0.0.1:8000/sadmin/crm/preInvoice?customer={{$model->id}}"
                                                class="dropdown-item text-center">لیست پیش فاکتورها</a>
                                             <div class="dropdown-divider"></div>
                                         </div>

@@ -1,15 +1,20 @@
 @props([
-    'name',
-     'checked' => false,
-      'title' => 'title',
-      'value' => null,
-     ])
+'name',
+'checked' => false,
+'title' => 'title',
+'value' => null,
+'id' => null,
+'checked' => false
+
+])
 
 <div class="form-group">
     <div class="checkbox-list">
         <label class="checkbox ">
-            <input class="check" value="{{ $value }}" type="checkbox" name="{{ $name }}" @if($checked) checked @endif/>
+            <input class="check" value="{{ $value }}" id="{{ $id }}" type="checkbox" name="{{ $name }}"
+                {{$checked}} />
             <span></span>
+            {{ $title }}
         </label>
     </div>
 </div>

@@ -59,12 +59,12 @@
                         <tr>
                             <th class="align-middle text-center">#</th>
                             <th class="align-middle text-center">
-                                <div class="checkbox-list">
-                                    <label class="checkbox ">
-                                        <input class="check" id="checkAll" type="checkbox" name="Checkboxes1"/>
-                                        <span></span>
-                                    </label>
-                                </div>
+{{--                                <div class="checkbox-list">--}}
+{{--                                    <label class="checkbox ">--}}
+{{--                                        <input class="check" id="checkAll" type="checkbox" name="Checkboxes1"/>--}}
+{{--                                        <span></span>--}}
+{{--                                    </label>--}}
+{{--                                </div>--}}
                             </th>
                             <th>عملیات</th>
                             <th> نام</th>
@@ -79,9 +79,9 @@
                             <tr>
                                 <td class="align-middle text-center">{{ ($models->currentPage()-1) * $models->perPage() + $loop->index + 1 }}</td>
                                 <td class="align-middle pt-12 " >
-                                    <div class="checkbox-list">
-                                        <x-backend.form.checkbox name="checks[{{ $model->id }}]"/>
-                                    </div>
+{{--                                    <div class="checkbox-list">--}}
+{{--                                        <x-backend.form.checkbox name="checks[{{ $model->id }}]"/>--}}
+{{--                                    </div>--}}
                                 </td>
 
                                 <td class="pt-9">

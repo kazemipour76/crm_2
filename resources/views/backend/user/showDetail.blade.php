@@ -83,7 +83,7 @@
                             <div class="d-flex align-items-sm-center mb-7">
                                 <div class="d-flex align-items-center flex-row-fluid flex-wrap">
                                     <div class="flex-grow-1 me-2">
-                                        <a class="text-gray-800 text-hover-primary fs-6 fw-bolder">  جمع کل  فاکتورها: </a>
+                                        <a class="text-gray-800 text-hover-primary fs-6 fw-bolder">  جمع کل پیش فاکتورها: </a>
                                         <span class="fw-bolder text-warning py-1">   {{ $totalSumPricePreInvoice }} تومان  </span>
                                     </div>
                                 </div>

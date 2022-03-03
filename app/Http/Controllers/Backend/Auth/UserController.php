@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
+use App\Scopes\UserScope;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use App\Utilities\UploadHandler;
@@ -28,13 +29,23 @@ class UserController extends Controller
 
     public function filter()
     {
+//        dd(\request()->all());
 
-        $model = $this->model::OrderBy('id');
+        $model = User::withoutGlobalScope(UserScope::class)->OrderBy('id');
         $filter = request()->all();
 
         if (!empty($filter['term'])) {
             $model->search($filter['term']);
         }
+
+        if (isset($filter['user_type']) && in_array('1', \request('user_type'))){
+            $model->whereIn('user_type',\request('user_type'))
+
+            ->orWhere('user_block',in_array('1', \request('user_type')));
+        }elseif(isset($filter['user_type'])){
+            $model->whereIn('user_type',\request('user_type'));
+        }
+
 
         $date_type = '';
         if (isset($filter['date_type'])) {

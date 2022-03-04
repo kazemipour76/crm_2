@@ -34,6 +34,8 @@ class CreateInvoicesTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->timestamps();
         });
+        DB::statement('ALTER TABLE tbl_invoices ADD FULLTEXT fulltext_index (description,title)');
+
     }
 
     /**

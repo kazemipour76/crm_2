@@ -25,6 +25,9 @@ class CustomerController extends Controller
 //        $model = $this->model::OrderBy('id')->withTrashed();
         $model = $this->model::OrderBy('id');
         $filter = request()->all();
+        if (!empty($filter['term'])) {
+            $model->search($filter['term']);
+        }
 
 
         $date_type = '';

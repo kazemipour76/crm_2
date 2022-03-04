@@ -8,6 +8,8 @@ use App\Models\BaseModel;
 use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\FullTextSearch;
+
 
 
 ///**
@@ -83,6 +85,9 @@ use Illuminate\Support\Facades\Auth;
  */
 class Invoice extends BaseModel
 {
+    use FullTextSearch;
+
+
     const STATUS_OPEN = 1;
     const STATUS_CLOSE = 2;
     const STATUS_FACTOR_SHODEH = 3;
@@ -90,6 +95,7 @@ class Invoice extends BaseModel
     const  TYPE_RASMI = 1;
     const  TYPE_GHEYRE_RASMI = 0;
     protected $idGenerator = true;
+    protected $searchable = ['description','title'];
 
     protected $table = 'invoices';
     protected $fillable = [

@@ -26,6 +26,8 @@ class CreateCustomersTable extends Migration
             $table->bigInteger('_user_id');
             $table->timestamps();
         });
+        DB::statement('ALTER TABLE tbl_customers ADD FULLTEXT fulltext_index (economicID,nationalID,email,phone,name,address)');
+
     }
 
     /**

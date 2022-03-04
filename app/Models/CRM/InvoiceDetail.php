@@ -6,7 +6,7 @@ namespace App\Models\CRM;
 
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\FullTextSearch;
 
 /**
  * App\Models\CRM\InvoiceDetail
@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InvoiceDetail extends BaseModel
 {
-
+    use FullTextSearch;
     protected $table = 'invoice_details';
     protected $searchable=['product_name'];
     protected $fillable = [

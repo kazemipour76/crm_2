@@ -75,7 +75,7 @@ class PreInvoiceController extends Controller
             $model->where('id', '=', $filter['perInvoiceNumber']);
         }
         if (isset($filter['title'])) {
-//            $model->search($filter['perInvoiceTitle']);
+
             request()->validate(PreInvoice::getValidationSearchTitle());
             $model->where('title', '=', $filter['title']);
         }

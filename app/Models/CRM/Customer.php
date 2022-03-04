@@ -6,11 +6,7 @@ namespace App\Models\CRM;
 
 use App\Models\BaseModel;
 use \App\Scopes\UserScope;
-//use App\Traits\UserScope;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
-
+use App\Traits\FullTextSearch;
 
 /**
  * App\Models\CRM\Customer
@@ -59,10 +55,11 @@ class Customer extends BaseModel
     CONST NATURAL =2;
 //    use SoftDeletes;
 //    use UserScope;
+    use FullTextSearch;
 
     protected $table = 'customers';
     protected $idGenerator = true;
-
+    protected $searchable = ['economicID','nationalID','email','phone','name','address'];
     protected $fillable = [
         'name',
         'address',

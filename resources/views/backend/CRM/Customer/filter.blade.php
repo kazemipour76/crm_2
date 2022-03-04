@@ -43,7 +43,7 @@
                 <x-backend.icon class="fa-file-search"/>
                 جست و جو
             </button>
-            <a class="btn btn-warning" href="{{ \App\Utilities\Url::admin('auth/user') }}">
+            <a class="btn btn-warning" href="{{ \App\Utilities\Url::admin('crm/customer') }}">
                 <x-backend.icon class="fa-eraser"/>
                 پاک کن</a>
         </x-slot>

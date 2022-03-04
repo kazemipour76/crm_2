@@ -24,6 +24,8 @@ class CreateInvoiceDetailsTable extends Migration
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->timestamps();
         });
+        DB::statement('ALTER TABLE tbl_invoice_details ADD FULLTEXT fulltextsearch (product_name)');
+
     }
 
     /**

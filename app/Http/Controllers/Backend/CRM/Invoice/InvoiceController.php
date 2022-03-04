@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
 use App\Models\CRM\InvoiceDetail;
+use App\Models\CRM\PreInvoice;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class InvoiceController extends Controller
 //        $model = $this->model::OrderBy('id')->withTrashed();
         $model = $this->model::OrderBy('id');
         $filter = request()->all();
-
+//
 //        if (!empty($filter['term'])) {
 //            $model->search($filter['term']);
 //        }
@@ -88,12 +89,11 @@ class InvoiceController extends Controller
             $model->where('id', '=', $filter['perInvoiceNumber']);
         }
         if (isset($filter['title'])) {
-//            $model->search($filter['perInvoiceTitle']);
-//            $x = \App\Utilities\HString::number2en($filter['title']);
-//            $filter['title'] = preg_replace("/[^آ-یA-Za-z0-9 ]/", '', $x);
+
             request()->validate(Invoice::getValidationSearchTitle());
             $model->where('title', '=', $filter['title']);
         }
+
         if (isset($filter['economicID'])) {
             request()->validate(Invoice::getValidationeconomicID());
             $x = \App\Utilities\HString::number2en($filter['economicID']);

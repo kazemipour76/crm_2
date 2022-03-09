@@ -31,9 +31,9 @@ class CreateUsersTable extends Migration
 
             $table->text('password');
             $table->timestamps();
-            $table->text('remember_token')->nullable();
-            $table->text('remember_token_time_creat')->nullable();
+
         });
+
         DB::statement('ALTER TABLE tbl_users ADD FULLTEXT fulltext_index (email,name)');
     }
 
@@ -48,3 +48,5 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('users');
     }
 }
+
+

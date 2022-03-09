@@ -22,16 +22,19 @@ class CreateInvoicesTable extends Migration
             $table->string('title',255)->nullable();
             $table->date('date')->nullable();
             $table->bigInteger('tax',)->nullable();
-            $table->tinyInteger('status',)->default(\App\Models\CRM\Invoice::STATUS_OPEN);
+            $table->tinyInteger('status',)
+                ->default(\App\Models\CRM\Invoice::STATUS_OPEN);
             $table->tinyInteger('type');
             $table->bigInteger('_user_id');
 
             $table->bigInteger('customer_id')->unsigned()->index();
             $table->bigInteger('pre_invoice_id')->unsigned()->index()->nullable();
 
-            $table->foreign('pre_invoice_id')->references('id')->on('pre_invoices')->onDelete('cascade');
+            $table->foreign('pre_invoice_id')
+                ->references('id')->on('pre_invoices')->onDelete('cascade');
 
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('customer_id')
+                ->references('id')->on('customers')->onDelete('cascade');
             $table->timestamps();
         });
         DB::statement('ALTER TABLE tbl_invoices ADD FULLTEXT fulltext_index (description,title)');

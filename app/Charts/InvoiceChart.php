@@ -26,20 +26,17 @@ class InvoiceChart extends BaseChart
         $result = Customer::orderBy('id')->pluck('id');
         foreach ($result as $x)
         {
-            $totalSum = Invoice::orderBy('id')->where('customer_id',$x)->whereHas('details', function ($q) {
+            $totalSum = Invoice::orderBy('id')->where('customer_id',$x)
+                ->whereHas('details', function ($q) {
             })->pluck('id');
             $totalSum1[]= InvoiceDetail::whereIn('invoice_id', $totalSum)
                 ->selectRaw('SUM(count*unit_price) as total_price')
                 ->pluck('total_price')->first();
-
-
         }
-
         $y=Customer::withCount('invoices');
         $y=$y->get()->pluck('invoices_count','name');
         return Chartisan::build()
             ->labels($y->keys()->toArray())
-
             ->dataset('هزینه کل فاکتورهای صادر شده برای مشتری', $totalSum1);
     }
 }

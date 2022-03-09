@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend\CRM\Admin;
 
-use App\Charts\UserChart;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\CRM\Customer;

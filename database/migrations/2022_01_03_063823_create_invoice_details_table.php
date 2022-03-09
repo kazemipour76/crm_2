@@ -21,7 +21,8 @@ class CreateInvoiceDetailsTable extends Migration
             $table->bigInteger('unit_price');
             $table->integer('count');
             $table->bigInteger('invoice_id')->unsigned()->index();
-            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->foreign('invoice_id')->references('id')
+                ->on('invoices')->onDelete('cascade');
             $table->timestamps();
         });
         DB::statement('ALTER TABLE tbl_invoice_details ADD FULLTEXT fulltextsearch (product_name)');

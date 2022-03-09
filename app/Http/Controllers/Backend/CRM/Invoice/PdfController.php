@@ -3,15 +3,10 @@
 namespace App\Http\Controllers\Backend\CRM\Invoice;
 
 use App\Http\Controllers\Controller;
-use App\Models\Auth\User;
 use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
-use App\Models\CRM\PreInvoice;
-use App\Utilities\Jdf;
-use App\Utilities\MessageBag;
 use App\Utilities\Number2Word;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+
 
 class PdfController extends Controller
 {
@@ -23,16 +18,6 @@ class PdfController extends Controller
     protected $viewFolder = 'CRM/invoice/pdf';
 
 
-    public function index(Request $request)
-    {
-//
-    }
-
-
-    public function destroy($id)
-    {
-        //
-    }
 
     public function create($id)
     {
@@ -70,21 +55,6 @@ class PdfController extends Controller
     {
         $tax = ($totalSum * 9) / 100;
         return $tax;
-    }
-
-    public function store()
-    {
-//
-    }
-
-    public function edit($id)
-    {
-//
-    }
-
-    public function update($id)
-    {
-//
     }
 
 }

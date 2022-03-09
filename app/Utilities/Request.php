@@ -9,5 +9,4 @@ class Request
     {
         return !empty(request()->getQueryString());
     }
-    // mode=2&term= shaport
 }

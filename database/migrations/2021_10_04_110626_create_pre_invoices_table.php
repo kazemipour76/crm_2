@@ -24,17 +24,17 @@ class CreatePreInvoicesTable extends Migration
             $table->bigInteger('tax')->nullable();
             $table->bigInteger('_user_id');
 
-            $table->tinyInteger('status' ,)->default(\App\Models\CRM\PreInvoice::STATUS_OPEN);
+            $table->tinyInteger('status' ,)
+                ->default(\App\Models\CRM\PreInvoice::STATUS_OPEN);
             $table->tinyInteger('type');
             $table->bigInteger('customer_id')->unsigned()->index();
-//            $table->bigInteger('invoice_id')->unsigned()->index()->nullable();
-
-
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-//            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')
+                ->on('customers')->onDelete('cascade');
             $table->timestamps();
         });
-        DB::statement('ALTER TABLE tbl_pre_invoices ADD FULLTEXT fulltext_index (description,title)');
+
+        DB::statement('ALTER TABLE tbl_pre_invoices ADD FULLTEXT fulltext_index
+    (description,title)');
 
     }
 

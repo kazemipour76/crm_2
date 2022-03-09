@@ -18,12 +18,11 @@ use Illuminate\Support\Facades\Gate;
 class DashboardController extends Controller
 {
 
-//    public $preInvoice;
     public $data;
     public $customer;
 
 
-        public function index()
+    public function index()
     {
 
 
@@ -105,14 +104,14 @@ class DashboardController extends Controller
         return view('backend.CRM.index', $this->data);
     }
 
-    public function handler(Request $request): Chartisan
-    {
-        $y = Customer::withCount('invoices');
-        $y = $y->get()->pluck('invoices_count', 'name');
-        return Chartisan::build()
-            ->labels($y->keys()->toArray())
-            ->dataset('Sample', $y->values()->toArray());
-    }
+//    public function handler(Request $request): Chartisan
+//    {
+//        $y = Customer::withCount('invoices');
+//        $y = $y->get()->pluck('invoices_count', 'name');
+//        return Chartisan::build()
+//            ->labels($y->keys()->toArray())
+//            ->dataset('Sample', $y->values()->toArray());
+//    }
 
     public $entity;
 

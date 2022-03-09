@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Backend\Auth;
 use App\Events\UserBlocked;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
-use App\Models\CRM\Customer;
-use App\Models\CRM\Invoice;
 use App\Scopes\UserScope;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
@@ -15,13 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-
-//use IIlluminate\Support\Facades\St;
 
 class UserController extends Controller
 {
-
     protected $returnDefault = 'sadmin/auth/user';
     protected $model = \App\Models\Auth\User::class;
     protected $modelName = 'کاربر';
@@ -29,7 +23,6 @@ class UserController extends Controller
 
     public function filter()
     {
-//        dd(\request()->all());
 
         $model = User::withoutGlobalScope(UserScope::class)->OrderBy('id');
         $filter = request()->all();
@@ -66,8 +59,6 @@ class UserController extends Controller
 
         return $model;
     }
-
-
     public function index(Request $request)
     {
 
@@ -81,14 +72,11 @@ class UserController extends Controller
 
         return view("backend.{$this->viewFolder}.list", $data);
     }
-
-
     public function destroy($id)
     {
         $this->deleteAction([$id]);
         return redirect($this->returnDefault);
     }
-
     public function create()
     {
         return view("backend.{$this->viewFolder}.create");
@@ -107,8 +95,6 @@ class UserController extends Controller
         $image = $request->file('image');
         $name_image = time().rand(0,20). ".". $image->extension();
 
-//        $name_image = $request->file('image')->getClientOriginalName();
-//        $path_image = $request->file('image')->store('public/images');
 
 
         $model= User::findOrFail(\Auth::id());
@@ -135,7 +121,6 @@ class UserController extends Controller
         $model->save();
         return redirect()->back();
     }
-
     public function store()
     {
         $model = new $this->model;
@@ -152,7 +137,6 @@ class UserController extends Controller
         }
 
     }
-
     public function edit($id)
     {
         $model = $this->model::findOrFail($id);
@@ -165,7 +149,6 @@ class UserController extends Controller
         $data['model'] = $model;
         return view("backend.{$this->viewFolder}.edit", $data);
     }
-
     public function update($id)
     {
         $model = $this->model::findOrFail($id);
@@ -180,7 +163,6 @@ class UserController extends Controller
             return redirect()->back();
         }
     }
-
     public function updateInformation()
     {
 //        dd('ddd');
@@ -206,7 +188,6 @@ class UserController extends Controller
             return redirect()->back();
         }
     }
-
     public function blockUser($id){
         if (Auth::id()==$id)
         {
@@ -236,8 +217,6 @@ class UserController extends Controller
             }
         }
     }
-
-
     public function userPermissions($id){
         if (Auth::id()==$id)
         {
@@ -294,7 +273,6 @@ class UserController extends Controller
 
         return redirect()->back();
     }
-
     public function deleteAction($ids)
     {
 

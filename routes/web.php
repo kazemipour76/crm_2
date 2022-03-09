@@ -1,19 +1,14 @@
 <?php
+use App\Utilities\Routers;
 
 Route::get('/',function (){
    return response()->redirectTo('auth/login');
 });
 Route::get('auth/login', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'loginPage'])->name('login');
 Route::post('auth/login', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'login']);
-
 Route::get('auth/register', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'registerPage']);
 Route::post('auth/register', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'register']);
-
 Route::get('auth/logout', [\App\Http\Controllers\Backend\Auth\AuthController::class, 'logout']);
-
-use App\Models\CRM\Customer;
-use App\Utilities\Routers;
-use Illuminate\Database\Eloquent\Model;
 
 Route::group([
     'middleware' =>[ 'auth','check_user'],
@@ -38,12 +33,16 @@ Route::group([
     });
     Route::group(['prefix' => 'auth','middleware' => ['check_admin']], function () {
         Routers::crud('user', \App\Http\Controllers\Backend\Auth\UserController::class);
-        Routers::crud('group', \App\Http\Controllers\Backend\Auth\GroupController::class);
-        Route::get('user/image', [\App\Http\Controllers\Backend\Auth\UserController::class, 'image'])->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
-        Route::post('user/image', [\App\Http\Controllers\Backend\Auth\UserController::class, 'saveImage'])->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
-        Route::get('user/image/deleteImage', [\App\Http\Controllers\Backend\Auth\UserController::class, 'deleteImage'])->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
-        Route::get('user/userInformation', [\App\Http\Controllers\Backend\Auth\UserController::class, 'editInformation'])->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
-        Route::post('user/userInformation', [\App\Http\Controllers\Backend\Auth\UserController::class, 'updateInformation'])->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
+        Route::get('user/image', [\App\Http\Controllers\Backend\Auth\UserController::class, 'image'])
+            ->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
+        Route::post('user/image', [\App\Http\Controllers\Backend\Auth\UserController::class, 'saveImage'])
+            ->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
+        Route::get('user/image/deleteImage', [\App\Http\Controllers\Backend\Auth\UserController::class, 'deleteImage'])
+            ->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
+        Route::get('user/userInformation', [\App\Http\Controllers\Backend\Auth\UserController::class, 'editInformation'])
+            ->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
+        Route::post('user/userInformation', [\App\Http\Controllers\Backend\Auth\UserController::class, 'updateInformation'])
+            ->withoutMiddleware(\App\Http\Middleware\CheckAdmin::class);;
         Route::get('user/{id}/block', [\App\Http\Controllers\Backend\Auth\UserController::class, 'blockUser']);
         Route::get('user/{id}/permissions', [\App\Http\Controllers\Backend\Auth\UserController::class, 'userPermissions']);
         Route::post('user/{id}/permissions', [\App\Http\Controllers\Backend\Auth\UserController::class, 'userPermissionsChange']);
@@ -52,7 +51,8 @@ Route::group([
     });
 
     Route::group(['prefix' => '/dash'], function () {
-        Route::get('/', [\App\Http\Controllers\Backend\Dashboard\DashboardController::class, 'index'])->withoutMiddleware(\App\Http\Middleware\CheckUser::class);
+        Route::get('/', [\App\Http\Controllers\Backend\Dashboard\DashboardController::class, 'index'])
+            ->withoutMiddleware(\App\Http\Middleware\CheckUser::class);
     });
 
 });

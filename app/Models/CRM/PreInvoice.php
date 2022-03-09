@@ -80,7 +80,7 @@ class PreInvoice extends BaseModel
     ];
 
     protected $casts = [
-//        'date' => Jalali::class ,
+        'date' => Jalali::class ,
 //        'created_at' => Jalali::class . ':time',
     ];
 

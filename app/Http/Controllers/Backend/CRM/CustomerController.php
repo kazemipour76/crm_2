@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Backend\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
-use App\Models\CRM\InvoiceDetail;
-use App\Models\CRM\PreInvoice;
 use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
 use Illuminate\Http\Request;
@@ -64,9 +62,6 @@ class CustomerController extends Controller
 
         return $model;
     }
-
-
-
     public function index(Request $request)
     {
 
@@ -80,19 +75,15 @@ class CustomerController extends Controller
 
         return view("backend.{$this->viewFolder}.list", $data);
     }
-
-
     public function destroy($id)
     {
         $this->deleteAction([$id]);
         return redirect($this->returnDefault);
     }
-
     public function create()
     {
         return view("backend.{$this->viewFolder}.create");
     }
-
     public function store()
     {
         $model = new Customer();
@@ -110,14 +101,12 @@ class CustomerController extends Controller
         }
 
     }
-
     public function edit($id)
     {
         $model = Customer::findOrFail($id);
         $data['model'] = $model;
         return view("backend.{$this->viewFolder}.edit", $data);
     }
-
     public function update($id)
     {
         $model = Customer::findOrFail($id);
@@ -131,7 +120,6 @@ class CustomerController extends Controller
             return redirect()->back();
         }
     }
-
 
     /*
      * ------------------------------- actions ------------------------------

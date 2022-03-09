@@ -23,12 +23,7 @@ class UserChart extends BaseChart
      * and never a string or an array.
      */
  public $id;
-    public  function test()
-    {
-        dd(session());
 
-    }
-//dd(session('c','g'))
 
     public function handler(Request $request): Chartisan
     {

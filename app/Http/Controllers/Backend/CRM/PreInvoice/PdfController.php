@@ -3,14 +3,10 @@
 namespace App\Http\Controllers\Backend\CRM\PreInvoice;
 
 use App\Http\Controllers\Controller;
-use App\Models\Auth\User;
 use App\Models\CRM\Customer;
 use App\Models\CRM\PreInvoice;
-use App\Utilities\Jdf;
-use App\Utilities\MessageBag;
 use App\Utilities\Number2Word;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+
 
 class PdfController extends Controller
 {
@@ -20,12 +16,6 @@ class PdfController extends Controller
     protected $modelDetail = \App\Models\CRM\PreInvoiceDetail::class;
     protected $modelName = 'مشتری';
     protected $viewFolder = 'CRM/PreInvoice/pdf';
-
-
-    public function index(Request $request)
-    {
-        //
-    }
 
 
     public function create($id)
@@ -66,10 +56,6 @@ class PdfController extends Controller
         return $tax;
     }
 
-    public function store()
-    {
-//
-    }
 
 
 }

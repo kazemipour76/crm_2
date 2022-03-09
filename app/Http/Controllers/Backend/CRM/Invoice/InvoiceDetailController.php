@@ -3,22 +3,13 @@
 namespace App\Http\Controllers\Backend\CRM\Invoice;
 
 use App\Http\Controllers\Controller;
-use App\Models\Auth\User;
-use App\Models\CRM\Customer;
 use App\Models\CRM\Invoice;
 use App\Models\CRM\InvoiceDetail;
-use App\Models\CRM\PreInvoice;
-use App\Models\CRM\PreInvoiceDetail;
-use App\Utilities\Jdf;
 use App\Utilities\MessageBag;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use function Couchbase\defaultDecoder;
-use function React\Promise\all;
+
 
 class InvoiceDetailController extends Controller
 {
-
     protected $returnDefault = 'sadmin/crm/invoice';
     protected $model = \App\Models\CRM\Invoice::class;
     protected $modelDetail = \App\Models\CRM\InvoiceDetail::class;
@@ -27,24 +18,15 @@ class InvoiceDetailController extends Controller
     protected $viewFolder = 'CRM/invoice';
 
 
-    public function index()
-    {
-//
-    }
-
     public function destroy($id)
     {
-        $this->deleteAction([$id]);
-        return redirect($this->returnDefault);
-    }
-
-    public function create()
-    {
-//
+        $this->deleteAction($id);
+        return redirect()->back();
     }
 
     public function store($id)
     {
+         dd('ddd');
         $status = $this->model::findOrFail($id);
         $old = \Request::flash($status);
         $old = \Request::old($old);
@@ -74,7 +56,6 @@ class InvoiceDetailController extends Controller
 
 
     }
-
 
     public function edit($id)
     {
@@ -112,33 +93,14 @@ class InvoiceDetailController extends Controller
         }
     }
 
-    public function discount()
-    {
-        $discount = request('total_discount');
-        dd($discount);
-    }
-
     /*
      * ------------------------------- actions ------------------------------
      */
-    public function actions(Request $request)
-    {
-        $ids = array_keys(request('checks', []));
-        $action = trim(strtolower(request('action', '')));
 
-        switch ($action) {
-            case 'delete':
-                $this->deleteAction($ids);
-                break;
-        }
-        return redirect()->back();
-    }
-
-    public function deleteAction($ids)
+    public function deleteAction($id)
     {
-        $count = count($ids);
-        if ($this->modelDetail::whereIn('id', $ids)->delete()) {
-            MessageBag::push("تعداد {$count} {$this->modelName} با موفقیت حذف شد", MessageBag::TYPE_SUCCESS);
+        if ($this->modelDetail::where('id', $id)->delete()) {
+            MessageBag::push("تعداد 1 {$this->modelName} با موفقیت حذف شد", MessageBag::TYPE_SUCCESS);
         } else {
             MessageBag::push("{$this->modelName}  حذف نشد لطفا مجددا تلاش فرمایید");
         }

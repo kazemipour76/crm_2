@@ -21,10 +21,12 @@ class CreatePreInvoiceDetailsTable extends Migration
             $table->string('unit_price');
             $table->integer('count');
             $table->bigInteger('pre_invoice_id')->unsigned()->index();
-            $table->foreign('pre_invoice_id')->references('id')->on('pre_invoices')->onDelete('cascade');
+            $table->foreign('pre_invoice_id')->references('id')
+                ->on('pre_invoices')->onDelete('cascade');
             $table->timestamps();
         });
-        DB::statement('ALTER TABLE tbl_pre_invoice_details ADD FULLTEXT fulltextsearch (product_name)');
+        DB::statement('ALTER TABLE tbl_pre_invoice_details ADD FULLTEXT
+    fulltextsearch (product_name)');
 
     }
 

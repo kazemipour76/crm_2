@@ -11,7 +11,6 @@ class MessageBag {
     CONST TYPE_INFO = 'info';
     const SESSION_ID = 'MASSAGE_BAG';
 
-
     public static function push($message, $type = self::TYPE_DANGER)
     {
         $models = collect(session(self::SESSION_ID));

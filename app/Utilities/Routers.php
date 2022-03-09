@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 class Routers
 {
-
     public static function crud($path, $controller, array $options = [])
     {
         $defaultOptions = [

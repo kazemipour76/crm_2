@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\CRM\PreInvoice;
 use App\Models\CRM\PreInvoiceDetail;
 use App\Utilities\MessageBag;
-use Illuminate\Http\Request;
 
 class PreInvoiceDetailController extends Controller
 {
@@ -19,20 +18,10 @@ class PreInvoiceDetailController extends Controller
     protected $viewFolder = 'CRM/preInvoice';
 
 
-    public function index()
-    {
-//
-    }
-
     public function destroy($id)
     {
-        $this->deleteAction([$id]);
-        return redirect($this->returnDefault);
-    }
-
-    public function create()
-    {
-//
+        $this->deleteAction($id);
+        return redirect()->back();
     }
 
     public function store($id)
@@ -66,7 +55,6 @@ class PreInvoiceDetailController extends Controller
 
 
     }
-
 
     public function edit($id)
     {
@@ -104,33 +92,14 @@ class PreInvoiceDetailController extends Controller
         }
     }
 
-    public function discount()
-    {
-        $discount = request('total_discount');
-        dd($discount);
-    }
-
     /*
      * ------------------------------- actions ------------------------------
      */
-    public function actions(Request $request)
-    {
-        $ids = array_keys(request('checks', []));
-        $action = trim(strtolower(request('action', '')));
 
-        switch ($action) {
-            case 'delete':
-                $this->deleteAction($ids);
-                break;
-        }
-        return redirect()->back();
-    }
-
-    public function deleteAction($ids)
+    public function deleteAction($id)
     {
-        $count = count($ids);
-        if ($this->modelDetail::whereIn('id', $ids)->delete()) {
-            MessageBag::push("تعداد {$count} {$this->modelName} با موفقیت حذف شد", MessageBag::TYPE_SUCCESS);
+        if ($this->modelDetail::where('id', $id)->delete()) {
+            MessageBag::push("تعداد 1 {$this->modelName} با موفقیت حذف شد", MessageBag::TYPE_SUCCESS);
         } else {
             MessageBag::push("{$this->modelName}  حذف نشد لطفا مجددا تلاش فرمایید");
         }

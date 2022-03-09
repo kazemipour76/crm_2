@@ -49,24 +49,18 @@ class User  extends BaseModel implements
     CanResetPasswordContract
 {
     use
-        \Illuminate\Auth\Authenticatable,
-        \Illuminate\Foundation\Auth\Access\Authorizable,
-        \Illuminate\Auth\Passwords\CanResetPassword,
-        \Illuminate\Auth\MustVerifyEmail,
-        HasFactory, FullTextSearch;
-
+        \Illuminate\Auth\Authenticatable,        \Illuminate\Foundation\Auth\Access\Authorizable,       \Illuminate\Auth\Passwords\CanResetPassword,
+        \Illuminate\Auth\MustVerifyEmail,        HasFactory, FullTextSearch;
     const USER_BLOCK=1;
     const USER_UNBLOCK=0;
     const USER_ADMIN=3;
     const USER_SPECIAL=2;
     const USER_NORMAL=0;
-
     protected $table = "users";
     protected $searchable = [
         'name',
         'email'
     ];
-
     protected $fillable = [
         'name',
         'email',
@@ -80,26 +74,16 @@ class User  extends BaseModel implements
         'registration_number',
         'last_login_at',
     ];
-
     protected $casts = [
         'updated_at' => Jalali::class . ':time',
 //        'created_at' => Jalali::class . ':time',
     ];
-
     protected static function newFactory()
     {
         return UserFactory::new();
     }
-
-    public function scopeKazemi($q, $name)
-    {
-        $q->where('fadakar', $name);
-        return $q;
-    }
-
     public static function getValidationRules($idEdit = false, $id = null)
     {
-
         $rules = [
 //            'name' => 'required',
 //            'password' => 'required',
@@ -110,7 +94,7 @@ class User  extends BaseModel implements
 //            'phone' => 'required',
 //            'nationalID' => 'required',
 //            'economicID' => 'required',
-//            'registration_number' => 'required',
+//            'registration_number' => 'required'
         ];
         if ($idEdit) {
 //            $rules ['password'] = '';
